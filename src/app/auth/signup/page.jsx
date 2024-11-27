@@ -6,8 +6,10 @@ import { Eye, EyeOff, Lock, Mail, NotebookPen, User } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input";
 import Link from 'next/link';
+import { useTheme } from 'next-themes';
 
 function page() {
+    const { theme } = useTheme()
     const [inputType, setInputType] = useState('password')
     const toggleInputType = () => setInputType(prev => (prev === 'password' ? 'text' : 'password'));
     return (
@@ -17,9 +19,9 @@ function page() {
                     <div className="flex items-center justify-center mb-4">
                         <NotebookPen className={`h-12 w-12`} />
                     </div>
-                    <CardTitle className="text-2xl font-bold text-center">Create an account</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-center">Sign Up</CardTitle>
                     <CardDescription className={`text-center`}>
-                        Enter your details to create your NoteWorthy account
+                    Create a new account to start blogging
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -83,7 +85,7 @@ function page() {
                                 </button>
                             </div>
                         </div>
-                        <Button className="w-full mt-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white" type="submit">
+                        <Button className='w-full'>
                             Sign Up
                         </Button>
                     </form>
