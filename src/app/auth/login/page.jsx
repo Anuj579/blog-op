@@ -55,7 +55,7 @@ function page() {
                                 </button>
                             </div>
                         </div>
-                        <Button className="w-full mt-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white" type="submit">
+                        <Button className="w-full mt-2">
                             Log In
                         </Button>
                     </form>
