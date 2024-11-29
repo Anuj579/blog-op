@@ -29,7 +29,7 @@ function page() {
                         <div className="space-y-2">
                             <label htmlFor="firstname" className="text-sm">First Name</label>
                             <div className="relative">
-                                <User className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4`} />
+                                <User className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted`} />
                                 <Input
                                     id="firstname"
                                     type="text"

@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -46,7 +45,7 @@ export default function Home() {
           Welcome to BlogApp
         </h1>
         <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-          Discover amazing stories, share your thoughts, and connect with fellow bloggers.
+          Discover insightful articles, share your knowledge, and engage with a community of passionate writers and readers.
         </p>
         <div className="flex justify-center gap-4">
           <Link href="/blog">

@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,52 +33,9 @@ export default function RootLayout({ children }) {
       >
         <ThemeProvider attribute="class">
           <div className="flex flex-col min-h-screen">
-            <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:bg-background">
-              <div className="container flex h-14 items-center">
-                <Link href="/" className="mr-6 flex items-center space-x-2">
-                  <span className="font-bold text-xl">BlogApp</span>
-                </Link>
-                <nav className="items-center space-x-6 text-sm font-medium hidden md:flex">
-                  <Link href="/">Home</Link>
-                  <Link href="/blog">Blog</Link>
-                  <Link href="/about">About</Link>
-                </nav>
-                <div className="flex flex-1 items-center justify-end space-x-4">
-                  <nav className="flex items-center space-x-2">
-                    <Link href="/auth/login">
-                      <Button variant="ghost">Login</Button>
-                    </Link>
-                    <Link href="/auth/signup">
-                      <Button>Sign Up</Button>
-                    </Link>
-                    <ThemeToggle />
-                    <Button variant="ghost" size="icon" className="md:hidden">
-                      <Menu className="h-5 w-5" />
-                      <span className="sr-only">Toggle menu</span>
-                    </Button>
-                  </nav>
-                </div>
-              </div>
-            </header>
+            <Navbar />
             <main className="flex-1">{children}</main>
-            <footer className="border-t">
-              <div className="container flex flex-col md:flex-row items-center justify-between py-8 space-y-4 md:space-y-0">
-                <p className="text-sm text-muted-foreground">
-                  © {new Date().getFullYear()} BlogApp. All rights reserved.
-                </p>
-                <nav className="flex items-center space-x-4">
-                  <Link href="/about" className="text-sm text-muted-foreground hover:underline">
-                    About
-                  </Link>
-                  <Link href="/privacy" className="text-sm text-muted-foreground hover:underline">
-                    Privacy
-                  </Link>
-                  <Link href="/terms" className="text-sm text-muted-foreground hover:underline">
-                    Terms
-                  </Link>
-                </nav>
-              </div>
-            </footer>
+            <Footer />
           </div>
         </ThemeProvider>
       </body>
