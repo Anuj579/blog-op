@@ -22,7 +22,7 @@
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
+    --secondary: 126 96.4% 33.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --accent: 210 40% 96.1%;
@@ -37,7 +37,7 @@
   }
 
   .dark {
-    --background: 240 10% 4%;
+    --background: 0 0% 7.1%;
 
     --muted: 240 4% 50%;
     --muted-foreground: 240 4% 65%;
@@ -57,7 +57,7 @@
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 1.2%;
 
-    --secondary: 222.2 47.4% 11.2%;
+    --secondary: 126 97.3% 42.9%;
     --secondary-foreground: 210 40% 98%;
 
     --destructive: 0 63% 31%;
@@ -74,18 +74,6 @@
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
-}
-
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #09090B;
-    --foreground: #ededed;
-  }
 }
 
 body {

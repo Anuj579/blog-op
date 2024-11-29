@@ -24,7 +24,7 @@ const Navbar = () => {
         <header className="sticky top-0 z-50 w-full border-b backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-card/60">
             <div className="px-4 md:container flex h-14 items-center">
                 <Link href="/" className="mr-6 flex items-center space-x-2">
-                    <span className="font-bold text-xl">BlogApp</span>
+                    <span className="font-bold text-2xl">BlogApp</span>
                 </Link>
                 <nav className="items-center space-x-6 text-sm font-medium hidden md:flex">
                     <Link href="/">Home</Link>

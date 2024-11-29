@@ -90,7 +90,7 @@ function page() {
                         </Button>
                     </form>
                 </CardContent>
-                <hr className="dark:border-gray-700 mb-4 mx-6" />
+                <hr className="border-border mb-4 mx-6" />
                 <CardFooter>
                     <p className={`text-sm text-center w-full `}>
                         Already have an account?

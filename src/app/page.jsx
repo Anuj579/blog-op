@@ -42,17 +42,14 @@ export default function Home() {
     <div className="container mx-auto px-4 py-12">
       <section className="text-center mb-16">
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl mb-4">
-          Welcome to BlogApp
+          Welcome to <span className="text-secondary">BlogApp</span>
         </h1>
         <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
           Discover insightful articles, share your knowledge, and engage with a community of passionate writers and readers.
         </p>
-        <div className="flex justify-center gap-4">
+        <div>
           <Link href="/blog">
             <Button size="lg">Explore Blogs</Button>
-          </Link>
-          <Link href="/create">
-            <Button size="lg" variant="outline">Start Writing</Button>
           </Link>
         </div>
       </section>
@@ -84,7 +81,7 @@ export default function Home() {
       <section className="text-center">
         <h2 className="text-3xl font-bold mb-4">Join Our Community</h2>
         <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-          Connect with like-minded individuals, share your stories, and grow together.
+        Create your own blog, share your thoughts, and receive feedback from readers. Start your writing journey today!
         </p>
         <Link href="/signup">
           <Button size="lg">Sign Up Now</Button>
