@@ -2,30 +2,28 @@
 
 import React, { useState } from 'react'
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Lock, Mail, NotebookPen } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input";
 import Link from 'next/link';
+import { Label } from '@/components/ui/label';
 
 function page() {
     const [inputType, setInputType] = useState('password')
     const toggleInputType = () => setInputType(prev => (prev === 'password' ? 'text' : 'password'));
     return (
-        <div className="flex items-center justify-center mx-4 my-24">
+        <div className="flex items-center justify-center mx-4 my-6 min-h-[calc(100vh-10rem)]">
             <Card className={`w-full max-w-md`}>
-                <CardHeader className="space-y-1">
-                    <div className="flex items-center justify-center mb-4">
-                        <NotebookPen className={`h-12 w-12`} />
-                    </div>
-                    <CardTitle className="text-2xl font-bold text-center">Log In</CardTitle>
-                    <CardDescription className={`text-center`}>
-                        Enter your email to sign in to your account
+                <CardHeader className="space-y-2">
+                    <CardTitle className="text-2xl font-bold">Login</CardTitle>
+                    <CardDescription>
+                        Enter your credentials to access your account
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form className="flex flex-col gap-4">
                         <div className="space-y-2">
-                            <label htmlFor="email" className="text-sm">Email</label>
+                            <Label htmlFor="email">Email</Label>
                             <div className="relative">
                                 <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4`} />
                                 <Input
@@ -39,7 +37,7 @@ function page() {
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <label htmlFor="password" className="text-sm">Password</label>
+                            <Label htmlFor="password">Password</Label>
                             <div className="relative">
                                 <Lock className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4`} />
                                 <Input
