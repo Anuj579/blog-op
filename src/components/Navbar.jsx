@@ -12,8 +12,24 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
+const NavLink = ({ href, children }) => {
+    const pathname = usePathname()
+    const isActive = pathname === href
+
+    return (
+        <Link
+            href={href}
+            className={`text-sm font-medium transition-colors hover:text-primary ${isActive
+                    ? 'text-primary'
+                    : 'text-muted-foreground'
+                }`}
+        >
+            {children}
+        </Link>
+    )
+}
 
 const Navbar = () => {
     const [session, setSession] = useState(null)
@@ -27,8 +43,8 @@ const Navbar = () => {
                         <span className="font-bold text-2xl">BlogApp</span>
                     </Link>
                     <nav className="items-center space-x-6 text-sm font-medium hidden md:flex">
-                        <Link href="/">Home</Link>
-                        <Link href="/blog">Explore</Link>
+                        <NavLink href="/">Home</NavLink>
+                        <NavLink href="/blog">Explore</NavLink>
                     </nav>
                 </div>
                 <div className="flex flex-1 items-center justify-end">

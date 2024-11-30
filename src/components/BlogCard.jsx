@@ -12,10 +12,10 @@ export function BlogCard({ post }) {
                 alt={post.title}
                 width={300}
                 height={200}
-                className="w-full h-48 object-cover"
+                className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
             />
             <CardHeader>
-                <CardTitle className="line-clamp-2">{post.title}</CardTitle>
+                <CardTitle>{post.title}</CardTitle>
             </CardHeader>
             <CardContent className="flex-grow">
                 <p className="text-muted-foreground line-clamp-3 mb-2">{post.excerpt}</p>
