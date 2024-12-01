@@ -60,10 +60,10 @@ function page() {
                 </CardContent>
                 <hr className="border-border mb-4 mx-6" />
                 <CardFooter>
-                    <p className={`text-sm text-center w-full `}>
-                        Don't have an account?
-                        <Link href="/auth/signup" className={`font-semibold ml-1 hover:underline`}>
-                            Sign Up
+                    <p className={`text-sm text-center w-full`}>
+                        <span className='text-muted-foreground'>Don't have an account?</span>
+                        <Link href="/auth/signup" className={`font-medium ml-1 hover:underline`}>
+                            Sign up
                         </Link>
                     </p>
                 </CardFooter>

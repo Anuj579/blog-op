@@ -91,8 +91,8 @@ function page() {
                 <hr className="border-border mb-4 mx-6" />
                 <CardFooter>
                     <p className={`text-sm text-center w-full `}>
-                        Already have an account?
-                        <Link href="/auth/login" className={`font-semibold ml-1 hover:underline`}>
+                        <span className='text-muted-foreground'>Already have an account?</span>
+                        <Link href="/auth/login" className={`font-medium ml-1 hover:underline`}>
                             Login
                         </Link>
                     </p>

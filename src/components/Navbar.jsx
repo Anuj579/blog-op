@@ -77,17 +77,17 @@ const UserMenu = () => {
 }
 
 const Navbar = () => {
-    const [session, setSession] = useState(true)
+    const [session, setSession] = useState(false)
     const router = useRouter()
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-card/60 px-4">
-            <div className="md:container flex h-14 items-center">
+        <header className="sticky top-0 z-50 w-full border-b backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-card/60 md:px-4">
+            <div className="md:container flex p-3 items-center">
                 <div className="flex items-center">
                     <Link href="/" className="mr-6 flex items-center">
-                        <span className="font-bold text-2xl">BlogApp</span>
+                        <span className="font-bold text-xl">BlogApp</span>
                     </Link>
-                    <nav className="items-center space-x-6 text-sm font-medium hidden md:flex">
+                    <nav className="items-center space-x-6 text-sm font-medium hidden md:inline-flex">
                         <NavLink href="/">Home</NavLink>
                         <NavLink href="/blogs">Explore</NavLink>
                     </nav>
@@ -95,7 +95,11 @@ const Navbar = () => {
                 <div className="flex flex-1 items-center justify-end">
                     <nav className="flex items-center gap-3">
                         <ThemeToggle />
-                        <UserMenu />
+                        {session &&
+                            <div className="md:hidden">
+                                <UserMenu />
+                            </div>
+                        }
                         <div className="hidden md:flex gap-2">
                             {!session ? (
                                 <>
@@ -107,9 +111,7 @@ const Navbar = () => {
                                     </Link>
                                 </>
                             ) : (
-                                <>
-
-                                </>
+                                <UserMenu />
                             )}
                         </div>
                         <DropdownMenu>
@@ -123,8 +125,14 @@ const Navbar = () => {
                                 <DropdownMenuItem onClick={() => router.push("/")}>
                                     Home
                                 </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => router.push("/blogs")}>
+                                    Explore
+                                </DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => router.push("/auth/login")}>
                                     Login
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => router.push("/auth/signup")}>
+                                    Sign Up
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
