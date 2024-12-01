@@ -10,7 +10,7 @@ function page() {
         { id: 5, title: "Responsive Design Best Practices", excerpt: "Create beautiful, responsive websites with these tips.", author: "Emma Brown", date: "2023-07-20", comments: 19, readTime: 6, image: "https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
         { id: 6, title: "Getting Started with Next.js", excerpt: "Build powerful React applications with Next.js.", author: "Chris Green", date: "2023-07-25", comments: 27, readTime: 9, image: "https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
     ]
-
+    
     return (
         <div className="container mx-auto px-4 py-8">
             <h1 className="text-3xl font-bold mb-8">All Blog Posts</h1>

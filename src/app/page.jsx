@@ -22,7 +22,7 @@ export default function Home() {
           Discover insightful articles, share your knowledge, and engage with a community of passionate writers and readers.
         </p>
         <div>
-          <Link href="/blog">
+          <Link href="/blogs">
             <Button size="lg">Explore Blogs</Button>
           </Link>
         </div>
