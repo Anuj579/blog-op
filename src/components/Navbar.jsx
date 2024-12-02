@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/ThemeToggle";
-import { LogOut, Menu, Truck, User } from "lucide-react";
-import { signOut } from "next-auth/react";
+import { LogOut, Menu, User } from "lucide-react";
 import { useState } from "react";
 import {
     DropdownMenu,
@@ -60,7 +59,7 @@ const UserMenu = () => {
                     <User className="mr-2 h-4 w-4" />
                     <span>Profile</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem asChild>
                     <Link href="/dashboard" className="flex w-full">
                         <User className="mr-2 h-4 w-4" />
                         Dashboard
@@ -77,7 +76,7 @@ const UserMenu = () => {
 }
 
 const Navbar = () => {
-    const [session, setSession] = useState(false)
+    const [session, setSession] = useState(true)
     const router = useRouter()
 
     return (
@@ -128,12 +127,14 @@ const Navbar = () => {
                                 <DropdownMenuItem onClick={() => router.push("/blogs")}>
                                     Explore
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => router.push("/auth/login")}>
-                                    Login
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => router.push("/auth/signup")}>
-                                    Sign Up
-                                </DropdownMenuItem>
+                                {!session && <>
+                                    <DropdownMenuItem onClick={() => router.push("/auth/login")}>
+                                        Login
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => router.push("/auth/signup")}>
+                                        Sign Up
+                                    </DropdownMenuItem>
+                                </>}
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </nav>

@@ -1,11 +1,17 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Textarea } from "@/components/ui/textarea"
-import { Edit, Trash2, MessageCircle, Clock, Calendar, ThumbsUp } from 'lucide-react'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Edit, Trash2, Clock, Calendar, MoreVertical, Share2, Link } from 'lucide-react'
 import Image from 'next/image'
 
 const blogPost = {
@@ -22,30 +28,49 @@ const blogPost = {
         { id: 1, author: "Alice", content: "Great article! Very helpful for beginners.", date: "2023-06-02" },
         { id: 2, author: "Bob", content: "I'd love to see more advanced topics in the future.", date: "2023-06-03" }
     ],
-    likes: 45,
     image: "https://images.pexels.com/photos/11035471/pexels-photo-11035471.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
 }
 
 export default function BlogPost() {
-    const [isAuthor, setIsAuthor] = useState(false)
-    const [liked, setLiked] = useState(false)
+    const [isAuthor, setIsAuthor] = useState(true)
     const [commentText, setCommentText] = useState('')
-
-    useEffect(() => {
-        // This should be replaced with actual authentication logic
-        setIsAuthor(Math.random() > 0.5)
-    }, [])
-
-    const handleLike = () => {
-        setLiked(!liked)
-        // Here you would typically update the like count on the server
-    }
 
     const handleCommentSubmit = (e) => {
         e.preventDefault()
         // Here you would typically send the comment to the server
         console.log('Comment submitted:', commentText)
         setCommentText('')
+    }
+
+    const handleShare = async (platform) => {
+        const shareData = {
+            title: 'Check out this blog!',
+            text: 'I found this amazing blog on BlogApp. Take a look!',
+            url: window.location.href,
+        }
+        if (platform === 'copy') {
+            try {
+                await navigator.clipboard.writeText(window.location.href)
+                alert('Link copied successfully!')
+            } catch (err) {
+                console.error('Error copying text: ', err)
+                alert('Failed to copy link.')
+            }
+        } else {
+            let url
+            switch (platform) {
+                case 'facebook':
+                    url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`
+                    break
+                case 'twitter':
+                    url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareData.text)}&url=${encodeURIComponent(window.location.href)}`
+                    break
+                case 'linkedin':
+                    url = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent(shareData.title)}`
+                    break
+            }
+            window.open(url, '_blank')
+        }
     }
 
     return (
@@ -56,10 +81,10 @@ export default function BlogPost() {
                     alt={blogPost.title}
                     width={1200}
                     height={600}
-                    className="w-full h-[400px] object-cover"
+                    className="w-full h-[300px] sm:h-[400px] object-cover"
                 />
-                <CardHeader>
-                    <div className="flex justify-between items-center mb-4">
+                <CardHeader className="space-y-4">
+                    <div className="flex justify-between items-start">
                         <div className="flex items-center space-x-4">
                             <Avatar>
                                 <AvatarImage src={blogPost.author.avatar} />
@@ -73,36 +98,53 @@ export default function BlogPost() {
                                 </div>
                             </div>
                         </div>
-                        {isAuthor && (
-                            <div className="flex space-x-2">
-                                <Button variant="outline" size="sm">
-                                    <Edit className="h-4 w-4 mr-2" /> Edit
-                                </Button>
-                                <Button variant="destructive" size="sm">
-                                    <Trash2 className="h-4 w-4 mr-2" /> Delete
-                                </Button>
-                            </div>
-                        )}
+                        <div className="flex items-center space-x-2">
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="outline" size="icon">
+                                        <Share2 className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuItem onSelect={() => handleShare('copy')}>
+                                        <Link className="mr-2 h-4 w-4" /> Copy Link
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onSelect={() => handleShare('facebook')}>
+                                        <svg className="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg> Share on Facebook
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onSelect={() => handleShare('twitter')}>
+                                        <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                                        </svg> Share on Twitter
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onSelect={() => handleShare('linkedin')}>
+                                        <svg className="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor"><path d="M100.3 448H7.4V148.9h92.9zM53.8 108.1C24.1 108.1 0 83.5 0 53.8a53.8 53.8 0 0 1 107.6 0c0 29.7-24.1 54.3-53.8 54.3zM447.9 448h-92.7V302.4c0-34.7-.7-79.2-48.3-79.2-48.3 0-55.7 37.7-55.7 76.7V448h-92.8V148.9h89.1v40.8h1.3c12.4-23.5 42.7-48.3 87.9-48.3 94 0 111.3 61.9 111.3 142.3V448z" /></svg> Share on LinkedIn
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                            {isAuthor && (
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="outline" size="icon">
+                                            <MoreVertical className="h-4 w-4" />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuItem>
+                                            <Edit className="mr-2 h-4 w-4" /> Edit
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <Trash2 className="mr-2 h-4 w-4" /> Delete
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            )}
+                        </div>
                     </div>
-                    <CardTitle className="text-3xl font-bold mb-2">{blogPost.title}</CardTitle>
-                    <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                        <span className="flex items-center">
-                            <Clock className="mr-1 h-4 w-4" />
-                            {blogPost.readTime} min read
-                        </span>
-                        <span className="flex items-center">
-                            <MessageCircle className="mr-1 h-4 w-4" />
-                            {blogPost.comments.length} comments
-                        </span>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={handleLike}
-                            className={`flex items-center ${liked ? 'text-primary' : 'text-muted-foreground'}`}
-                        >
-                            <ThumbsUp className="mr-1 h-4 w-4" />
-                            {blogPost.likes + (liked ? 1 : 0)} likes
-                        </Button>
+                    <CardTitle className="text-3xl font-bold">{blogPost.title}</CardTitle>
+                    <div className="flex items-center text-sm text-muted-foreground">
+                        <Clock className="mr-1 h-4 w-4" />
+                        {blogPost.readTime} min read
                     </div>
                 </CardHeader>
                 <CardContent>
