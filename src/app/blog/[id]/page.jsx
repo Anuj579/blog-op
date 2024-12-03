@@ -11,8 +11,21 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Edit, Trash2, Clock, Calendar, MoreVertical, Share2, Link } from 'lucide-react'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Edit, Trash2, Clock, Calendar, MoreVertical, Share2, AlertTriangle, LinkIcon } from 'lucide-react'
 import Image from 'next/image'
+import { useParams } from 'next/navigation'
+import Link from 'next/link'
 
 const blogPost = {
     id: 1,
@@ -34,6 +47,8 @@ const blogPost = {
 export default function BlogPost() {
     const [isAuthor, setIsAuthor] = useState(true)
     const [commentText, setCommentText] = useState('')
+    const [showAlert, setShowAlert] = useState(false)
+    const { id } = useParams()
 
     const handleCommentSubmit = (e) => {
         e.preventDefault()
@@ -107,7 +122,7 @@ export default function BlogPost() {
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
                                     <DropdownMenuItem onSelect={() => handleShare('copy')}>
-                                        <Link className="mr-2 h-4 w-4" /> Copy Link
+                                        <LinkIcon className="mr-2 h-4 w-4" /> Copy Link
                                     </DropdownMenuItem>
                                     <DropdownMenuItem onSelect={() => handleShare('facebook')}>
                                         <svg className="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg> Share on Facebook
@@ -130,16 +145,37 @@ export default function BlogPost() {
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end">
-                                        <DropdownMenuItem>
-                                            <Edit className="mr-2 h-4 w-4" /> Edit
+                                        <DropdownMenuItem asChild>
+                                            <Link href={id ? `/blog/${id}/edit` : '#'}>
+                                                <Edit className="mr-2 h-4 w-4" /> Edit
+                                            </Link>
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => setShowAlert(true)}>
                                             <Trash2 className="mr-2 h-4 w-4" /> Delete
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             )}
                         </div>
+                        <AlertDialog open={showAlert} onOpenChange={setShowAlert}>
+                            <AlertDialogTrigger asChild>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle className='text-red-600 dark:text-red-500'>
+                                        <AlertTriangle className="h-5 w-5 mr-2" />
+                                        Confirm Deletion
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        Are you sure you want to delete the blog? This action cannot be undone.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction asChild><Button className='bg-red-600 hover:bg-red-700 dark:text-white'>Delete Blog</Button></AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </div>
                     <CardTitle className="text-3xl font-bold">{blogPost.title}</CardTitle>
                     <div className="flex items-center text-sm text-muted-foreground">
