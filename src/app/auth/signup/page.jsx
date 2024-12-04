@@ -8,11 +8,58 @@ import { Input } from "@/components/ui/input";
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { Label } from '@/components/ui/label';
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { signIn } from "next-auth/react";
 
 function page() {
     const { theme } = useTheme()
     const [inputType, setInputType] = useState('password')
     const toggleInputType = () => setInputType(prev => (prev === 'password' ? 'text' : 'password'));
+    const [formData, setFormData] = useState({
+        firstname: "",
+        lastname: "",
+        email: "",
+        password: "",
+    })
+
+    const handleInputChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
+
+    const handleSignup = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await signIn("credentials", {
+                email: formData.email,
+                password: formData.password,
+                firstname: formData.firstname,
+                lastname: formData.lastname,
+                redirect: false,
+            });
+
+            if (res?.error) {
+                const errorMessage = res.error === "User already exists"
+                    ? "User already exists. Please log in."
+                    : "Failed to create account.";
+                toast.error(errorMessage, {
+                    autoClose: 4000,
+                    theme: theme === "light" ? "light" : "dark",
+                });
+            } else if (res?.ok) {
+                toast.success("Account created successfully!", {
+                    autoClose: 4000,
+                    theme: theme === "light" ? "light" : "dark",
+                });
+            }
+        } catch (err) {
+            toast.error("An error occurred. Please try again.", {
+                autoClose: 4000,
+                theme: theme === "light" ? "light" : "dark",
+            });
+            console.error(err);
+        }
+    };
     return (
         <div className="flex items-center justify-center mx-4 my-6 min-h-[calc(100vh-10rem)]">
             <Card className={`w-full max-w-md`}>
@@ -23,15 +70,18 @@ function page() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <form className="flex flex-col gap-4">
+                    <form onSubmit={handleSignup} className="flex flex-col gap-4">
                         <div className="space-y-2">
                             <Label htmlFor="firstname">First Name</Label>
                             <div className="relative">
                                 <User className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4`} />
                                 <Input
                                     id="firstname"
+                                    name="firstname"
                                     type="text"
-                                    placeholder="Anuj"
+                                    value={formData.firstname}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter your first name"
                                     autoComplete="username"
                                     className={`pl-10 `}
                                     required
@@ -44,8 +94,11 @@ function page() {
                                 <User className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4`} />
                                 <Input
                                     id="lastname"
+                                    name="lastname"
                                     type="text"
-                                    placeholder="Chaudhary"
+                                    value={formData.lastname}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter your last name"
                                     autoComplete="username"
                                     className={`pl-10 `}
                                     required
@@ -58,8 +111,11 @@ function page() {
                                 <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4`} />
                                 <Input
                                     id="email"
+                                    name="email"
                                     type="email"
-                                    placeholder="anujchaudhary3112@gmail.com"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter your email"
                                     autoComplete="email"
                                     className={`pl-10 `}
                                     required
@@ -72,8 +128,11 @@ function page() {
                                 <Lock className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4`} />
                                 <Input
                                     id="password"
+                                    name="password"
                                     type={inputType}
-                                    placeholder="••••••••"
+                                    value={formData.password}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter your password"
                                     autoComplete="new-password"
                                     className={`pl-10`}
                                     required
@@ -110,6 +169,7 @@ function page() {
                     </p>
                 </CardFooter>
             </Card>
+            <ToastContainer />
         </div>
     )
 }

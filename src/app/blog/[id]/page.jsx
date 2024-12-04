@@ -26,6 +26,9 @@ import { Edit, Trash2, Clock, Calendar, MoreVertical, Share2, AlertTriangle, Lin
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { useTheme } from 'next-themes'
 
 const blogPost = {
     id: 1,
@@ -49,6 +52,7 @@ export default function BlogPost() {
     const [commentText, setCommentText] = useState('')
     const [showAlert, setShowAlert] = useState(false)
     const { id } = useParams()
+    const { theme } = useTheme()
 
     const handleCommentSubmit = (e) => {
         e.preventDefault()
@@ -66,10 +70,16 @@ export default function BlogPost() {
         if (platform === 'copy') {
             try {
                 await navigator.clipboard.writeText(window.location.href)
-                alert('Link copied successfully!')
+                toast.success('Link copied successfully!', {
+                    autoClose: 4000,
+                    theme: theme === "light" ? "light" : "dark"
+                })
             } catch (err) {
                 console.error('Error copying text: ', err)
-                alert('Failed to copy link.')
+                toast.error('Failed to copy link.', {
+                    autoClose: 4000,
+                    theme: theme === "light" ? "light" : "dark"
+                })
             }
         } else {
             let url
@@ -224,6 +234,7 @@ export default function BlogPost() {
                     </div>
                 </CardContent>
             </Card>
+            <ToastContainer />
         </article>
     )
 }

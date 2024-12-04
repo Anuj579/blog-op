@@ -76,7 +76,7 @@ const UserMenu = () => {
 }
 
 const Navbar = () => {
-    const [session, setSession] = useState(true)
+    const [session, setSession] = useState(false)
     const router = useRouter()
 
     return (

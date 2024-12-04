@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { BookOpen, MessageCircle, ThumbsUp, PlusCircle } from 'lucide-react'
+import { BookOpen, MessageCircle, PlusCircle } from 'lucide-react'
 import { UserBlogs } from "@/components/UserBlogs"
 
 export default function DashboardPage() {
@@ -18,7 +18,7 @@ export default function DashboardPage() {
 
             <section className="mb-12">
                 <h2 className="text-2xl font-semibold mb-4">Blog Stats</h2>
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-6 md:grid-cols-2   ">
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">Total Posts</CardTitle>
@@ -35,15 +35,6 @@ export default function DashboardPage() {
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">289</div>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Likes</CardTitle>
-                            <ThumbsUp className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">1,024</div>
                         </CardContent>
                     </Card>
                 </div>

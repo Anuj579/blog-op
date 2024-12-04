@@ -17,15 +17,15 @@ export const authOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
+                firstname: { label: "First Name", type: "text" },
+                lastname: { label: "Last Name", type: "text" },
                 email: { label: "Email", type: "email" },
                 password: { label: "Password", type: "password" },
-                firstName: { label: "First Name", type: "text" },
-                lastName: { label: "Last Name", type: "text" },
             },
             async authorize(credentials) {
                 await connectDB();
 
-                if (credentials.firstName && credentials.lastName) {
+                if (credentials.firstname && credentials.lastname) {
                     // If it's a signup process (has first and last name)
                     const existingUser = await User.findOne({ email: credentials.email });
 
@@ -38,8 +38,8 @@ export const authOptions = {
 
                     // Create a new user in the database
                     const newUser = new User({
-                        firstName: credentials.firstName,
-                        lastName: credentials.lastName,
+                        firstname: credentials.firstname,
+                        lastname: credentials.lastname,
                         email: credentials.email,
                         password: hashedPassword,
                     });
@@ -57,7 +57,9 @@ export const authOptions = {
 
                     return { id: user._id, email: user.email, name: `${user.firstName} ${user.lastName}` };
                 }
+
             },
+
         }),
     ],
     pages: {
