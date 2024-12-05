@@ -3,14 +3,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button"
 import { BlogCard } from "@/components/BlogCard";
-import { useState } from "react";
-import { ArrowRight, Calendar, Clock, PlusCircle } from "lucide-react";
+import { ArrowRight, Calendar, Clock, Loader2, PlusCircle } from "lucide-react";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-
+import { useSession } from "next-auth/react";
 
 export default function Home() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-
+  const { data: session, status } = useSession()
   const featuredPosts = [
     { id: 1, title: "10 Tips for Better Coding", excerpt: "Improve your coding skills with these essential tips.", author: "Jane Doe", date: "2023-07-01", comments: 15, readTime: 5, image: "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
     { id: 2, title: "The Future of Web Development", excerpt: "Explore upcoming trends in web development.", author: "John Smith", date: "2023-07-05", comments: 8, readTime: 7, image: "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
@@ -23,9 +21,15 @@ export default function Home() {
     { id: 6, title: "CSS Grid vs Flexbox: When to Use Which?", date: "2023-07-08", readTime: 5 },
   ]
 
+  if (status === "loading")
+    return (
+      <div className="flex items-center justify-center min-h-[calc(100vh-10rem)]">
+        <Loader2 className="animate-spin h-8 w-8" />
+      </div>
+    )
   return (
     <div className="container mx-auto px-4 py-12">
-      {isAuthenticated ?
+      {session ?
         <>
           <section className="mb-12">
             <h1 className="text-4xl font-bold mb-4">Welcome back, John!</h1>
@@ -100,7 +104,7 @@ export default function Home() {
         </div>
       </section>
 
-      {!isAuthenticated &&
+      {!session &&
         <section className="text-center">
           <h2 className="text-3xl font-bold mb-4">Join Our Community</h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">

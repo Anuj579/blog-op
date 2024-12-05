@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/ThemeToggle";
 import { LogOut, Menu, User } from "lucide-react";
-import { useState } from "react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -15,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { usePathname, useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { signOut, useSession } from "next-auth/react";
 
 
 const NavLink = ({ href, children }) => {
@@ -66,7 +66,7 @@ const UserMenu = () => {
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/auth/login' })}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
                 </DropdownMenuItem>
@@ -76,7 +76,7 @@ const UserMenu = () => {
 }
 
 const Navbar = () => {
-    const [session, setSession] = useState(false)
+    const { data: session } = useSession()
     const router = useRouter()
 
     return (
