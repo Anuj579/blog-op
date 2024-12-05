@@ -2,9 +2,8 @@
 import localFont from "next/font/local";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import SessionWrapper from "@/components/SessionWrapper";
+import Layout from "@/components/Layout";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,11 +29,7 @@ export default function RootLayout({ children }) {
       >
         <SessionWrapper>
           <ThemeProvider attribute="class">
-            <div className="flex flex-col min-h-screen bg-background">
-              <Navbar />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </div>
+            <Layout children={children} />
           </ThemeProvider>
         </SessionWrapper>
       </body>

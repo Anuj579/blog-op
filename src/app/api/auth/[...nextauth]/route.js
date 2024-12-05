@@ -80,8 +80,8 @@ export const authOptions = {
                 if (!existingUser) {
                     // Create a new user in MongoDB from Google profile
                     await User.create({
-                        firstName: user.name.split(" ")[0] || "Unknown",
-                        lastName: user.name.split(" ")[1] || "",
+                        firstname: user.name.split(" ")[0] || "Unknown",
+                        lastname: user.name.split(" ")[1] || "",
                         email: user.email,
                         image: user.image,
                         password: null, // Google users don't need a password

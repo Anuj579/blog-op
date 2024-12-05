@@ -1,33 +1,29 @@
 import { NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';  // Import getToken to fetch token from headers or cookies
+import { getToken } from 'next-auth/jwt';
 
-const PUBLIC_PATHS = ['/login', '/signup'];
+const publicPaths = ['/auth/login', '/auth/signup'];
+const protectedPaths = ['/dashboard', '/profile', '/blog/create', '/blog/:id/edit'];
 
-export async function middleware(request) {
-  const path = request.nextUrl.pathname;
+export async function middleware(req) {
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const { pathname } = req.nextUrl;
 
-  // Fetch token from the request headers or cookies using next-auth's getToken method
-  const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
-
-  // If the user is logged in and tries to access a public path, redirect them to the home page.
-  if (PUBLIC_PATHS.includes(path) && token) {
-    return NextResponse.redirect(new URL('/', request.url));
+  if (token) {
+    // If the user is logged in and tries to access public paths (login/signup), redirect them to homepage
+    if (publicPaths.some((path) => pathname.startsWith(path))) {
+      return NextResponse.redirect(new URL('/', req.url)); // Redirect authenticated users from login/signup
+    }
+  } else {
+    // If the user is not logged in and tries to access protected paths, redirect them to login page
+    if (protectedPaths.some((path) => pathname.startsWith(path))) {
+      return NextResponse.redirect(new URL('/auth/login', req.url)); // Redirect unauthenticated users to login
+    }
   }
 
-  // If the user is not logged in and tries to access a private path, redirect to login page.
-  if (!PUBLIC_PATHS.includes(path) && !token) {
-    return NextResponse.redirect(new URL('/login', request.url));
-  }
-
-  // Proceed to the requested page if the user is authorized
+  // Allow the request to proceed as usual
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    '/dashboard/:path*',
-    '/profile',
-    '/login',  // include login page in the match
-    '/signup', // include signup page in the match
-  ],
+  matcher: ['/dashboard', '/profile', '/blog/create', '/blog/:id/edit', '/auth/:path*'],
 };

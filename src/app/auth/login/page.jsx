@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import Link from 'next/link';
 import { Label } from '@/components/ui/label';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useTheme } from 'next-themes';
@@ -26,6 +26,7 @@ function page() {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
     const [loading, setLoading] = useState(false)
+    const { status } = useSession();
 
     const handleLogin = async (e) => {
         e.preventDefault()
@@ -65,7 +66,9 @@ function page() {
                     theme: theme === "light" ? "light" : "dark",
                 });
             } else if (res?.ok) {
-                router.push('/');
+                if (status === "authenticated") {
+                    router.push('/');
+                }
             }
         } catch (error) {
             toast.error("An error occurred. Please try again.", {

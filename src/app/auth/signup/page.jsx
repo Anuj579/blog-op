@@ -10,7 +10,7 @@ import { useTheme } from 'next-themes';
 import { Label } from '@/components/ui/label';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from 'next/navigation';
 
 function page() {
@@ -24,6 +24,7 @@ function page() {
         password: "",
     })
     const [loading, setLoading] = useState(false)
+    const { status } = useSession();
     const router = useRouter()
 
     const handleInputChange = (e) => {
@@ -85,7 +86,9 @@ function page() {
                     theme: theme === "light" ? "light" : "dark",
                 });
             } else if (res?.ok) {
-                router.push('/');
+                if (status === "authenticated") {
+                    router.push('/'); // Redirect after login
+                }
             }
         } catch (error) {
             toast.error("An error occurred. Please try again.", {
