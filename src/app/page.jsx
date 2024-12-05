@@ -31,8 +31,8 @@ export default function Home() {
     <div className="container mx-auto px-4 py-12">
       {session ?
         <>
-          <section className="mb-12">
-            <h1 className="text-4xl font-bold mb-4">Welcome back, John!</h1>
+          <section className="mb-12"> 
+            <h1 className="text-4xl font-bold mb-4">Welcome back, {session.user.name.split(' ')[0] || session.user.name}!</h1>
             <p className="text-xl text-muted-foreground mb-6">Ready to share your thoughts with the world?</p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/blogs/create-blog" className="w-full sm:w-auto">

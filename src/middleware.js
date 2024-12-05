@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
 const publicPaths = ['/auth/login', '/auth/signup'];
-const protectedPaths = ['/dashboard', '/profile', '/blog/create', '/blog/:id/edit'];
+const protectedPaths = ['/dashboard', '/profile', '/blogs/create-blog', '/blog/:id/edit'];
 
 export async function middleware(req) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
@@ -25,5 +25,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: ['/dashboard', '/profile', '/blog/create', '/blog/:id/edit', '/auth/:path*'],
+  matcher: ['/dashboard', '/profile', '/blogs/create-blog', '/blog/:id/edit', '/auth/:path*'],
 };

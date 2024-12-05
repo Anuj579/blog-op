@@ -29,6 +29,7 @@ import Link from 'next/link'
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useTheme } from 'next-themes'
+import { useSession } from 'next-auth/react'
 
 const blogPost = {
     id: 1,
@@ -48,7 +49,7 @@ const blogPost = {
 }
 
 export default function BlogPost() {
-    const [isAuthor, setIsAuthor] = useState(true)
+    const { data: session } = useSession()
     const [commentText, setCommentText] = useState('')
     const [showAlert, setShowAlert] = useState(false)
     const { id } = useParams()
@@ -147,7 +148,7 @@ export default function BlogPost() {
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
-                            {isAuthor && (
+                            {session && (
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                         <Button variant="outline" size="icon">

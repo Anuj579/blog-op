@@ -35,44 +35,48 @@ const NavLink = ({ href, children }) => {
 }
 
 const UserMenu = () => {
-    return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    <Avatar className="h-8 w-8 md:h-9 md:w-9">
-                        <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                        <AvatarFallback>JD</AvatarFallback>
-                    </Avatar>
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">John Doe</p>
-                        <p className="text-xs leading-none text-muted-foreground">
-                            anatoly3449@gmail.com
-                        </p>
-                    </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link href="/dashboard" className="flex w-full">
+    const { data: session, status } = useSession();
+    if (status === 'authenticated') {
+        const { name, email, image } = session.user
+        return (
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                        <Avatar className="h-8 w-8 md:h-9 md:w-9">
+                            <AvatarImage src={image} alt="@shadcn" />
+                            <AvatarFallback>{name.charAt(0).toUpperCase()}</AvatarFallback>
+                        </Avatar>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                    <DropdownMenuLabel className="font-normal">
+                        <div className="flex flex-col space-y-1">
+                            <p className="text-sm font-medium leading-none">{name.charAt(0).toUpperCase() + name.slice(1)}</p>
+                            <p className="text-xs leading-none text-muted-foreground">
+                                {email}
+                            </p>
+                        </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
                         <User className="mr-2 h-4 w-4" />
-                        Dashboard
-                    </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/auth/login' })}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
-    )
+                        <span>Profile</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <Link href="/dashboard" className="flex w-full">
+                            <User className="mr-2 h-4 w-4" />
+                            Dashboard
+                        </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/auth/login' })}>
+                        <LogOut className="mr-2 h-4 w-4" />
+                        <span>Log out</span>
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        )
+    }
 }
 
 const Navbar = () => {

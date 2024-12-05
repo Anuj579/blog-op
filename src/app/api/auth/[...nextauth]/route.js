@@ -46,7 +46,7 @@ export const authOptions = {
 
                     await newUser.save();
 
-                    return { id: newUser._id, email: newUser.email, name: `${newUser.firstName} ${newUser.lastName}` };
+                    return { id: newUser._id, email: newUser.email, name: `${newUser.firstname} ${newUser.lastname}` };
                 } else {
                     // Login process (credentials only)
                     const user = await User.findOne({ email: credentials.email });
@@ -55,7 +55,7 @@ export const authOptions = {
                         throw new Error("Invalid email or password");
                     }
 
-                    return { id: user._id, email: user.email, name: `${user.firstName} ${user.lastName}` };
+                    return { id: user._id, email: user.email, name: `${user.firstname} ${user.lastname}` };
                 }
 
             },
