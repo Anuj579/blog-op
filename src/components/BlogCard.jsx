@@ -18,23 +18,25 @@ export function BlogCard({ post }) {
                 <CardTitle>{post.title}</CardTitle>
             </CardHeader>
             <CardContent className="flex-grow">
-                <p className="text-muted-foreground line-clamp-3 mb-2">{post.excerpt}</p>
-                <p className="text-sm text-muted-foreground">By {post.author} • {post.date}</p>
+                <p className="text-muted-foreground line-clamp-2 mb-2">{post.excerpt}</p>
             </CardContent>
-            <CardFooter className="flex justify-between items-center">
-                <div className="flex items-center text-sm text-muted-foreground space-x-2">
-                    <span className="flex items-center">
-                        <Clock className="h-4 w-4 mr-1" />
-                        {post.readTime} min read
-                    </span>
-                    <span className="flex items-center">
-                        <MessageCircle className="h-4 w-4 mr-1" />
-                        {post.comments}
-                    </span>
+            <CardFooter className='flex flex-col items-start gap-2'>
+                <p className="text-sm text-muted-foreground">By {post.author} • {post.date}</p>
+                <div className="flex items-center justify-between w-full">
+                    <div className="flex items-center text-sm text-muted-foreground space-x-2">
+                        <span className="flex items-center">
+                            <Clock className="h-4 w-4 mr-1" />
+                            {post.readTime} min read
+                        </span>
+                        <span className="flex items-center">
+                            <MessageCircle className="h-4 w-4 mr-1" />
+                            {post.comments}
+                        </span>
+                    </div>
+                    <Link href={`/blog/${post.id}`}>
+                        <Button variant="outline">Read More</Button>
+                    </Link>
                 </div>
-                <Link href={`/blog/${post.id}`}>
-                    <Button variant="outline">Read More</Button>
-                </Link>
             </CardFooter>
         </Card>
     )

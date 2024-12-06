@@ -38,12 +38,13 @@ const UserMenu = () => {
     const { data: session, status } = useSession();
     if (status === 'authenticated') {
         const { name, email, image } = session.user
+        console.log("user image:", image);
         return (
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                         <Avatar className="h-8 w-8 md:h-9 md:w-9">
-                            <AvatarImage src={image} alt="@shadcn" />
+                            <AvatarImage src={image} alt="user-avatar" />
                             <AvatarFallback>{name.charAt(0).toUpperCase()}</AvatarFallback>
                         </Avatar>
                     </Button>

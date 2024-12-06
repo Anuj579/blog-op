@@ -10,8 +10,8 @@ import { useSession } from "next-auth/react";
 export default function Home() {
   const { data: session, status } = useSession()
   const featuredPosts = [
-    { id: 1, title: "10 Tips for Better Coding", excerpt: "Improve your coding skills with these essential tips.", author: "Jane Doe", date: "2023-07-01", comments: 15, readTime: 5, image: "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
-    { id: 2, title: "The Future of Web Development", excerpt: "Explore upcoming trends in web development.", author: "John Smith", date: "2023-07-05", comments: 8, readTime: 7, image: "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
+    { id: 1, title: "10 Tips for Better Coding", excerpt: "Improve your coding skills with these essential tips. Improve your coding skills with these essential tips.Improve your coding skills with these essential tips.", author: "Jane Doe", date: "2023-07-01", comments: 15, readTime: 5, image: "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
+    { id: 2, title: "The Future of Web Development", excerpt: "Explore upcoming trends in web development. Explore upcoming trends in web development. Explore upcoming trends in web development.", author: "John Smith", date: "2023-07-05", comments: 8, readTime: 7, image: "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
     { id: 3, title: "Mastering React Hooks", excerpt: "Take your React skills to the next level with Hooks.", author: "Alice Johnson", date: "2023-07-10", comments: 23, readTime: 6, image: "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
   ]
 
@@ -31,8 +31,8 @@ export default function Home() {
     <div className="container mx-auto px-4 py-12">
       {session ?
         <>
-          <section className="mb-12"> 
-            <h1 className="text-4xl font-bold mb-4">Welcome back, {session.user.name.split(' ')[0] || session.user.name}!</h1>
+          <section className="mb-12">
+            <h1 className="text-4xl font-bold mb-4">Welcome back, {session.user.name.split(' ')[0].charAt(0).toUpperCase() + session.user.name.split(' ')[0].slice(1)}!</h1>
             <p className="text-xl text-muted-foreground mb-6">Ready to share your thoughts with the world?</p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/blogs/create-blog" className="w-full sm:w-auto">
