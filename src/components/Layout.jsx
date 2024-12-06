@@ -4,12 +4,21 @@ import { useSession } from 'next-auth/react';
 import { Loader2 } from 'lucide-react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import { useEffect, useState } from 'react';
 
 const Layout = ({ children }) => {
     const { status } = useSession(); // Check session status
+    const [loading, setLoading] = useState(true)
 
+    useEffect(() => {
+        if (status === "loading") {
+            setLoading(true)
+        } else {
+            setLoading(false)
+        }
+    }, [status])
     // Show a global loader while session is loading
-    if (status === 'loading') {
+    if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <Loader2 className="animate-spin h-8 w-8" />
