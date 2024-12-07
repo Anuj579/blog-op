@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/ThemeToggle";
-import { LogOut, Menu, User } from "lucide-react";
+import { Loader2, LogOut, Menu, User } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -12,9 +12,17 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+    AlertDialog,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { usePathname, useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { signOut, useSession } from "next-auth/react";
+import { useState } from "react";
 
 
 const NavLink = ({ href, children }) => {
@@ -36,9 +44,20 @@ const NavLink = ({ href, children }) => {
 
 const UserMenu = () => {
     const { data: session, status } = useSession();
+    const [loading, setLoading] = useState(false)
+
+    const handleLogout = async () => {
+        setLoading(true)
+        try {
+            await signOut({ callbackUrl: '/auth/login' })
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setLoading(false)
+        }
+    }
     if (status === 'authenticated') {
         const { name, email, image } = session.user
-        console.log("user image:", image);
         return (
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -70,11 +89,20 @@ const UserMenu = () => {
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/auth/login' })}>
+                    <DropdownMenuItem onClick={handleLogout}>
                         <LogOut className="mr-2 h-4 w-4" />
                         <span>Log out</span>
                     </DropdownMenuItem>
                 </DropdownMenuContent>
+                <AlertDialog open={loading}>
+                    <AlertDialogContent className='max-w-80'>
+                        <AlertDialogHeader className="flex gap-4 items-center ">
+                            <AlertDialogTitle className='sr-only'>Loading</AlertDialogTitle>
+                            <Loader2 className="animate-spin h-7 w-7" />
+                            <AlertDialogDescription className='font-medium'>Logging out...</AlertDialogDescription>
+                        </AlertDialogHeader>
+                    </AlertDialogContent>
+                </AlertDialog>
             </DropdownMenu>
         )
     }
