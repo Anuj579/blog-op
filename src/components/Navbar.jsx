@@ -122,6 +122,9 @@ const Navbar = () => {
                     <nav className="items-center space-x-6 text-sm font-medium hidden md:inline-flex">
                         <NavLink href="/">Home</NavLink>
                         <NavLink href="/blogs">Explore</NavLink>
+                        {session &&
+                            <NavLink href="/dashboard">Dashboard</NavLink>
+                        }
                     </nav>
                 </div>
                 <div className="flex flex-1 items-center justify-end">
