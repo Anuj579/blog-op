@@ -21,6 +21,28 @@ const blogSchema = new mongoose.Schema(
             ref: "User",
             required: true,
         },
+        comments: [
+            {
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "User",
+                    required: true,
+                },
+                content: {
+                    type: String,
+                    required: true,
+                    trim: true,
+                },
+                createdAt: {
+                    type: Date,
+                    default: Date.now,
+                },
+            },
+        ],
+        readTime: {
+            type: Number, // Read time in minutes
+            default: 0,
+        },
     },
     {
         timestamps: true, // Automatically adds `createdAt` and `updatedAt`

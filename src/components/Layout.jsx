@@ -12,12 +12,12 @@ const Layout = ({ children }) => {
 
     useEffect(() => {
         if (status === "loading") {
-            setLoading(true)
-        } else {
-            setLoading(false)
+            setLoading(true);
+        } else if (status === "authenticated" || status === "unauthenticated") {
+            setLoading(false);
         }
     }, [status])
-    // Show a global loader while session is loading
+
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">

@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
@@ -39,7 +39,7 @@ export default function CreateBlogPage() {
             })
 
             if (res.ok) {
-                router.push('/', { showBlogCretedToast: true })
+                router.push('/', { showBlogCreatedToast: true })
             } else {
                 console.log("Error:", res.statusText);
             }
@@ -60,7 +60,7 @@ export default function CreateBlogPage() {
                     <CardTitle className="text-3xl">Create New Blog Post</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <form>
+                    <form onSubmit={handleCreateBlog}>
                         <fieldset disabled={loading}>
                             <div className="space-y-4">
                                 <div>
