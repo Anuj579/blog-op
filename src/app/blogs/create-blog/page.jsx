@@ -65,15 +65,15 @@ export default function CreateBlogPage() {
                             <div className="space-y-4">
                                 <div>
                                     <Label htmlFor="title">Title</Label>
-                                    <Input id="title" name="title" placeholder="Enter your blog title" required />
+                                    <Input id="title" name="title" value={body.title} onChange={(e) => setBody({ ...body, title: e.target.value })} placeholder="Enter your blog title" required />
                                 </div>
                                 <div>
                                     <Label htmlFor="content">Content</Label>
-                                    <Textarea id="content" name="content" placeholder="Write your blog content here" rows={10} required />
+                                    <Textarea id="content" name="content" value={body.content} onChange={(e) => setBody({ ...body, content: e.target.value })} placeholder="Write your blog content here" rows={10} required />
                                 </div>
                                 <div>
                                     <Label htmlFor="coverImage">Cover Image</Label>
-                                    <Input id="coverImage" name="coverImage" type="file" accept="image/*" />
+                                    <Input id="coverImage" name="coverImage" type="file" accept="image/*"/>
                                 </div>
                             </div>
                             <Button className="mt-5">

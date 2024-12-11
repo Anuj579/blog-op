@@ -14,7 +14,7 @@ const blogSchema = new mongoose.Schema(
         },
         coverImage: {
             type: String,
-            default: null, // URL of the image
+            default: "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", // URL of the image
         },
         author: {
             type: mongoose.Schema.Types.ObjectId,
