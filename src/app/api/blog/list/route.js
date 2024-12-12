@@ -6,7 +6,7 @@ export async function GET(req) {
     try {
         await connectDB()
 
-        const blogs = await Blog.find({}).populate("author", "name email").sort({ createdAt: -1 })
+        const blogs = await Blog.find({}).populate("author", "firstname lastname email").sort({ createdAt: -1 })
         return NextResponse.json({ success: true, blogs }, { status: 200 })
     } catch (error) {
         return NextResponse.json({ success: false, error: error.message }, { status: 500 })
