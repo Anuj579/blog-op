@@ -3,17 +3,9 @@ import { Button } from "@/components/ui/button"
 import { MessageCircle, Clock } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import formatDate from "@/utils/formatDate"
 
 export function BlogCard({ post }) {
-    const formatDate = (date) => {
-        const d = new Date(date).toLocaleDateString('en-IN', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric'
-        })
-        const parts = d.split(' ')
-        return `${parts[0]} ${parts[1]}, ${parts[2]}`
-    }
 
     return (
         <Card className="flex flex-col overflow-hidden h-full hover:shadow-lg transition-shadow duration-300">
@@ -44,7 +36,7 @@ export function BlogCard({ post }) {
                             {post.comments.length}
                         </span>
                     </div>
-                    <Link href={`/blog/${post.id}`}>
+                    <Link href={`/blog/${post._id}`}>
                         <Button variant="outline">Read More</Button>
                     </Link>
                 </div>

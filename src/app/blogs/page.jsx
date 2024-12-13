@@ -36,7 +36,8 @@ function page() {
         e.preventDefault()
         const filtered = blogPosts.filter(post =>
             post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            post.content.toLowerCase().includes(searchTerm.toLowerCase())
+            post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            post.author.firstname.toLowerCase().includes(searchTerm.toLowerCase())
         )
         setFilteredPosts(filtered)
     }

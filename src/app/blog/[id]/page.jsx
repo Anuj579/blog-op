@@ -1,6 +1,6 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -22,7 +22,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Edit, Trash2, Clock, Calendar, MoreVertical, Share2, AlertTriangle, LinkIcon } from 'lucide-react'
+import { Edit, Trash2, Clock, Calendar, MoreVertical, Share2, AlertTriangle, LinkIcon, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
@@ -30,30 +30,32 @@ import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useTheme } from 'next-themes'
 import { useSession } from 'next-auth/react'
-
-const blogPost = {
-    id: 1,
-    title: "Getting Started with React",
-    content: "React is a popular JavaScript library for building user interfaces. It allows developers to create reusable UI components that can be composed to build complex applications. In this post, we'll cover the basics of React, including components, props, and state.\n\nTo get started with React, you'll need to have Node.js installed on your computer. Once you have Node.js, you can create a new React project using Create React App, a tool that sets up a new React project with a good default configuration.\n\nHere's a simple example of a React component:\n\n```jsx\nfunction Welcome(props) {\n  return <h1>Hello, {props.name}</h1>;\n}\n```\n\nThis component takes a 'name' prop and renders a greeting. You can use this component like this:\n\n```jsx\n<Welcome name=\"Alice\" />\n```\n\nReact's component-based architecture makes it easy to build complex UIs by breaking them down into smaller, reusable pieces. As you become more comfortable with React, you'll learn about more advanced concepts like hooks, context, and how to manage application state effectively.",
-    author: {
-        name: "John Doe",
-        avatar: "https://github.com/shadcn.png"
-    },
-    date: "2023-06-01",
-    readTime: 5,
-    comments: [
-        { id: 1, author: "Alice", content: "Great article! Very helpful for beginners.", date: "2023-06-02" },
-        { id: 2, author: "Bob", content: "I'd love to see more advanced topics in the future.", date: "2023-06-03" }
-    ],
-    image: "https://images.pexels.com/photos/11035471/pexels-photo-11035471.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-}
+import formatDate from '@/utils/formatDate'
 
 export default function BlogPost() {
     const { data: session } = useSession()
+    const [blog, setBlog] = useState({})
+    const [loading, setLoading] = useState(true)
     const [commentText, setCommentText] = useState('')
     const [showAlert, setShowAlert] = useState(false)
     const { id } = useParams()
     const { theme } = useTheme()
+
+    useEffect(() => {
+        const fetchBlogDetail = async () => {
+            setLoading(true)
+            try {
+                const res = await fetch(`/api/blog/${id}`)
+                const data = await res.json()
+                setBlog(data.blog)
+            } catch (error) {
+                console.log("Error in fetching blog details:", error);
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchBlogDetail()
+    }, [id])
 
     const handleCommentSubmit = (e) => {
         e.preventDefault()
@@ -99,12 +101,19 @@ export default function BlogPost() {
         }
     }
 
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-[82vh]">
+                <Loader2 className="animate-spin h-8 w-8" />
+            </div>
+        );
+    }
     return (
         <article className="container mx-auto px-4 py-8 max-w-4xl">
             <Card className="overflow-hidden">
                 <Image
-                    src={blogPost.image}
-                    alt={blogPost.title}
+                    src={blog.image || "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}
+                    alt={blog.title}
                     width={1200}
                     height={600}
                     className="w-full h-[300px] sm:h-[400px] object-cover"
@@ -113,14 +122,14 @@ export default function BlogPost() {
                     <div className="flex justify-between items-start">
                         <div className="flex items-center space-x-4">
                             <Avatar>
-                                <AvatarImage src={blogPost.author.avatar} />
-                                <AvatarFallback>{blogPost.author.name[0]}</AvatarFallback>
+                                <AvatarImage src={blog.author.image} />
+                                <AvatarFallback>{blog.author.firstname[0]}</AvatarFallback>
                             </Avatar>
                             <div>
-                                <p className="font-semibold">{blogPost.author.name}</p>
+                                <p className="font-semibold">{blog.author.firstname} {blog.author.lastname}</p>
                                 <div className="flex items-center text-sm text-muted-foreground">
                                     <Calendar className="mr-1 h-4 w-4" />
-                                    <time dateTime={blogPost.date}>{blogPost.date}</time>
+                                    <time dateTime={formatDate(blog.createdAt)}>{formatDate(blog.createdAt)}</time>
                                 </div>
                             </div>
                         </div>
@@ -188,17 +197,15 @@ export default function BlogPost() {
                             </AlertDialogContent>
                         </AlertDialog>
                     </div>
-                    <CardTitle className="text-3xl font-bold">{blogPost.title}</CardTitle>
+                    <CardTitle className="text-3xl font-bold">{blog.title}</CardTitle>
                     <div className="flex items-center text-sm text-muted-foreground">
                         <Clock className="mr-1 h-4 w-4" />
-                        {blogPost.readTime} min read
+                        {blog.readTime} min read
                     </div>
                 </CardHeader>
                 <CardContent>
                     <div className="prose dark:prose-invert max-w-none">
-                        {blogPost.content.split('\n').map((paragraph, index) => (
-                            <p key={index} className="mb-4">{paragraph}</p>
-                        ))}
+                        {blog.content}
                     </div>
                 </CardContent>
             </Card>
@@ -214,11 +221,12 @@ export default function BlogPost() {
                             value={commentText}
                             onChange={(e) => setCommentText(e.target.value)}
                             className="mb-2"
+                            required
                         />
                         <Button type="submit">Post Comment</Button>
                     </form>
                     <div className="space-y-4">
-                        {blogPost.comments.map((comment) => (
+                        {blog.comments.length > 0 && blog.comments.map((comment) => (
                             <div key={comment.id} className="border-b pb-4 last:border-b-0">
                                 <div className="flex items-center space-x-2 mb-2">
                                     <Avatar>
