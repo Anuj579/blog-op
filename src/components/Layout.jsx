@@ -7,16 +7,19 @@ import Footer from './Footer';
 import { useEffect, useState } from 'react';
 
 const Layout = ({ children }) => {
-    const { status } = useSession(); // Check session status
+    const { data: session, status } = useSession(); // Check session status
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        // console.log("Status:", status);
+        // console.log("Session:", session);
+
         if (status === "loading") {
             setLoading(true);
         } else if (status === "authenticated" || status === "unauthenticated") {
             setLoading(false);
         }
-    }, [status])
+    }, [status, session])
 
     if (loading) {
         return (

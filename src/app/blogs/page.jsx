@@ -18,13 +18,13 @@ function page() {
             try {
                 const res = await fetch('/api/blog/list')
                 if (!res.ok) {
-                    throw new Error('Failed to fetch blogs')
+                    throw new Error(`Failed to fetch blogs: ${res.statusText}`)
                 }
                 const data = await res.json()
                 setBlogPosts(data.blogs)
                 setFilteredPosts(data.blogs)
             } catch (error) {
-                console.error(error)
+                console.error('Error fetching blogs:', error)
             } finally {
                 setLoading(false)
             }
