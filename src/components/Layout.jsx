@@ -11,9 +11,6 @@ const Layout = ({ children }) => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        // console.log("Status:", status);
-        // console.log("Session:", session);
-
         if (status === "loading") {
             setLoading(true);
         } else if (status === "authenticated" || status === "unauthenticated") {

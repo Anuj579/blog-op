@@ -10,7 +10,7 @@ export function UserBlogs() {
     useEffect(() => {
         if (session) {
             // Fetch blogs of the logged-in user
-            
+
             const fetchUserBlogs = async () => {
                 try {
                     const res = await fetch(`/api/blog?author=${session.user.id}`)
@@ -32,7 +32,7 @@ export function UserBlogs() {
     }, [session])
 
     if (loading) {
-        return <p>Loading...</p> 
+        return <p>Loading...</p>
     }
 
     return (
