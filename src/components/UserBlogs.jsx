@@ -43,7 +43,7 @@ export function UserBlogs() {
                     <p>No blogs found. Start writing your first blog!</p>
                 ) : (
                     userBlogs.map((blog) => (
-                        <BlogCard key={blog._id} post={blog} />  // Use _id instead of id (MongoDB uses _id)
+                        <BlogCard key={blog._id} post={blog} />
                     ))
                 )}
             </div>
