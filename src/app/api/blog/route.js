@@ -2,11 +2,14 @@ import Blog from "@/models/blogModel";
 import { connectDB } from "@/utils/db";
 import { NextResponse } from "next/server";
 
+// This is for getting the current user blogs
+
 export async function GET(req) {
     try {
         await connectDB();
 
         const author  = req.url.split('author=')[1];  // Get the author ID from the query string
+        // console.log(req.url);
         
         if (!author) {
             return NextResponse.json({ success: false, error: "Author ID is required" }, { status: 400 });
