@@ -12,7 +12,7 @@ export async function GET(req, { params }) {
             return NextResponse.json({ success: false, error: "Blog ID is required" }, { status: 400 });
         }
 
-        const blog = await Blog.findById(id).populate("author", "firstname lastname email image"); // Optional: Populate author details
+        const blog = await Blog.findById(id).populate("author", "firstname lastname email image");
         if (!blog) {
             return NextResponse.json({ success: false, message: "Blog not found" }, { status: 404 });
         }
