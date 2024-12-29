@@ -11,6 +11,7 @@ import { useState } from "react"
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { Loader2 } from "lucide-react"
+import { useTheme } from "next-themes"
 
 export default function CreateBlogPage() {
     const [body, setBody] = useState({
@@ -21,6 +22,7 @@ export default function CreateBlogPage() {
     const [loading, setLoading] = useState(false)
     const { data: session } = useSession()
     const router = useRouter()
+    const { theme } = useTheme()
 
     const handleCreateBlog = async (e) => {
         e.preventDefault()
@@ -73,11 +75,11 @@ export default function CreateBlogPage() {
                                 </div>
                                 <div>
                                     <Label htmlFor="coverImage">Cover Image</Label>
-                                    <Input id="coverImage" name="coverImage" type="file" accept="image/*"/>
+                                    <Input id="coverImage" name="coverImage" type="file" accept="image/*" />
                                 </div>
                             </div>
                             <Button className="mt-5">
-                                {loading ? <span className='flex items-center gap-1'><Loader2 className='animate-spin' />Publish Post</span> : "Publish Post"}
+                                {loading ? <span className='flex items-center gap-1'><Loader2 className='animate-spin' />Publishing Post</span> : "Publish Post"}
                             </Button>
                         </fieldset>
                     </form>
