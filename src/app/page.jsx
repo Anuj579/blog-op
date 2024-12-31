@@ -6,22 +6,42 @@ import { BlogCard } from "@/components/BlogCard";
 import { ArrowRight, Calendar, Clock, Loader2, PlusCircle } from "lucide-react";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import formatDate from "@/utils/formatDate";
 
 export default function Home() {
   const { data: session, status } = useSession()
+  const [yourRecentPosts, setYourRecentPosts] = useState([])
+  const [loading, setLoading] = useState(true)
   const featuredPosts = [
     { id: 1, title: "10 Tips for Better Coding", excerpt: "Improve your coding skills with these essential tips. Improve your coding skills with these essential tips.Improve your coding skills with these essential tips.", author: "Jane Doe", date: "2023-07-01", comments: 15, readTime: 5, image: "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
     { id: 2, title: "The Future of Web Development", excerpt: "Explore upcoming trends in web development. Explore upcoming trends in web development. Explore upcoming trends in web development.", author: "John Smith", date: "2023-07-05", comments: 8, readTime: 7, image: "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
     { id: 3, title: "Mastering React Hooks", excerpt: "Take your React skills to the next level with Hooks.", author: "Alice Johnson", date: "2023-07-10", comments: 23, readTime: 6, image: "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
   ]
 
-  const recentPosts = [
-    { id: 4, title: "My Journey with Next.js", date: "2023-07-15", readTime: 8 },
-    { id: 5, title: "Understanding TypeScript Generics", date: "2023-07-12", readTime: 6 },
-    { id: 6, title: "CSS Grid vs Flexbox: When to Use Which?", date: "2023-07-08", readTime: 5 },
-  ]
+  useEffect(() => {
+    if (session) {
+      const fetchRecentPosts = async () => {
+        setLoading(true)
+        try {
+          const res = await fetch(`/api/blog?author=${session.user.id}`)
+          const data = await res.json()
+          if (data.success) {
+            setYourRecentPosts(data.blogs)
+          } else {
+            console.log("Error fetching user posts:", data.error);
+          }
+        } catch (error) {
+          console.error("Error fetching blogs:", error)
+        } finally {
+          setLoading(false)
+        }
+      }
+      fetchRecentPosts()
+    }
+  }, [])
 
-  if (status === "loading")
+  if (status === "loading" || loading)
     return (
       <div className="flex items-center justify-center min-h-[calc(100vh-10rem)]">
         <Loader2 className="animate-spin h-8 w-8" />
@@ -45,6 +65,8 @@ export default function Home() {
               </Link>
             </div>
           </section>
+
+          {/* Your Recent Posts */}
           <section className="mb-12">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-3xl font-semibold">Your Recent Posts</h2>
@@ -55,11 +77,11 @@ export default function Home() {
               </Link>
             </div>
             <div className="space-y-4">
-              {recentPosts.map((post) => (
-                <Card key={post.id}>
+              {yourRecentPosts.map((post) => (
+                <Card key={post._id}>
                   <CardHeader>
                     <CardTitle>
-                      <Link href={`/blog/${post.id}`} className="hover:underline">
+                      <Link href={`/blog/${post._id}`} className="hover:underline">
                         {post.title}
                       </Link>
                     </CardTitle>
@@ -67,7 +89,7 @@ export default function Home() {
                   <CardFooter className="flex justify-between items-center text-sm text-muted-foreground">
                     <div className="flex items-center">
                       <Calendar className="mr-2 h-4 w-4" />
-                      {post.date}
+                      {formatDate(post.updatedAt)}
                     </div>
                     <div className="flex items-center">
                       <Clock className="mr-2 h-4 w-4" />

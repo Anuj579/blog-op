@@ -112,6 +112,7 @@ export default function BlogPost() {
         <article className="container mx-auto px-4 py-8 max-w-4xl">
             <Card className="overflow-hidden">
                 <Image
+                    // Check this blog.image because I am using coverImage not image when working on image
                     src={blog.image || "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}
                     alt={blog.title}
                     width={1200}
@@ -129,7 +130,7 @@ export default function BlogPost() {
                                 <p className="font-semibold">{blog.author.firstname} {blog.author.lastname}</p>
                                 <div className="flex items-center text-sm text-muted-foreground">
                                     <Calendar className="mr-1 h-4 w-4" />
-                                    <time dateTime={formatDate(blog.createdAt)}>{formatDate(blog.createdAt)}</time>
+                                    <time dateTime={formatDate(blog.updatedAt)}>{formatDate(blog.updatedAt)}</time>
                                 </div>
                             </div>
                         </div>

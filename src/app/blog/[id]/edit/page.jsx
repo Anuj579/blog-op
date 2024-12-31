@@ -57,16 +57,20 @@ export default function CreateBlogPage() {
             })
 
             if (res.ok) {
-                router.push(`/blog/${id}`, { showBlogUpdatedToast: true })
+                router.push(`/blog/${id}`);
             } else {
+                toast.error("Failed to update the blog.", {
+                    autoClose: 4000,
+                    theme: theme === "light" ? "light" : "dark",
+                });
                 console.log("Error:", res.statusText);
             }
         } catch (error) {
-            console.log("Error:", error);
             toast.error("Failed to update the blog.", {
                 autoClose: 4000,
                 theme: theme === "light" ? "light" : "dark",
             });
+            console.log("Error:", error);
         } finally {
             setDisabled(false)
         }
@@ -104,7 +108,7 @@ export default function CreateBlogPage() {
                                 </div>
                             </div>
                             <Button className="mt-5">
-                                {loading ? <span className='flex items-center gap-1'><Loader2 className='animate-spin' />Updating Post</span> : "Update Post"}
+                                {disabled ? <span className='flex items-center gap-1'><Loader2 className='animate-spin' />Updating Post</span> : "Update Post"}
                             </Button>
                         </fieldset>
                     </form>
