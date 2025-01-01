@@ -38,8 +38,10 @@ export default function Home() {
         }
       }
       fetchRecentPosts()
+    } else {
+      setLoading(false)
     }
-  }, [])
+  }, [session])
 
   if (status === "loading" || loading)
     return (
