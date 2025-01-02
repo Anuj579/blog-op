@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Edit, Trash2, Clock, Calendar, MoreVertical, Share2, AlertTriangle, LinkIcon, Loader2 } from 'lucide-react'
 import Image from 'next/image'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
@@ -38,8 +38,10 @@ export default function BlogPost() {
     const [loading, setLoading] = useState(true)
     const [commentText, setCommentText] = useState('')
     const [showAlert, setShowAlert] = useState(false)
+    const [disabled, setDisabled] = useState(false)
     const { id } = useParams()
     const { theme } = useTheme()
+    const router = useRouter()
 
     useEffect(() => {
         const fetchBlogDetail = async () => {
@@ -98,6 +100,30 @@ export default function BlogPost() {
                     break
             }
             window.open(url, '_blank')
+        }
+    }
+
+    const handleDeleteBlog = async () => {
+        setDisabled(true)
+        try {
+            const res = await fetch(`/api/blog/${id}`, {
+                method: 'DELETE'
+            })
+            if (res.ok) {
+                router.push('/dashboard')
+            } else {
+                toast.error('Failed to delete blog.', {
+                    autoClose: 4000,
+                    theme: theme === "light" ? "light" : "dark"
+                })
+            }
+        } catch (error) {
+            toast.error('Failed to delete blog.', {
+                autoClose: 4000,
+                theme: theme === "light" ? "light" : "dark"
+            })
+        } finally {
+            setDisabled(false)
         }
     }
 
@@ -192,8 +218,8 @@ export default function BlogPost() {
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
-                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction asChild><Button className='bg-red-600 hover:bg-red-700 dark:text-white'>Delete Blog</Button></AlertDialogAction>
+                                    <AlertDialogCancel disabled={disabled}>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction asChild onClick={handleDeleteBlog} disabled={disabled}><Button className='bg-red-600 hover:bg-red-700 dark:text-white'>Delete Blog</Button></AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>
