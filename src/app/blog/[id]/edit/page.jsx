@@ -11,8 +11,10 @@ import { Loader2 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { useSession } from "next-auth/react"
 
-export default function CreateBlogPage() {
+export default function EditBlogPage() {
+    const { data: session } = useSession()
     const [body, setBody] = useState({
         title: "",
         content: "",
@@ -26,7 +28,7 @@ export default function CreateBlogPage() {
     const router = useRouter()
 
     useEffect(() => {
-        const fetchBlogDetails = async () => {
+        const fetchAndAuthorize = async () => {
             setLoading(true)
             if (id) {
                 try {
@@ -34,15 +36,19 @@ export default function CreateBlogPage() {
                     const data = await res.json()
                     // console.log("Blog details:", data.blog);
                     setBody({ title: data.blog.title, content: data.blog.content, coverImage: data.blog.coverImage })
+                    if (!session || session.user.id !== data.blog.author._id) {
+                        router.push(`/blog/${id}`)
+                    } else {
+                        setLoading(false)
+                    }
                 } catch (error) {
                     console.log("Error in fetching blog details:", error);
-                } finally {
-                    setLoading(false)
+                    router.push(`/blog/${id}`)
                 }
             }
         }
-        fetchBlogDetails()
-    }, [])
+        fetchAndAuthorize()
+    }, [session])
 
     const handleUpdateBlog = async (e) => {
         e.preventDefault()

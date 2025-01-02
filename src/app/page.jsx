@@ -12,12 +12,9 @@ import formatDate from "@/utils/formatDate";
 export default function Home() {
   const { data: session, status } = useSession()
   const [yourRecentPosts, setYourRecentPosts] = useState([])
+  const [featuredPosts, setFeaturedPosts] = useState([])
   const [loading, setLoading] = useState(true)
-  const featuredPosts = [
-    { id: 1, title: "10 Tips for Better Coding", excerpt: "Improve your coding skills with these essential tips. Improve your coding skills with these essential tips.Improve your coding skills with these essential tips.", author: "Jane Doe", date: "2023-07-01", comments: 15, readTime: 5, image: "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
-    { id: 2, title: "The Future of Web Development", excerpt: "Explore upcoming trends in web development. Explore upcoming trends in web development. Explore upcoming trends in web development.", author: "John Smith", date: "2023-07-05", comments: 8, readTime: 7, image: "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
-    { id: 3, title: "Mastering React Hooks", excerpt: "Take your React skills to the next level with Hooks.", author: "Alice Johnson", date: "2023-07-10", comments: 23, readTime: 6, image: "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
-  ]
+
 
   useEffect(() => {
     if (session) {
@@ -43,6 +40,26 @@ export default function Home() {
     }
   }, [session])
 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true)
+      try {
+        const res = await fetch('/api/blog/list', {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+        const data = await res.json()
+        setFeaturedPosts(data.blogs)
+      } catch (error) {
+        console.error("Error fetching featured posts:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchPosts()
+  }, [])
+
   if (status === "loading" || loading)
     return (
       <div className="flex items-center justify-center min-h-[calc(100vh-10rem)]">
@@ -54,7 +71,7 @@ export default function Home() {
       {session ?
         <>
           <section className="mb-12">
-            <h1 className="text-4xl font-bold mb-4">Welcome back, {session.user.name.split(' ')[0].charAt(0).toUpperCase() + session.user.name.split(' ')[0].slice(1)}!</h1>
+            <h1 className="text-4xl font-bold mb-4">Welcome, {session.user.name.split(' ')[0].charAt(0).toUpperCase() + session.user.name.split(' ')[0].slice(1)}!</h1>
             <p className="text-xl text-muted-foreground mb-6">Ready to share your thoughts with the world?</p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/blogs/create-blog" className="w-full sm:w-auto">
@@ -69,39 +86,41 @@ export default function Home() {
           </section>
 
           {/* Your Recent Posts */}
-          <section className="mb-12">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-3xl font-semibold">Your Recent Posts</h2>
-              <Link href="/dashboard">
-                <Button variant="link">
-                  View all <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-            <div className="space-y-4">
-              {yourRecentPosts.map((post) => (
-                <Card key={post._id}>
-                  <CardHeader>
-                    <CardTitle>
-                      <Link href={`/blog/${post._id}`} className="hover:underline">
-                        {post.title}
-                      </Link>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardFooter className="flex justify-between items-center text-sm text-muted-foreground">
-                    <div className="flex items-center">
-                      <Calendar className="mr-2 h-4 w-4" />
-                      {formatDate(post.updatedAt)}
-                    </div>
-                    <div className="flex items-center">
-                      <Clock className="mr-2 h-4 w-4" />
-                      {post.readTime} min read
-                    </div>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          </section>
+          {yourRecentPosts.length > 0 && (
+            <section className="mb-12">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-3xl font-semibold">Your Recent Posts</h2>
+                <Link href="/dashboard">
+                  <Button variant="link">
+                    View all <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
+              <div className="space-y-4">
+                {yourRecentPosts.slice(0, 3).map((post) => (
+                  <Card key={post._id}>
+                    <CardHeader>
+                      <CardTitle>
+                        <Link href={`/blog/${post._id}`} className="hover:underline">
+                          {post.title}
+                        </Link>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardFooter className="flex justify-between items-center text-sm text-muted-foreground">
+                      <div className="flex items-center">
+                        <Calendar className="mr-2 h-4 w-4" />
+                        {formatDate(post.updatedAt)}
+                      </div>
+                      <div className="flex items-center">
+                        <Clock className="mr-2 h-4 w-4" />
+                        {post.readTime} min read
+                      </div>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            </section>
+          )}
         </>
         :
         <section className="text-center mb-16">
@@ -122,8 +141,8 @@ export default function Home() {
       <section className="mb-16">
         <h2 className="text-3xl font-semibold mb-8">Featured Posts</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {featuredPosts.map((post) => (
-            <BlogCard key={post.id} post={post} />
+          {featuredPosts.slice(0, 3).map((post) => (
+            <BlogCard key={post._id} post={post} />
           ))}
         </div>
       </section>

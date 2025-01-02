@@ -35,6 +35,7 @@ import formatDate from '@/utils/formatDate'
 export default function BlogPost() {
     const { data: session } = useSession()
     const [blog, setBlog] = useState({})
+    const [isUserBlog, setIsUserBlog] = useState(false)
     const [loading, setLoading] = useState(true)
     const [commentText, setCommentText] = useState('')
     const [showAlert, setShowAlert] = useState(false)
@@ -58,6 +59,14 @@ export default function BlogPost() {
         }
         fetchBlogDetail()
     }, [id])
+
+    useEffect(() => {
+        if (session && blog.author) {
+            setIsUserBlog(session.user.id === blog.author._id)
+        } else {
+            setIsUserBlog(false)
+        }
+    }, [session, blog])
 
     const handleCommentSubmit = (e) => {
         e.preventDefault()
@@ -184,7 +193,7 @@ export default function BlogPost() {
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
-                            {session && (
+                            {isUserBlog && (
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                         <Button variant="outline" size="icon">

@@ -41,7 +41,7 @@ export default function CreateBlogPage() {
             })
 
             if (res.ok) {
-                router.push('/', { showBlogCreatedToast: true })
+                router.push('/dashboard')
             } else {
                 console.log("Error:", res.statusText);
             }
