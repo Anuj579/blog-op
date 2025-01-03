@@ -147,12 +147,12 @@ export default function BlogPost() {
         <article className="container mx-auto px-4 py-8 max-w-4xl">
             <Card className="overflow-hidden">
                 <Image
-                    // Check this blog.image because I am using coverImage not image when working on image
-                    src={blog.image || "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}
+                    src={blog.coverImage || "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}
                     alt={blog.title}
                     width={1200}
                     height={600}
                     className="w-full h-[300px] sm:h-[400px] object-cover"
+                    priority={true}
                 />
                 <CardHeader className="space-y-4">
                     <div className="flex justify-between items-start">

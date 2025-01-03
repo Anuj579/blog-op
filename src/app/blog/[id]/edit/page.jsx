@@ -2,6 +2,13 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+    AlertDialog,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
@@ -22,6 +29,7 @@ export default function EditBlogPage() {
     })
     const [loading, setLoading] = useState(true)
     const [disabled, setDisabled] = useState(false)
+    const [uploadingImage, setUploadingImage] = useState(false)
 
     const { id } = useParams()
     const { theme } = useTheme()
@@ -82,6 +90,35 @@ export default function EditBlogPage() {
         }
     }
 
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0]; // Get the selected file
+        if (!file) return;
+        setUploadingImage(true)
+        const formData = new FormData();
+        formData.append("file", file); // Add the file to the request
+        formData.append("upload_preset", "unsigned_preset");
+
+        try {
+            const res = await fetch(process.env.NEXT_PUBLIC_CLOUDINARY_API_URL, {
+                method: "POST",
+                body: formData,
+            });
+
+            const data = await res.json();
+            if (data.secure_url) {
+                setBody((prevBody) => ({ ...prevBody, coverImage: data.secure_url })); // Save the URL in state
+            }
+        } catch (error) {
+            toast.error("Failed to upload image.", {
+                autoClose: 4000,
+                theme: theme === "light" ? "light" : "dark",
+            });
+            console.error("Error uploading image:", error);
+        } finally{
+            setUploadingImage(false)
+        }
+    };
+
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[82vh]">
@@ -110,7 +147,7 @@ export default function EditBlogPage() {
                                 </div>
                                 <div>
                                     <Label htmlFor="coverImage">Cover Image</Label>
-                                    <Input id="coverImage" name="coverImage" type="file" accept="image/*" />
+                                    <Input id="coverImage" name="coverImage" type="file" accept="image/*" onChange={handleImageUpload} />
                                 </div>
                             </div>
                             <Button className="mt-5">
@@ -121,6 +158,15 @@ export default function EditBlogPage() {
                 </CardContent>
             </Card>
             <ToastContainer />
+            <AlertDialog open={uploadingImage}>
+                <AlertDialogContent className='max-w-80'>
+                    <AlertDialogHeader className="flex gap-4 items-center ">
+                        <AlertDialogTitle className='sr-only'>Uploading Image</AlertDialogTitle>
+                        <Loader2 className="animate-spin h-7 w-7" />
+                        <AlertDialogDescription className='font-medium'>Uploading Image...</AlertDialogDescription>
+                    </AlertDialogHeader>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     )
 }

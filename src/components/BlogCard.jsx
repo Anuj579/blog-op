@@ -10,11 +10,11 @@ export function BlogCard({ post }) {
     return (
         <Card className="flex flex-col overflow-hidden h-full hover:shadow-lg transition-shadow duration-300">
             <Image
-                src={post.image || "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}
+                src={post.coverImage || "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}
                 alt={post.title}
                 width={300}
                 height={200}
-                className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                className="w-full h-52 object-cover hover:scale-105 transition-transform duration-300"
                 priority={true}
             />
             <CardHeader>
