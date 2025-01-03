@@ -1,7 +1,7 @@
 
 const Footer = () => {
     return (
-        <footer className="border-t">
+        <footer className="border-t mt-6">
             <div className="container flex items-center justify-between px-4 py-8 ">
                 <p className="flex items-center space-x-4 text-muted-foreground">Built with ❤ by <a href="https://anujchaudhary.netlify.app/" className="ml-1 hover:underline font-medium" target="_blank">Anuj</a></p>
                 <div className="flex items-center gap-4 text-muted-foreground">
