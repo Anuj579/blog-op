@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import SessionWrapper from "@/components/SessionWrapper";
 import Layout from "@/components/Layout";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,7 +30,9 @@ export default function RootLayout({ children }) {
       >
         <SessionWrapper>
           <ThemeProvider attribute="class">
-            <Layout children={children} />
+            <ScrollToTop>
+              <Layout children={children} />
+            </ScrollToTop>
           </ThemeProvider>
         </SessionWrapper>
       </body>

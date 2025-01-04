@@ -148,7 +148,7 @@ export default function Home() {
       </section>
 
       {!session &&
-        <section className="text-center">
+        <section className="text-center mt-14">
           <h2 className="text-3xl font-bold mb-4">Join Our Community</h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             Create your own blog, share your thoughts, and receive feedback from readers. Start your writing journey today!

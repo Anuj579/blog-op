@@ -37,7 +37,8 @@ export default function BlogPost() {
     const [blog, setBlog] = useState({})
     const [isUserBlog, setIsUserBlog] = useState(false)
     const [loading, setLoading] = useState(true)
-    const [commentText, setCommentText] = useState('')
+    const [content, setContent] = useState('')
+    const [comment, setComment] = useState({})
     const [showAlert, setShowAlert] = useState(false)
     const [disabled, setDisabled] = useState(false)
     const { id } = useParams()
@@ -58,7 +59,9 @@ export default function BlogPost() {
             }
         }
         fetchBlogDetail()
-    }, [id])
+    }, [id, comment])
+
+    // console.log("Blog data:", blog);
 
     useEffect(() => {
         if (session && blog.author) {
@@ -68,11 +71,45 @@ export default function BlogPost() {
         }
     }, [session, blog])
 
-    const handleCommentSubmit = (e) => {
+    const handleCommentSubmit = async (e) => {
         e.preventDefault()
-        // Here you would typically send the comment to the server
-        console.log('Comment submitted:', commentText)
-        setCommentText('')
+        setDisabled(true)
+        try {
+            const res = await fetch(`/api/blog/${id}/comment`, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify({ content })
+            })
+
+            if (res.ok) {
+                setContent("")
+                const data = await res.json()
+                setComment(data.comment)
+                console.log("Comment added successfully.");
+
+            } else if (res.status === 401) {
+                toast.error('You need to login first.', {
+                    autoClose: 4000,
+                    theme: theme === "light" ? "light" : "dark"
+                })
+            }
+            else {
+                toast.error('Failed to add comment.', {
+                    autoClose: 4000,
+                    theme: theme === "light" ? "light" : "dark"
+                })
+            }
+        } catch (error) {
+            toast.error('Something went wrong. Try again!', {
+                autoClose: 4000,
+                theme: theme === "light" ? "light" : "dark"
+            })
+            console.log("Error adding comment:", error);
+        } finally {
+            setDisabled(false)
+        }
     }
 
     const handleShare = async (platform) => {
@@ -165,7 +202,7 @@ export default function BlogPost() {
                                 <p className="font-semibold">{blog.author.firstname} {blog.author.lastname}</p>
                                 <div className="flex items-center text-sm text-muted-foreground">
                                     <Calendar className="mr-1 h-4 w-4" />
-                                    <time dateTime={formatDate(blog.updatedAt)}>{formatDate(blog.updatedAt)}</time>
+                                    <time dateTime={formatDate(blog.createdAt)}>{formatDate(blog.createdAt)}</time>
                                 </div>
                             </div>
                         </div>
@@ -248,32 +285,37 @@ export default function BlogPost() {
 
             <Card className="mt-8">
                 <CardHeader>
-                    <CardTitle>Comments</CardTitle>
+                    <CardTitle>Comments ({blog.comments.length})</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleCommentSubmit} className="mb-6">
-                        <Textarea
-                            placeholder="Write a comment..."
-                            value={commentText}
-                            onChange={(e) => setCommentText(e.target.value)}
-                            className="mb-2"
-                            required
-                        />
-                        <Button type="submit">Post Comment</Button>
+                        <fieldset disabled={disabled}>
+                            <Textarea
+                                placeholder="Write a comment..."
+                                value={content}
+                                onChange={(e) => setContent(e.target.value)}
+                                className="mb-4"
+                                required
+                            />
+                            <Button type="submit">
+                                {disabled ? <span className='flex items-center gap-1'><Loader2 className='animate-spin' />Posting Comment</span> : "Post Comment"}
+                            </Button>
+                        </fieldset>
                     </form>
                     <div className="space-y-4">
                         {blog.comments.length > 0 && blog.comments.map((comment) => (
-                            <div key={comment.id} className="border-b pb-4 last:border-b-0">
-                                <div className="flex items-center space-x-2 mb-2">
+                            <div key={comment._id} className="border-b pb-4 last:border-b-0">
+                                <div className="flex items-start space-x-3 mb-2">
                                     <Avatar>
-                                        <AvatarFallback>{comment.author[0]}</AvatarFallback>
+                                        <AvatarImage src={comment.user.image} />
+                                        <AvatarFallback>{comment.user.firstname[0]}</AvatarFallback>
                                     </Avatar>
                                     <div>
-                                        <p className="font-semibold">{comment.author}</p>
-                                        <p className="text-sm text-muted-foreground">{comment.date}</p>
+                                        <p className="font-semibold">{comment.user.firstname}</p>
+                                        <p className="text-sm text-muted-foreground">{formatDate(comment.createdAt)}</p>
+                                        <p className='mt-1'>{comment.content}</p>
                                     </div>
                                 </div>
-                                <p>{comment.content}</p>
                             </div>
                         ))}
                     </div>

@@ -24,7 +24,7 @@ export function BlogCard({ post }) {
                 <p className="text-muted-foreground line-clamp-2 mb-2">{post.content}</p>
             </CardContent>
             <CardFooter className='flex flex-col items-start gap-2'>
-                <p className="text-sm text-muted-foreground">By {post.author.firstname + " " + post.author.lastname} - {formatDate(post.updatedAt)}</p>
+                <p className="text-sm text-muted-foreground">By {post.author.firstname + " " + post.author.lastname} - {formatDate(post.createdAt)}</p>
                 <div className="flex items-center justify-between w-full">
                     <div className="flex items-center text-sm text-muted-foreground space-x-2">
                         <span className="flex items-center">

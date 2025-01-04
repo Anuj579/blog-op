@@ -12,10 +12,16 @@ export async function GET(req, { params }) {
             return NextResponse.json({ success: false, error: "Blog ID is required" }, { status: 400 });
         }
 
-        const blog = await Blog.findById(id).populate("author", "firstname lastname email image");
+        const blog = await Blog.findById(id).populate("author", "firstname lastname email image").populate({
+            path: "comments.user", // Populate user details for each comment
+            select: "firstname lastname image", // Select only these fields
+        });
         if (!blog) {
             return NextResponse.json({ success: false, message: "Blog not found" }, { status: 404 });
         }
+
+        // Sort comments by createdAt in descending order
+        blog.comments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
         return NextResponse.json({ success: true, blog }, { status: 200 });
     } catch (error) {
