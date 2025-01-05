@@ -9,7 +9,6 @@ export async function GET(req) {
 
         // Use getServerSession to fetch the session on the server-side
         const session = await getServerSession(authOptions);
-        console.log("Session:", session);
 
         if (!session) {
             return new NextResponse(
