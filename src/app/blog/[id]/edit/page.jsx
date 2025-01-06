@@ -10,7 +10,6 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
@@ -19,6 +18,7 @@ import { useTheme } from "next-themes"
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useSession } from "next-auth/react"
+import BlogEditor from "@/components/BlogEditor"
 
 export default function EditBlogPage() {
     const { data: session } = useSession()
@@ -34,6 +34,13 @@ export default function EditBlogPage() {
     const { id } = useParams()
     const { theme } = useTheme()
     const router = useRouter()
+
+    const handleContentChange = (newContent) => {
+        setBody((prevState) => ({
+            ...prevState,
+            content: newContent
+        }));
+    };
 
     useEffect(() => {
         const fetchAndAuthorize = async () => {
@@ -114,7 +121,7 @@ export default function EditBlogPage() {
                 theme: theme === "light" ? "light" : "dark",
             });
             console.error("Error uploading image:", error);
-        } finally{
+        } finally {
             setUploadingImage(false)
         }
     };
@@ -143,7 +150,7 @@ export default function EditBlogPage() {
                                 </div>
                                 <div>
                                     <Label htmlFor="content">Content</Label>
-                                    <Textarea id="content" value={body.content} onChange={(e) => setBody({ ...body, content: e.target.value })} placeholder="Write your blog content here" rows={10} required />
+                                    <BlogEditor value={body.content} onEditorChange={handleContentChange} />
                                 </div>
                                 <div>
                                     <Label htmlFor="coverImage">Cover Image</Label>

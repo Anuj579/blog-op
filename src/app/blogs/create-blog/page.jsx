@@ -10,7 +10,6 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
@@ -19,6 +18,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { Loader2 } from "lucide-react"
 import { useTheme } from "next-themes"
+import BlogEditor from "@/components/BlogEditor"
 
 export default function CreateBlogPage() {
     const [body, setBody] = useState({
@@ -31,6 +31,13 @@ export default function CreateBlogPage() {
     const { data: session } = useSession()
     const router = useRouter()
     const { theme } = useTheme()
+
+    const handleContentChange = (newContent) => {
+        setBody((prevState) => ({
+            ...prevState,
+            content: newContent
+        }));
+    };
 
     const handleCreateBlog = async (e) => {
         e.preventDefault()
@@ -112,7 +119,7 @@ export default function CreateBlogPage() {
                                 </div>
                                 <div>
                                     <Label htmlFor="content">Content</Label>
-                                    <Textarea id="content" name="content" value={body.content} onChange={(e) => setBody({ ...body, content: e.target.value })} placeholder="Write your blog content here" rows={10} required />
+                                    <BlogEditor value={body.content} onEditorChange={handleContentChange} />
                                 </div>
                                 <div>
                                     <Label htmlFor="coverImage">Cover Image</Label>

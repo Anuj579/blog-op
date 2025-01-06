@@ -74,5 +74,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")], //by tailwindcss/typography we can use default headings styles and html tags style with prose class.
 };

@@ -277,8 +277,8 @@ export default function BlogPost() {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <div className="prose dark:prose-invert max-w-none">
-                        {blog.content}
+                    <div className="prose prose-pre:max-w-min prose-pre:bg-gray-200 prose-pre:text-gray-900 dark:prose-invert dark:prose-pre:bg-gray-900 dark:prose-pre:text-gray-200 max-w-none">
+                        <div className='max-w-full' dangerouslySetInnerHTML={{ __html: blog.content }} />
                     </div>
                 </CardContent>
             </Card>
