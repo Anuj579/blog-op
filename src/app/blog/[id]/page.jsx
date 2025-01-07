@@ -271,12 +271,13 @@ export default function BlogPost() {
                         </AlertDialog>
                     </div>
                     <CardTitle className="text-3xl font-bold">{blog.title}</CardTitle>
-                    <div className="flex items-center text-sm text-muted-foreground">
+                    <div className="flex items-center text-sm text-muted-foreground pb-2">
                         <Clock className="mr-1 h-4 w-4" />
                         {blog.readTime} min read
                     </div>
+                    <hr/>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="mt-8">
                     <div className="prose prose-pre:max-w-min prose-pre:bg-gray-200 prose-pre:text-gray-900 dark:prose-invert dark:prose-pre:bg-gray-900 dark:prose-pre:text-gray-200 max-w-none">
                         <div className='max-w-full' dangerouslySetInnerHTML={{ __html: blog.content }} />
                     </div>
