@@ -19,10 +19,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { Loader2 } from "lucide-react"
 import { useTheme } from "next-themes"
 import BlogEditor from "@/components/BlogEditor"
+import { Textarea } from "@/components/ui/textarea"
 
 export default function CreateBlogPage() {
     const [body, setBody] = useState({
         title: '',
+        previewText: '',
         content: '',
         coverImage: ''
     })
@@ -116,6 +118,18 @@ export default function CreateBlogPage() {
                                 <div>
                                     <Label htmlFor="title">Title</Label>
                                     <Input id="title" name="title" value={body.title} onChange={(e) => setBody({ ...body, title: e.target.value })} placeholder="Enter your blog title" required />
+                                </div>
+                                <div>
+                                    <Label htmlFor="previewText">Preview Text</Label>
+                                    <Textarea
+                                        id="previewText"
+                                        name="previewText"
+                                        value={body.previewText}
+                                        onChange={(e) => setBody({ ...body, previewText: e.target.value })}
+                                        placeholder="Write a short preview of your blog"
+                                        rows={2}
+                                        required
+                                    />
                                 </div>
                                 <div>
                                     <Label htmlFor="content">Content</Label>

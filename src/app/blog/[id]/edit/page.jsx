@@ -19,13 +19,15 @@ import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useSession } from "next-auth/react"
 import BlogEditor from "@/components/BlogEditor"
+import { Textarea } from "@/components/ui/textarea"
 
 export default function EditBlogPage() {
     const { data: session } = useSession()
     const [body, setBody] = useState({
-        title: "",
-        content: "",
-        coverImage: ""
+        title: '',
+        previewText: '',
+        content: '',
+        coverImage: ''
     })
     const [loading, setLoading] = useState(true)
     const [disabled, setDisabled] = useState(false)
@@ -50,7 +52,7 @@ export default function EditBlogPage() {
                     const res = await fetch(`/api/blog/${id}`)
                     const data = await res.json()
                     // console.log("Blog details:", data.blog);
-                    setBody({ title: data.blog.title, content: data.blog.content, coverImage: data.blog.coverImage })
+                    setBody({ title: data.blog.title, previewText: data.blog.previewText, content: data.blog.content, coverImage: data.blog.coverImage })
                     if (!session || session.user.id !== data.blog.author._id) {
                         router.push(`/blog/${id}`)
                     } else {
@@ -147,6 +149,18 @@ export default function EditBlogPage() {
                                 <div>
                                     <Label htmlFor="title">Title</Label>
                                     <Input id="title" value={body.title} onChange={(e) => setBody({ ...body, title: e.target.value })} placeholder="Enter your blog title" required />
+                                </div>
+                                <div>
+                                    <Label htmlFor="previewText">Preview Text</Label>
+                                    <Textarea
+                                        id="previewText"
+                                        name="previewText"
+                                        value={body.previewText}
+                                        onChange={(e) => setBody({ ...body, previewText: e.target.value })}
+                                        placeholder="Write a short preview of your blog"
+                                        rows={2}
+                                        required
+                                    />
                                 </div>
                                 <div>
                                     <Label htmlFor="content">Content</Label>

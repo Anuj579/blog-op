@@ -8,6 +8,12 @@ const blogSchema = new mongoose.Schema(
             trim: true,
             maxlength: [100, "Title cannot exceed 100 characters"],
         },
+        previewText: {
+            type: String,
+            required: [true, "Preview text is required"],
+            trim: true,
+            maxlength: [200, "Preview text cannot exceed 200 characters"],
+        },
         content: {
             type: String,
             required: [true, "Content is required"],
