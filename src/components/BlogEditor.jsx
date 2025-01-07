@@ -3,7 +3,7 @@ import { useTheme } from 'next-themes';
 
 const BlogEditor = ({ value, onEditorChange }) => {
     const { theme } = useTheme()
-    
+
     return (
         <Editor
             apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
@@ -14,15 +14,8 @@ const BlogEditor = ({ value, onEditorChange }) => {
                 menubar: false,
                 skin: "oxide-dark",
                 content_css: "dark",
-                // plugins: [
-                //     'advlist autolink lists link image charmap preview anchor',
-                //     'searchreplace visualblocks code fullscreen',
-                //     'insertdatetime media table paste code help wordcount',
-                // ],
-                // toolbar:
-                //     'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link image',
-                // content_style:
-                //     'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                plugins: 'lists advlist autolink link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table',
+                toolbar: 'undo redo | styles | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
             }}
         />
     );
