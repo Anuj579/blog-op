@@ -23,7 +23,7 @@ export function BlogCard({ post }) {
                 <CardTitle>{post.title}</CardTitle>
             </CardHeader>
             <CardContent className="flex-grow">
-                <p className="text-muted-foreground line-clamp-2 mb-2" dangerouslySetInnerHTML={{ __html: post.content }} />
+                <p className="text-muted-foreground line-clamp-2 mb-2">{post.previewText}</p>
             </CardContent>
             <CardFooter className='flex flex-col items-start gap-2'>
                 <p className="text-sm text-muted-foreground">By {post.author.firstname + " " + post.author.lastname} - {formatDate(post.createdAt)}</p>

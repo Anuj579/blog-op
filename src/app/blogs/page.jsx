@@ -70,7 +70,7 @@ function page() {
             </form>
 
             {filteredPosts.length === 0 ? (
-                <p className="text-center text-muted-foreground">No blogs found matching your search.</p>
+                <p className="text-center text-muted-foreground">No blogs found.</p>
             ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {filteredPosts.map((post) => (
