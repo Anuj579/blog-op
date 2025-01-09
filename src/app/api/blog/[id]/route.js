@@ -40,15 +40,16 @@ export async function PUT(req, { params }) {
         }
 
         const body = await req.json();
-        const { title, content, coverImage } = body;
+        const { title, previewText, content, coverImage } = body;
 
-        if (!title && !content) {
+        if (!title && !previewText && !content) {
             return NextResponse.json({ success: false, error: "No updates provided" }, { status: 400 });
         }
 
         // Prepare the update object
         const updatedFields = {};
         if (title) updatedFields.title = title;
+        if (previewText) updatedFields.previewText = previewText;
         if (content) {
             updatedFields.content = content;
 

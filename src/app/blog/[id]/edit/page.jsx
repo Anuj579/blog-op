@@ -65,7 +65,7 @@ export default function EditBlogPage() {
             }
         }
         fetchAndAuthorize()
-    }, [session])
+    }, [])
 
     const handleUpdateBlog = async (e) => {
         e.preventDefault()

@@ -15,7 +15,6 @@ export default function Home() {
   const [featuredPosts, setFeaturedPosts] = useState([])
   const [loading, setLoading] = useState(true)
 
-
   useEffect(() => {
     if (session) {
       const fetchRecentPosts = async () => {
@@ -38,7 +37,7 @@ export default function Home() {
     } else {
       setLoading(false)
     }
-  }, [session])
+  }, []) // include session in dependency array if needed
 
   useEffect(() => {
     const fetchPosts = async () => {
