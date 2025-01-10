@@ -64,7 +64,7 @@ const UserMenu = () => {
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                         <Avatar className="h-8 w-8 md:h-9 md:w-9">
                             <AvatarImage src={image} alt="user-avatar" />
-                            <AvatarFallback>{name.charAt(0).toUpperCase()}</AvatarFallback>
+                            <AvatarFallback><img src={`https://ui-avatars.com/api/?name=${name.charAt(0).toUpperCase()}&background=6A5ACD&color=fff`} alt="user-avatar" /></AvatarFallback>
                         </Avatar>
                     </Button>
                 </DropdownMenuTrigger>

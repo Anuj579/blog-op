@@ -16,7 +16,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Pencil, Check, Calendar, Camera, AlertCircle, AlertTriangle } from 'lucide-react'
+import { Pencil, Check, Calendar, Camera, AlertCircle, AlertTriangle, Loader2, Eye, EyeOff, Lock } from 'lucide-react'
 
 function page() {
     const [userDetails, setUserDetails] = useState({
@@ -26,9 +26,12 @@ function page() {
         image: '',
         createdAt: ''
     })
+    const [loading, setLoading] = useState(true)
     const [isEditing, setIsEditing] = useState(false)
     // const [tempUser, setTempUser] = useState(user)
     const [deleteConfirmation, setDeleteConfirmation] = useState('')
+    const [inputType, setInputType] = useState('password')
+    const toggleInputType = () => setInputType(prev => (prev === 'password' ? 'text' : 'password'));
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -42,6 +45,8 @@ function page() {
                 }
             } catch (error) {
                 console.log("Error in fetch user details:", error);
+            } finally {
+                setLoading(false)
             }
         }
         fetchUserProfile()
@@ -56,6 +61,13 @@ function page() {
         setIsEditing(false); // Exit edit mode
     };
 
+    if (loading)
+        return (
+            <div className="flex items-center justify-center min-h-[calc(100vh-11rem)]">
+                <Loader2 className="animate-spin h-8 w-8" />
+            </div>
+        )
+
     return (
         <div className="container max-w-3xl mx-auto px-4 py-8">
             <Card className="overflow-hidden shadow-lg">
@@ -65,7 +77,7 @@ function page() {
                             <div className="relative">
                                 <Avatar className="w-24 h-24 border-2 border-primary">
                                     <AvatarImage src={userDetails.image} />
-                                    <AvatarFallback>{userDetails.firstname[0]}</AvatarFallback>
+                                    <AvatarFallback><img src={`https://ui-avatars.com/api/?name=${userDetails.firstname[0]}&background=6A5ACD&color=fff&size=100`} alt="user-avatar" /></AvatarFallback>
                                 </Avatar>
                                 {isEditing && (
                                     <Label
@@ -131,7 +143,7 @@ function page() {
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
+                            <Label htmlFor="email">Email (Non-editable)</Label>
                             <Input
                                 id="email"
                                 name="email"
@@ -142,11 +154,10 @@ function page() {
                         </div>
                     </div>
                 </CardContent>
-                <CardFooter className="bg-muted/50 p-6 sm:p-8">
+                <CardFooter className="bg-muted/20 p-6 sm:p-8">
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <Button variant="destructive" className="w-full sm:w-auto e">
-                                {/* <Trash2 className="h-4 w-4 mr-2" /> */}
                                 Delete Account
                             </Button>
                         </AlertDialogTrigger>
@@ -163,13 +174,24 @@ function page() {
                             <form >
                                 <div className="space-y-4 py-4">
                                     <Label htmlFor="deleteConfirmation">Please type your password to confirm</Label>
-                                    <Input
-                                        id="deleteConfirmation"
-                                        type="password"
-                                        value={deleteConfirmation}
-                                        onChange={(e) => setDeleteConfirmation(e.target.value)}
-                                        autoComplete="off"
-                                    />
+                                    <div className="relative">
+                                        <Lock className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4`} />
+                                        <Input
+                                            id="password"
+                                            name="password"
+                                            type={inputType}
+                                            value={deleteConfirmation}
+                                            onChange={(e) => setDeleteConfirmation(e.target.value)}
+                                            placeholder="Enter your password"
+                                            autoComplete="off"
+                                            className={`pl-10`}
+                                            disabled={loading}
+                                            required
+                                        />
+                                        <button className='absolute right-3 top-0 h-full' type='button' onClick={toggleInputType} aria-label={inputType === 'password' ? 'Show password' : 'Hide password'} title={inputType === 'password' ? 'Show password' : 'Hide password'}>
+                                            {inputType === 'password' ? <Eye className="h-4 w-4 text-gray-500 dark:text-gray-400" /> : <EyeOff className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
+                                        </button>
+                                    </div>
                                 </div>
                                 <div className="flex items-center space-x-2 text-sm text-yellow-500 mb-6">
                                     <AlertCircle className="w-4 h-4" />
