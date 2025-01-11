@@ -52,15 +52,6 @@ function page() {
         fetchUserProfile()
     }, [])
 
-    const handleCancel = () => {
-        // setFormData({
-        //   firstname: user.firstname,
-        //   lastname: user.lastname,
-        //   email: user.email,
-        // });
-        setIsEditing(false); // Exit edit mode
-    };
-
     if (loading)
         return (
             <div className="flex items-center justify-center min-h-[calc(100vh-11rem)]">
