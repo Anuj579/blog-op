@@ -98,8 +98,21 @@ export const authOptions = {
             return token;
         },
         async session({ session, token }) {
-            session.user.id = token.id;
-            session.user.name = token.name;
+            // Fetch updated user details from the database
+            await connectDB();
+
+            const dbUser = await User.findById(token.id);
+
+            if (dbUser) {
+                session.user.id = dbUser._id.toString();
+                session.user.name = `${dbUser.firstname} ${dbUser.lastname}`;
+                session.user.email = dbUser.email;
+                session.user.image = dbUser.image;
+            } else {
+                // Fallback in case the user doesn't exist in DB
+                session.user.id = token.id;
+                session.user.name = token.name;
+            }
             return session;
         },
     },

@@ -41,3 +41,70 @@ export async function GET(req) {
         return NextResponse.json({ success: false, error: error.message }, { status: 500 })
     }
 }
+
+// To update user profile
+export async function PUT(req) {
+    try {
+        await connectDB()
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return NextResponse.json({ success: false, error: "User not authenticated" }, { status: 401 })
+        }
+
+        const authorId = session.user.id
+
+        if (!authorId) {
+            return NextResponse.json({ success: false, error: "Author ID not found" }, { status: 400 })
+        }
+
+        const body = await req.json()
+        const { firstname, lastname, image } = body;
+
+        if (!firstname && !lastname) {
+            return NextResponse.json({ success: false, error: "No updates provided" }, { status: 400 });
+        }
+
+        // Prepare the update object
+        const updatedFields = {};
+        if (firstname) updatedFields.firstname = firstname;
+        if (lastname) updatedFields.lastname = lastname;
+        if (image) updatedFields.image = image;
+
+        // Update the user document
+        const updatedUser = await User.findByIdAndUpdate(authorId, updatedFields, { new: true })
+        if (!updatedUser) {
+            return NextResponse.json({ success: false, error: "User not found" }, { status: 404 })
+        }
+
+        return NextResponse.json({ success: true, user: updatedUser }, { status: 200 });
+    } catch (error) {
+        console.error("Error updating user:", error);
+        return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
+    }
+}
+
+export async function DELETE(req) {
+    try {
+        await connectDB()
+        const session = await getServerSession(authOptions)
+        if (!session) {
+            return NextResponse.json({ success: false, error: "User not authenticated" }, { status: 401 })
+        }
+
+        const authorId = session.user.id
+        if (!authorId) {
+            return NextResponse.json({ success: false, error: "Author ID not found" }, { status: 400 })
+        }
+
+        const deletedUser = await User.findByIdAndDelete(authorId)
+
+        if (!deletedUser) {
+            return NextResponse.json({ success: false, error: "User not found" }, { status: 404 })
+        }
+
+        return NextResponse.json({ success: true, message: "User deleted successfully" }, { status: 200 })
+    } catch (error) {
+        console.log("Error deleting user:", error);
+        return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
+    }
+}

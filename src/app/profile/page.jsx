@@ -6,17 +6,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {
-    AlertDialog,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Pencil, Check, Calendar, Camera, AlertCircle, AlertTriangle, Loader2, Eye, EyeOff, Lock } from 'lucide-react'
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, } from "@/components/ui/alert-dialog"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Pencil, Check, Calendar, Camera, AlertCircle, AlertTriangle, Loader2, Eye, EyeOff, Lock, MoreVertical, X } from 'lucide-react'
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { useTheme } from 'next-themes'
+import { useSession } from 'next-auth/react'
 
 function page() {
     const [userDetails, setUserDetails] = useState({
@@ -28,10 +24,12 @@ function page() {
     })
     const [loading, setLoading] = useState(true)
     const [isEditing, setIsEditing] = useState(false)
-    // const [tempUser, setTempUser] = useState(user)
     const [deleteConfirmation, setDeleteConfirmation] = useState('')
     const [inputType, setInputType] = useState('password')
     const toggleInputType = () => setInputType(prev => (prev === 'password' ? 'text' : 'password'));
+    const { theme } = useTheme()
+    const { data: session, update } = useSession();
+    const { name } = session.user
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -52,6 +50,43 @@ function page() {
         fetchUserProfile()
     }, [])
 
+    const updateProfile = async () => {
+        try {
+            const res = await fetch('/api/profile', {
+                method: "PUT",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(userDetails)
+            })
+            if (res.ok) {
+                setIsEditing(false)
+                await update({
+                    name: `${userDetails.firstname} ${userDetails.lastname}`
+                })
+            } else {
+                toast.error("Failed to update user profile.", {
+                    autoClose: 4000,
+                    theme: theme === "light" ? "light" : "dark",
+                });
+            }
+        } catch (error) {
+            console.log("Error in updating profile:", error);
+            toast.error("Error! Please try again.", {
+                autoClose: 4000,
+                theme: theme === "light" ? "light" : "dark",
+            });
+        }
+    }
+
+    const handleEdit = () => {
+        if (isEditing) {
+            updateProfile()
+        } else {
+            setIsEditing(prev => !prev)
+        }
+    }
+
     if (loading)
         return (
             <div className="flex items-center justify-center min-h-[calc(100vh-11rem)]">
@@ -71,24 +106,42 @@ function page() {
                                     <AvatarFallback><img src={`https://ui-avatars.com/api/?name=${userDetails.firstname[0]}&background=6A5ACD&color=fff&size=100`} alt="user-avatar" /></AvatarFallback>
                                 </Avatar>
                                 {isEditing && (
-                                    <Label
-                                        htmlFor="profilePic"
-                                        className="absolute bottom-0 right-0 p-1 bg-primary text-primary-foreground rounded-full cursor-pointer hover:bg-primary/90 transition-colors"
-                                    >
-                                        <Camera className="h-5 w-5" />
-                                        <input
+                                    <div>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button
+                                                    size="icon"
+                                                    className="absolute bottom-0 right-0 rounded-full"
+                                                >
+                                                    <MoreVertical className="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent>
+                                                <DropdownMenuItem onClick={() => document.getElementById('fileInput').click()}>
+                                                    <Camera className="mr-2 h-4 w-4" />
+                                                    <span>{userDetails.image ? 'Change' : 'Add'} Picture</span>
+                                                </DropdownMenuItem>
+                                                {userDetails.image && (
+                                                    <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)} >
+                                                        <X className="mr-2 h-4 w-4" />
+                                                        <span>Remove Picture</span>
+                                                    </DropdownMenuItem>
+                                                )}
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                        <Input
                                             type="file"
-                                            id="profilePic"
-                                            className="hidden"
-                                            // onChange={handleImageChange}
+                                            id='fileInput'
                                             accept="image/*"
+                                            className="hidden"
+                                        // onChange={handleFileChange}
                                         />
-                                    </Label>
+                                    </div>
                                 )}
                             </div>
                             <div className="text-center sm:text-left">
                                 <h2 className="text-2xl font-bold">
-                                    {`${userDetails.firstname} ${userDetails.lastname}`}
+                                    {name}
                                 </h2>
                                 <p className="text-sm flex items-center justify-center sm:justify-start mt-1 text-muted-foreground">
                                     <Calendar className="w-4 h-4 mr-2" />
@@ -102,7 +155,7 @@ function page() {
                         <Button
                             variant="outline"
                             size="sm"
-                            // onClick={handleEdit}
+                            onClick={handleEdit}
                             className="mt-4 sm:mt-0"
                         >
                             {isEditing ? <Check className="h-4 w-4 mr-2" /> : <Pencil className="h-4 w-4 mr-2" />}
@@ -118,7 +171,7 @@ function page() {
                                     id="firstName"
                                     name="firstName"
                                     value={userDetails.firstname}
-                                    // onChange={handleChange}
+                                    onChange={(e) => setUserDetails({ ...userDetails, firstname: e.target.value })}
                                     disabled={!isEditing}
                                 />
                             </div>
@@ -128,13 +181,13 @@ function page() {
                                     id="lastName"
                                     name="lastName"
                                     value={userDetails.lastname}
-                                    // onChange={handleChange}
+                                    onChange={(e) => setUserDetails({ ...userDetails, lastname: e.target.value })}
                                     disabled={!isEditing}
                                 />
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="email">Email (Non-editable)</Label>
+                            <Label htmlFor="email">Email {isEditing && '(Non-editable)'}</Label>
                             <Input
                                 id="email"
                                 name="email"
@@ -184,7 +237,7 @@ function page() {
                                         </button>
                                     </div>
                                 </div>
-                                <div className="flex items-center space-x-2 text-sm text-yellow-500 mb-6">
+                                <div className="flex items-center space-x-2 text-sm text-yellow-600 dark:text-yellow-500 mb-6">
                                     <AlertCircle className="w-4 h-4" />
                                     <span>All of your data will be permanently removed.</span>
                                 </div>
@@ -197,6 +250,7 @@ function page() {
                     </AlertDialog>
                 </CardFooter>
             </Card>
+            <ToastContainer />
         </div>
     )
 }
