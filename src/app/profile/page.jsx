@@ -8,11 +8,13 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, } from "@/components/ui/alert-dialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Pencil, Check, Calendar, Camera, AlertCircle, AlertTriangle, Loader2, Eye, EyeOff, Lock, MoreVertical, X } from 'lucide-react'
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useTheme } from 'next-themes'
 import { useSession } from 'next-auth/react'
+import ImageCropper from '@/components/ImageCropper'
 
 function page() {
     const [userDetails, setUserDetails] = useState({
@@ -24,6 +26,8 @@ function page() {
     })
     const [loading, setLoading] = useState(true)
     const [isEditing, setIsEditing] = useState(false)
+    const [previewUrl, setPreviewUrl] = useState('')
+    const [isCropperOpen, setIsCropperOpen] = useState(false)
     const [deleteConfirmation, setDeleteConfirmation] = useState('')
     const [inputType, setInputType] = useState('password')
     const toggleInputType = () => setInputType(prev => (prev === 'password' ? 'text' : 'password'));
@@ -49,6 +53,21 @@ function page() {
         }
         fetchUserProfile()
     }, [])
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const preview = URL.createObjectURL(file);
+            setPreviewUrl(preview);
+            setIsCropperOpen(true);
+        }
+    };
+
+    const handleCrop = async (croppedImage) => {
+        // setCroppedImage(croppedImage);
+        setPreviewUrl(croppedImage)
+        setIsCropperOpen(false);
+    };
 
     const updateProfile = async () => {
         try {
@@ -102,7 +121,7 @@ function page() {
                         <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4 mb-4 sm:mb-0">
                             <div className="relative">
                                 <Avatar className="w-24 h-24 border-2 border-primary">
-                                    <AvatarImage src={userDetails.image} />
+                                    <AvatarImage src={userDetails.image || previewUrl} />
                                     <AvatarFallback><img src={`https://ui-avatars.com/api/?name=${userDetails.firstname[0]}&background=6A5ACD&color=fff&size=100`} alt="user-avatar" /></AvatarFallback>
                                 </Avatar>
                                 {isEditing && (
@@ -134,7 +153,7 @@ function page() {
                                             id='fileInput'
                                             accept="image/*"
                                             className="hidden"
-                                        // onChange={handleFileChange}
+                                            onChange={handleFileChange}
                                         />
                                     </div>
                                 )}
@@ -250,6 +269,17 @@ function page() {
                     </AlertDialog>
                 </CardFooter>
             </Card>
+            <Dialog open={isCropperOpen} onOpenChange={setIsCropperOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Crop Your Image</DialogTitle>
+                        <DialogDescription>
+                            Crop your image to the desired size
+                        </DialogDescription>
+                    </DialogHeader>
+                    <ImageCropper image={previewUrl} onCrop={handleCrop} onClose={() => setIsCropperOpen(false)} />
+                </DialogContent>
+            </Dialog>
             <ToastContainer />
         </div>
     )
