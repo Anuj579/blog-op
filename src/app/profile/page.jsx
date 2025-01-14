@@ -28,6 +28,8 @@ function page() {
     const [isEditing, setIsEditing] = useState(false)
     const [previewUrl, setPreviewUrl] = useState('')
     const [isCropperOpen, setIsCropperOpen] = useState(false)
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+    const [isProcessingProfilePic, setIsProcessingProfilePic] = useState(false);
     const [deleteConfirmation, setDeleteConfirmation] = useState('')
     const [inputType, setInputType] = useState('password')
     const toggleInputType = () => setInputType(prev => (prev === 'password' ? 'text' : 'password'));
@@ -63,13 +65,91 @@ function page() {
         }
     };
 
+    const updateProfilePic = async (croppedImage) => {
+        if (!croppedImage) {
+            console.error("No image provided for profile picture update");
+            return;
+        }
+
+        // Extract the base64 string (remove the data URL prefix)
+        const base64Data = croppedImage.split(',')[1];
+
+        // Decode the base64 string into a byte array
+        const byteString = atob(base64Data);
+
+        // Get the MIME type from the base64 string
+        const mimeString = croppedImage.split(',')[0].split(':')[1].split(';')[0];
+
+        // Create an array buffer from the decoded string
+        const arrayBuffer = new ArrayBuffer(byteString.length);
+        const uintArray = new Uint8Array(arrayBuffer);
+
+        // Populate the array buffer with the byte data
+        for (let i = 0; i < byteString.length; i++) {
+            uintArray[i] = byteString.charCodeAt(i);
+        }
+
+        // Create a Blob from the byte array
+        const blob = new Blob([uintArray], { type: mimeString });
+
+        // Convert Blob to File (you can name the file whatever you want)
+        const file = new File([blob], 'profile-pic.jpg', { type: mimeString });
+
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "unsigned_preset");
+
+        setIsProcessingProfilePic(true)
+        try {
+            const res = await fetch(process.env.NEXT_PUBLIC_CLOUDINARY_API_URL, {
+                method: "POST",
+                body: formData,
+            });
+
+            const data = await res.json();
+            if (data.secure_url) {
+                setUserDetails((prevDetails) => ({ ...prevDetails, image: data.secure_url })); // Save the URL in state
+            }
+        } catch (error) {
+            toast.error("Failed to upload user avatar.", {
+                autoClose: 4000,
+                theme: theme === "light" ? "light" : "dark",
+            });
+            console.error("Error updating profile picture:", error.response || error);
+        } finally {
+            setIsProcessingProfilePic(false)
+        }
+    }
+
     const handleCrop = async (croppedImage) => {
-        // setCroppedImage(croppedImage);
         setPreviewUrl(croppedImage)
+        await updateProfilePic(croppedImage)
         setIsCropperOpen(false);
     };
 
-    const updateProfile = async () => {
+    const removeProfilePic = async () => {
+        setIsProcessingProfilePic(true)
+        try {
+            const res = await fetch('/api/profile', {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ ...userDetails, image: null })
+            });
+            if (res.ok) {
+                setUserDetails({ ...userDetails, image: null })
+            }
+            setPreviewUrl(null)
+            setIsDeleteDialogOpen(false)
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsProcessingProfilePic(false)
+        }
+    }
+
+    const updateProfileDetails = async () => {
         try {
             const res = await fetch('/api/profile', {
                 method: "PUT",
@@ -81,7 +161,7 @@ function page() {
             if (res.ok) {
                 setIsEditing(false)
                 await update({
-                    name: `${userDetails.firstname} ${userDetails.lastname}`
+                    name: `${userDetails.firstname} ${userDetails.lastname} ${userDetails.image}`
                 })
             } else {
                 toast.error("Failed to update user profile.", {
@@ -100,7 +180,7 @@ function page() {
 
     const handleEdit = () => {
         if (isEditing) {
-            updateProfile()
+            updateProfileDetails()
         } else {
             setIsEditing(prev => !prev)
         }
@@ -269,6 +349,38 @@ function page() {
                     </AlertDialog>
                 </CardFooter>
             </Card>
+
+            {/* Remove profile pic dialog */}
+            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+                <AlertDialogTrigger asChild>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle className='font-semibold flex items-center text-red-600 dark:text-red-500'>
+                            <AlertTriangle className="h-5 w-5 mr-2" />
+                            Remove Profile Picture
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Are you sure you want to remove your profile picture?
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <Button variant="destructive" onClick={removeProfilePic}>Remove</Button>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+            <AlertDialog open={isProcessingProfilePic}>
+                <AlertDialogContent className='max-w-80'>
+                    <AlertDialogHeader className="flex gap-4 items-center ">
+                        <AlertDialogTitle className='sr-only'>Processing profile pic</AlertDialogTitle>
+                        <Loader2 className="animate-spin h-7 w-7" />
+                        <AlertDialogDescription className='font-medium'>Processing profile picture...</AlertDialogDescription>
+                    </AlertDialogHeader>
+                </AlertDialogContent>
+            </AlertDialog>
+
+            {/* Cropper dialog */}
             <Dialog open={isCropperOpen} onOpenChange={setIsCropperOpen}>
                 <DialogContent>
                     <DialogHeader>

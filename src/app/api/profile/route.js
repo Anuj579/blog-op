@@ -68,7 +68,10 @@ export async function PUT(req) {
         const updatedFields = {};
         if (firstname) updatedFields.firstname = firstname;
         if (lastname) updatedFields.lastname = lastname;
-        if (image) updatedFields.image = image;
+        
+        if (image !== undefined) {
+            updatedFields.image = image; // This allows null to be set as a valid value
+        }
 
         // Update the user document
         const updatedUser = await User.findByIdAndUpdate(authorId, updatedFields, { new: true })
