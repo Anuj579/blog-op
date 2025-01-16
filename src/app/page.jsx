@@ -138,7 +138,7 @@ export default function Home() {
       }
 
       <section>
-        <h2 className="text-3xl font-semibold mb-8">Featured Posts</h2>
+        <h2 className="text-3xl font-semibold mb-8">Latest Posts</h2>
         {featuredPosts.length === 0 && (<p>There are no blogs found.</p>)}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {featuredPosts.length > 0 && featuredPosts.slice(0, 3).map((post) => (

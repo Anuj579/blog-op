@@ -30,7 +30,6 @@ function page() {
     const [isCropperOpen, setIsCropperOpen] = useState(false)
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
     const [isProcessingProfilePic, setIsProcessingProfilePic] = useState(false);
-    const [deleteConfirmation, setDeleteConfirmation] = useState('')
     const [inputType, setInputType] = useState('password')
     const toggleInputType = () => setInputType(prev => (prev === 'password' ? 'text' : 'password'));
     const { theme } = useTheme()
@@ -300,7 +299,7 @@ function page() {
                 <CardFooter className="bg-muted/20 p-6 sm:p-8">
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
-                            <Button variant="destructive" className="w-full sm:w-auto e">
+                            <Button variant="destructive" className="w-full sm:w-auto" aria-label="Delete Account">
                                 Delete Account
                             </Button>
                         </AlertDialogTrigger>
@@ -311,40 +310,13 @@ function page() {
                                     Delete Account
                                 </AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    This action cannot be undone. This will permanently delete your account and remove your data from our servers.
+                                    Confirm your decision, and we’ll send you an email to complete the account deletion process.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
-                            <form >
-                                <div className="space-y-4 py-4">
-                                    <Label htmlFor="deleteConfirmation">Please type your password to confirm</Label>
-                                    <div className="relative">
-                                        <Lock className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4`} />
-                                        <Input
-                                            id="password"
-                                            name="password"
-                                            type={inputType}
-                                            value={deleteConfirmation}
-                                            onChange={(e) => setDeleteConfirmation(e.target.value)}
-                                            placeholder="Enter your password"
-                                            autoComplete="off"
-                                            className={`pl-10`}
-                                            disabled={loading}
-                                            required
-                                        />
-                                        <button className='absolute right-3 top-0 h-full' type='button' onClick={toggleInputType} aria-label={inputType === 'password' ? 'Show password' : 'Hide password'} title={inputType === 'password' ? 'Show password' : 'Hide password'}>
-                                            {inputType === 'password' ? <Eye className="h-4 w-4 text-gray-500 dark:text-gray-400" /> : <EyeOff className="h-4 w-4 text-gray-500 dark:text-gray-400" />}
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className="flex items-center space-x-2 text-sm text-yellow-600 dark:text-yellow-500 mb-6">
-                                    <AlertCircle className="w-4 h-4" />
-                                    <span>All of your data will be permanently removed.</span>
-                                </div>
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel >Cancel</AlertDialogCancel>
-                                    <Button variant="destructive">Delete Account</Button>
-                                </AlertDialogFooter>
-                            </form>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel >Cancel</AlertDialogCancel>
+                                <Button variant="destructive">Confirm</Button>
+                            </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialog>
                 </CardFooter>
