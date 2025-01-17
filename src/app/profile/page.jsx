@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, } from "@/components/ui/alert-dialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Pencil, Check, Calendar, Camera, AlertCircle, AlertTriangle, Loader2, Eye, EyeOff, Lock, MoreVertical, X } from 'lucide-react'
+import { Pencil, Check, Calendar, Camera, AlertTriangle, Loader2, MoreVertical, X } from 'lucide-react'
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useTheme } from 'next-themes'
@@ -30,8 +30,8 @@ function page() {
     const [isCropperOpen, setIsCropperOpen] = useState(false)
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
     const [isProcessingProfilePic, setIsProcessingProfilePic] = useState(false);
-    const [inputType, setInputType] = useState('password')
-    const toggleInputType = () => setInputType(prev => (prev === 'password' ? 'text' : 'password'));
+    const [disabled, setDisabled] = useState(false)
+    const [deleteAccountDialog, setDeleteAccountDialog] = useState(false)
     const { theme } = useTheme()
     const { data: session, update } = useSession();
     const { name } = session.user
@@ -185,6 +185,42 @@ function page() {
         }
     }
 
+    const sendDeleteEmail = async () => {
+        setDisabled(true)
+        try {
+            const res = await fetch('/api/send-delete-email', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: session.user.email
+                })
+            })
+
+            if (res.ok) {
+                toast.success("Confirmation email sent successfully.", {
+                    autoClose: 4000,
+                    theme: theme === "light" ? "light" : "dark",
+                });
+            } else {
+                toast.error("Failed to send confirmation email.", {
+                    autoClose: 4000,
+                    theme: theme === "light" ? "light" : "dark",
+                });
+            }
+        } catch (error) {
+            console.log("Failed to send email:", error);
+            toast.error("Failed to send email.", {
+                autoClose: 4000,
+                theme: theme === "light" ? "light" : "dark",
+            });
+        } finally {
+            setDisabled(false)
+            setDeleteAccountDialog(false)
+        }
+    }
+
     if (loading)
         return (
             <div className="flex items-center justify-center min-h-[calc(100vh-11rem)]">
@@ -297,9 +333,9 @@ function page() {
                     </div>
                 </CardContent>
                 <CardFooter className="bg-muted/20 p-6 sm:p-8">
-                    <AlertDialog>
+                    <AlertDialog open={deleteAccountDialog} onOpenChange={setDeleteAccountDialog}>
                         <AlertDialogTrigger asChild>
-                            <Button variant="destructive" className="w-full sm:w-auto" aria-label="Delete Account">
+                            <Button onClick={() => setDeleteAccountDialog(true)} variant="destructive" className="w-full sm:w-auto" aria-label="Delete Account">
                                 Delete Account
                             </Button>
                         </AlertDialogTrigger>
@@ -314,8 +350,10 @@ function page() {
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                                <AlertDialogCancel >Cancel</AlertDialogCancel>
-                                <Button variant="destructive">Confirm</Button>
+                                <AlertDialogCancel disabled={disabled}>Cancel</AlertDialogCancel>
+                                <Button variant="destructive" onClick={sendDeleteEmail} disabled={disabled}>
+                                    {disabled ? <span className='flex items-center gap-1'><Loader2 className='animate-spin w-5 h-5' />Confirm</span> : "Confirm"}
+                                </Button>
                             </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialog>
@@ -344,7 +382,7 @@ function page() {
             </AlertDialog>
             <AlertDialog open={isProcessingProfilePic}>
                 <AlertDialogContent className='max-w-80'>
-                    <AlertDialogHeader className="flex gap-4 items-center ">
+                    <AlertDialogHeader className="flex gap-3 items-center ">
                         <AlertDialogTitle className='sr-only'>Processing profile pic</AlertDialogTitle>
                         <Loader2 className="animate-spin h-7 w-7" />
                         <AlertDialogDescription className='font-medium'>Processing profile picture...</AlertDialogDescription>

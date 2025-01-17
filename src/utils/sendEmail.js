@@ -1,32 +1,35 @@
 import nodemailer from 'nodemailer';
 
 export async function sendDeleteConfirmationEmail(toEmail, confirmationUrl) {
-    // Create Nodemailer transporter using your SMTP credentials
-    
+    // Set up Nodemailer transporter
     const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com', // For Gmail, you can use Gmail's SMTP server
-        port: 465, // 465 for secure, 587 for non-secure
-        secure: true, // true for 465, false for 587
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
         auth: {
-            user: process.env.SMTP_USER, // Your email
-            pass: process.env.SMTP_PASS, // Your email password or app-specific password
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
         },
     });
 
-    // Set up email data
+    const blogAppName = "BlogApp"
+
+    // Email options
     const mailOptions = {
         from: process.env.SMTP_USER,
         to: toEmail,
-        subject: 'Confirm Account Deletion',
-        text: `Click the link below to confirm your account deletion: ${confirmationUrl}`,
-        html: `<p>Click the link below to confirm your account deletion:</p>
-               <a href="${confirmationUrl}">Confirm Deletion</a>`,
+        subject: `Confirm Account Deletion - ${blogAppName}`,
+        html: `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <p>You recently requested to delete your account on <strong>${blogAppName}</strong>.</p>
+            <p>Click the button below to confirm your account deletion. This link will expire in <strong>10 minutes</strong>:</p>
+            <a href="${confirmationUrl}" style="display: inline-block; color: #ffffff; background-color: #007bff; text-decoration: none; font-weight: bold; padding: 10px 15px; border-radius: 5px;">Confirm Deletion</a>
+            <p style="margin-top: 15px;">If you did not request this, you can safely ignore this email.</p>
+        </div>`,
     };
 
     try {
-        // Send the email
         await transporter.sendMail(mailOptions);
-        console.log('Email sent successfully');
+        console.log('Confirmation email sent');
     } catch (error) {
         console.error('Error sending email:', error);
         throw new Error('Failed to send email');

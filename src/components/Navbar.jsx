@@ -98,7 +98,7 @@ const UserMenu = () => {
                 </DropdownMenuContent>
                 <AlertDialog open={loading}>
                     <AlertDialogContent className='max-w-80'>
-                        <AlertDialogHeader className="flex gap-4 items-center ">
+                        <AlertDialogHeader className="flex gap-3 items-center ">
                             <AlertDialogTitle className='sr-only'>Loading</AlertDialogTitle>
                             <Loader2 className="animate-spin h-7 w-7" />
                             <AlertDialogDescription className='font-medium'>Logging out...</AlertDialogDescription>
