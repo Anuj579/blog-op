@@ -172,7 +172,7 @@ export default function EditBlogPage() {
                                 </div>
                             </div>
                             <Button className="mt-5">
-                                {disabled ? <span className='flex items-center gap-1'><Loader2 className='animate-spin' />Updating Post</span> : "Update Post"}
+                                {disabled ? <span className='flex items-center gap-1'><Loader2 className='animate-spin h-5 w-5' />Updating Post</span> : "Update Post"}
                             </Button>
                         </fieldset>
                     </form>

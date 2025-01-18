@@ -70,7 +70,7 @@ export default function Home() {
       {session ?
         <>
           <section className="mb-12">
-            <h1 className="text-4xl font-bold mb-4">Welcome, {session.user.name.split(' ')[0].charAt(0).toUpperCase() + session.user.name.split(' ')[0].slice(1)}!</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold mb-4">Welcome, {session.user.name.split(' ')[0].charAt(0).toUpperCase() + session.user.name.split(' ')[0].slice(1)}!</h1>
             <p className="text-xl text-muted-foreground mb-6">Ready to share your thoughts with the world?</p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/blogs/create-blog" className="w-full sm:w-auto">
@@ -88,7 +88,7 @@ export default function Home() {
           {yourRecentPosts.length > 0 && (
             <section className="mb-12">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-3xl font-semibold">Your Recent Posts</h2>
+                <h2 className="text-2xl sm:text-3xl font-semibold">Your Recent Posts</h2>
                 <Link href="/dashboard">
                   <Button variant="link">
                     View all <ArrowRight className="ml-2 h-4 w-4" />
@@ -99,7 +99,7 @@ export default function Home() {
                 {yourRecentPosts.slice(0, 3).map((post) => (
                   <Card key={post._id}>
                     <CardHeader>
-                      <CardTitle>
+                      <CardTitle className='text'>
                         <Link href={`/blog/${post._id}`} className="hover:underline">
                           {post.title}
                         </Link>
@@ -138,7 +138,7 @@ export default function Home() {
       }
 
       <section>
-        <h2 className="text-3xl font-semibold mb-8">Latest Posts</h2>
+        <h2 className="text-2xl sm:text-3xl font-semibold mb-8">Latest Posts</h2>
         {featuredPosts.length === 0 && (<p>There are no blogs found.</p>)}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {featuredPosts.length > 0 && featuredPosts.slice(0, 3).map((post) => (

@@ -85,29 +85,3 @@ export async function PUT(req) {
         return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
     }
 }
-
-// export async function DELETE(req) {
-//     try {
-//         await connectDB()
-//         const session = await getServerSession(authOptions)
-//         if (!session) {
-//             return NextResponse.json({ success: false, error: "User not authenticated" }, { status: 401 })
-//         }
-
-//         const authorId = session.user.id
-//         if (!authorId) {
-//             return NextResponse.json({ success: false, error: "Author ID not found" }, { status: 400 })
-//         }
-
-//         const deletedUser = await User.findByIdAndDelete(authorId)
-
-//         if (!deletedUser) {
-//             return NextResponse.json({ success: false, error: "User not found" }, { status: 404 })
-//         }
-
-//         return NextResponse.json({ success: true, message: "User deleted successfully" }, { status: 200 })
-//     } catch (error) {
-//         console.log("Error deleting user:", error);
-//         return NextResponse.json({ success: false, error: "Internal Server Error" }, { status: 500 });
-//     }
-// }

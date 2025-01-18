@@ -59,14 +59,16 @@ export default function CreateBlogPage() {
 
             if (res.ok) {
                 router.push('/dashboard')
-                console.log("Body Data:", body);
-
             } else {
                 console.log("Error:", res.statusText);
+                toast.error("Failed to create the blog.", {
+                    autoClose: 4000,
+                    theme: theme === "light" ? "light" : "dark",
+                });
             }
         } catch (error) {
             console.log("Error:", error);
-            toast.error("Faile to create the blog.", {
+            toast.error("Something went wrong.", {
                 autoClose: 4000,
                 theme: theme === "light" ? "light" : "dark",
             });
@@ -141,7 +143,7 @@ export default function CreateBlogPage() {
                                 </div>
                             </div>
                             <Button className="mt-5">
-                                {loading ? <span className='flex items-center gap-1'><Loader2 className='animate-spin' />Publishing Post</span> : "Publish Post"}
+                                {loading ? <span className='flex items-center gap-1'><Loader2 className='animate-spin h-5 w-5' />Publishing Post</span> : "Publish Post"}
                             </Button>
                         </fieldset>
                     </form>

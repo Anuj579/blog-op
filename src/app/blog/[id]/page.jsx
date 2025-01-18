@@ -188,7 +188,7 @@ export default function BlogPost() {
                     alt={blog.title}
                     width={1200}
                     height={600}
-                    className="w-full h-[300px] sm:h-[400px] object-cover"
+                    className="w-full h-full sm:h-[400px] object-cover"
                     priority={true}
                 />
                 <CardHeader className="space-y-4">
@@ -270,15 +270,15 @@ export default function BlogPost() {
                             </AlertDialogContent>
                         </AlertDialog>
                     </div>
-                    <CardTitle className="text-3xl font-bold">{blog.title}</CardTitle>
+                    <CardTitle className="text-2xl sm:text-3xl font-bold">{blog.title}</CardTitle>
                     <div className="flex items-center text-sm text-muted-foreground pb-2">
                         <Clock className="mr-1 h-4 w-4" />
                         {blog.readTime} min read
                     </div>
-                    <hr/>
+                    <hr />
                 </CardHeader>
                 <CardContent className="mt-8">
-                    <div className="prose prose-pre:max-w-min prose-pre:bg-gray-200 prose-pre:text-gray-900 dark:prose-invert dark:prose-pre:bg-gray-900 dark:prose-pre:text-gray-200 max-w-none">
+                    <div className="prose prose-pre:bg-gray-200 prose-pre:text-gray-900 dark:prose-invert dark:prose-pre:bg-gray-900 dark:prose-pre:text-gray-200 max-w-none">
                         <div className='max-w-full' dangerouslySetInnerHTML={{ __html: blog.content }} />
                     </div>
                 </CardContent>
@@ -299,7 +299,7 @@ export default function BlogPost() {
                                 required
                             />
                             <Button type="submit">
-                                {disabled ? <span className='flex items-center gap-1'><Loader2 className='animate-spin' />Posting Comment</span> : "Post Comment"}
+                                {disabled ? <span className='flex items-center gap-1'><Loader2 className='animate-spin h-5 w-5' />Posting Comment</span> : "Post Comment"}
                             </Button>
                         </fieldset>
                     </form>

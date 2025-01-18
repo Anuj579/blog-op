@@ -133,7 +133,7 @@ const Navbar = () => {
                     <nav className="flex items-center gap-3">
                         <ThemeToggle />
                         {session &&
-                            <div className="md:hidden">
+                            <div className="md:hidden p-0 flex items-center">
                                 <UserMenu />
                             </div>
                         }

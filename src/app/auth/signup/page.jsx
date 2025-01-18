@@ -186,7 +186,7 @@ function page() {
                             </div>
                         </div>
                         <Button className='w-full' disabled={loading}>
-                            {loading ? <span className='flex items-center gap-1'><Loader2 className='animate-spin' />Sign Up</span> : "Sign Up"}
+                            {loading ? <span className='flex items-center gap-1'><Loader2 className='animate-spin h-5 w-5' />Sign Up</span> : "Sign Up"}
                         </Button>
                     </form>
                 </CardContent>
