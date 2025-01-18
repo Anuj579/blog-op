@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { BlogCard } from "./BlogCard"
 import { useSession } from "next-auth/react"
+import SkeletonCard from "./SkeletonCard"
 
 export function UserBlogs() {
     const { data: session } = useSession()
@@ -31,21 +32,20 @@ export function UserBlogs() {
         }
     }, [session])
 
-    if (loading) {
-        return <p>Loading...</p>
-    }
-
     return (
         <div>
             <h2 className="text-2xl font-semibold mb-4">Your Blog Posts</h2>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {userBlogs.length === 0 ? (
-                    <p>No blogs found. Start writing your first blog!</p>
-                ) : (
-                    userBlogs.map((blog) => (
-                        <BlogCard key={blog._id} post={blog} />
+                {loading
+                    ? // Show dynamic skeletons while loading
+                    Array.from({ length: 3 }).map((_, index) => (
+                        <SkeletonCard key={index} />
                     ))
-                )}
+                    : userBlogs.length === 0
+                        ? // Show message if no blogs are found
+                        <p>No blogs found. Start writing your first blog!</p>
+                        : // Show blog cards if data is loaded
+                        userBlogs.map((blog) => <BlogCard key={blog._id} post={blog} />)}
             </div>
         </div>
     )

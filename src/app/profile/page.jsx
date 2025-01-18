@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useTheme } from 'next-themes'
 import { useSession } from 'next-auth/react'
 import ImageCropper from '@/components/ImageCropper'
+import { Skeleton } from '@/components/ui/skeleton'
 
 function page() {
     const [userDetails, setUserDetails] = useState({
@@ -221,144 +222,188 @@ function page() {
         }
     }
 
-    if (loading)
+    const SkeletonProfileCard = () => {
         return (
-            <div className="flex items-center justify-center min-h-[calc(100vh-11rem)]">
-                <Loader2 className="animate-spin h-8 w-8" />
-            </div>
-        )
-
-    return (
-        <div className="container max-w-3xl mx-auto px-4 py-8">
-            <Card className="overflow-hidden shadow-lg">
+            <Card className="overflow-hidden shadow-lg border-none">
                 <CardContent className="p-6 sm:p-8">
-                    <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start mb-6">
+                    <div className="flex flex-col sm:flex-row gap-4 justify-between items-center sm:items-start mb-6">
                         <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4 mb-4 sm:mb-0">
                             <div className="relative">
-                                <Avatar className="w-24 h-24 border-2 border-primary">
-                                    <AvatarImage src={userDetails.image || previewUrl} />
-                                    <AvatarFallback><img src={`https://ui-avatars.com/api/?name=${userDetails.firstname[0]}&background=6A5ACD&color=fff&size=100`} alt="user-avatar" /></AvatarFallback>
-                                </Avatar>
-                                {isEditing && (
-                                    <div>
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button
-                                                    size="icon"
-                                                    className="absolute bottom-0 right-0 rounded-full"
-                                                >
-                                                    <MoreVertical className="h-4 w-4" />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent>
-                                                <DropdownMenuItem onClick={() => document.getElementById('fileInput').click()}>
-                                                    <Camera className="mr-2 h-4 w-4" />
-                                                    <span>{userDetails.image ? 'Change' : 'Add'} Picture</span>
-                                                </DropdownMenuItem>
-                                                {userDetails.image && (
-                                                    <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)} >
-                                                        <X className="mr-2 h-4 w-4" />
-                                                        <span>Remove Picture</span>
-                                                    </DropdownMenuItem>
-                                                )}
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                        <Input
-                                            type="file"
-                                            id='fileInput'
-                                            accept="image/*"
-                                            className="hidden"
-                                            onChange={handleFileChange}
-                                        />
-                                    </div>
-                                )}
+                                {/* Skeleton for Avatar */}
+                                <Skeleton className="w-24 h-24 rounded-full" />
                             </div>
-                            <div className="text-center sm:text-left">
-                                <h2 className="text-2xl font-bold">
-                                    {name}
-                                </h2>
-                                <p className="text-sm flex items-center justify-center sm:justify-start mt-1 text-muted-foreground">
-                                    <Calendar className="w-4 h-4 mr-2" />
-                                    Member since {new Date(userDetails.createdAt).toLocaleString('en-IN', {
-                                        year: 'numeric',
-                                        month: 'long',
-                                    })}
-                                </p>
+                            <div className="flex flex-col items-center sm:items-start">
+                                {/* Skeleton for Name */}
+                                <Skeleton className="w-48 h-7 mb-2" />
+                                {/* Skeleton for Member Since */}
+                                <Skeleton className="w-56 h-4 mt-1" />
                             </div>
                         </div>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={handleEdit}
-                            className="mt-4 sm:mt-0"
-                        >
-                            {isEditing ? <Check className="h-4 w-4 mr-2" /> : <Pencil className="h-4 w-4 mr-2" />}
-                            {isEditing ? 'Save' : 'Edit'}
-                        </Button>
+                        {/* Skeleton for Edit Button */}
+                        <Skeleton className="w-[72px] h-8 rounded-md" />
                     </div>
 
                     <div className="space-y-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="firstName">First Name</Label>
-                                <Input
-                                    id="firstName"
-                                    name="firstName"
-                                    value={userDetails.firstname}
-                                    onChange={(e) => setUserDetails({ ...userDetails, firstname: e.target.value })}
-                                    disabled={!isEditing}
-                                />
+                            <div className="space-y-3">
+                                {/* Skeleton for First Name Input */}
+                                <Skeleton className="w-20 h-5" />
+                                <Skeleton className="w-full h-9" />
                             </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="lastName">Last Name</Label>
-                                <Input
-                                    id="lastName"
-                                    name="lastName"
-                                    value={userDetails.lastname}
-                                    onChange={(e) => setUserDetails({ ...userDetails, lastname: e.target.value })}
-                                    disabled={!isEditing}
-                                />
+                            <div className="space-y-3">
+                                {/* Skeleton for Last Name Input */}
+                                <Skeleton className="w-20 h-5" />
+                                <Skeleton className="w-full h-9" />
                             </div>
                         </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="email">Email {isEditing && '(Non-editable)'}</Label>
-                            <Input
-                                id="email"
-                                name="email"
-                                type="email"
-                                value={userDetails.email}
-                                disabled
-                            />
+                        <div className="space-y-3">
+                            {/* Skeleton for Email */}
+                            <Skeleton className="w-14 h-5" />
+                            <Skeleton className="w-full h-9" />
                         </div>
                     </div>
                 </CardContent>
                 <CardFooter className="bg-muted/20 p-6 sm:p-8">
-                    <AlertDialog open={deleteAccountDialog} onOpenChange={setDeleteAccountDialog}>
-                        <AlertDialogTrigger asChild>
-                            <Button onClick={() => setDeleteAccountDialog(true)} variant="destructive" className="w-full sm:w-auto" aria-label="Delete Account">
-                                Delete Account
-                            </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle className='text-red-600 dark:text-red-500'>
-                                    <AlertTriangle className="h-5 w-5 mr-2" />
-                                    Delete Account
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    Confirm your decision, and we’ll send you an email to complete the account deletion process.
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel disabled={disabled}>Cancel</AlertDialogCancel>
-                                <Button variant="destructive" onClick={sendDeleteEmail} disabled={disabled}>
-                                    {disabled ? <span className='flex items-center gap-1'><Loader2 className='animate-spin w-5 h-5' />Confirm</span> : "Confirm"}
-                                </Button>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
+                    {/* Skeleton for Delete Account Button */}
+                    <Skeleton className="w-full sm:w-[135px] h-9 rounded-md" />
                 </CardFooter>
             </Card>
+        )
+    }
+
+    return (
+        <div className="container max-w-3xl mx-auto px-4 py-8">
+            {loading ? <SkeletonProfileCard /> :
+                <Card className="overflow-hidden shadow-lg">
+                    <CardContent className="p-6 sm:p-8">
+                        <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start mb-6">
+                            <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4 mb-4 sm:mb-0">
+                                <div className="relative">
+                                    <Avatar className="w-24 h-24 border-2 border-primary">
+                                        <AvatarImage src={userDetails.image || previewUrl} />
+                                        <AvatarFallback><img src={`https://ui-avatars.com/api/?name=${userDetails.firstname[0]}&background=6A5ACD&color=fff&size=100`} alt="user-avatar" /></AvatarFallback>
+                                    </Avatar>
+                                    {isEditing && (
+                                        <div>
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button
+                                                        size="icon"
+                                                        className="absolute bottom-0 right-0 rounded-full"
+                                                    >
+                                                        <MoreVertical className="h-4 w-4" />
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent>
+                                                    <DropdownMenuItem onClick={() => document.getElementById('fileInput').click()}>
+                                                        <Camera className="mr-2 h-4 w-4" />
+                                                        <span>{userDetails.image ? 'Change' : 'Add'} Picture</span>
+                                                    </DropdownMenuItem>
+                                                    {userDetails.image && (
+                                                        <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)} >
+                                                            <X className="mr-2 h-4 w-4" />
+                                                            <span>Remove Picture</span>
+                                                        </DropdownMenuItem>
+                                                    )}
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                            <Input
+                                                type="file"
+                                                id='fileInput'
+                                                accept="image/*"
+                                                className="hidden"
+                                                onChange={handleFileChange}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="text-center sm:text-left">
+                                    <h2 className="text-2xl font-bold">
+                                        {name}
+                                    </h2>
+                                    <p className="text-sm flex items-center justify-center sm:justify-start mt-1 text-muted-foreground">
+                                        <Calendar className="w-4 h-4 mr-2" />
+                                        Member since {new Date(userDetails.createdAt).toLocaleString('en-IN', {
+                                            year: 'numeric',
+                                            month: 'long',
+                                        })}
+                                    </p>
+                                </div>
+                            </div>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={handleEdit}
+                                className="mt-4 sm:mt-0"
+                            >
+                                {isEditing ? <Check className="h-4 w-4 mr-2" /> : <Pencil className="h-4 w-4 mr-2" />}
+                                {isEditing ? 'Save' : 'Edit'}
+                            </Button>
+                        </div>
+
+                        <div className="space-y-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="firstName">First Name</Label>
+                                    <Input
+                                        id="firstName"
+                                        name="firstName"
+                                        value={userDetails.firstname}
+                                        onChange={(e) => setUserDetails({ ...userDetails, firstname: e.target.value })}
+                                        disabled={!isEditing}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="lastName">Last Name</Label>
+                                    <Input
+                                        id="lastName"
+                                        name="lastName"
+                                        value={userDetails.lastname}
+                                        onChange={(e) => setUserDetails({ ...userDetails, lastname: e.target.value })}
+                                        disabled={!isEditing}
+                                    />
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="email">Email {isEditing && '(Non-editable)'}</Label>
+                                <Input
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    value={userDetails.email}
+                                    disabled
+                                />
+                            </div>
+                        </div>
+                    </CardContent>
+                    <CardFooter className="bg-muted/20 p-6 sm:p-8">
+                        <AlertDialog open={deleteAccountDialog} onOpenChange={setDeleteAccountDialog}>
+                            <AlertDialogTrigger asChild>
+                                <Button onClick={() => setDeleteAccountDialog(true)} variant="destructive" className="w-full sm:w-auto" aria-label="Delete Account">
+                                    Delete Account
+                                </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle className='text-red-600 dark:text-red-500'>
+                                        <AlertTriangle className="h-5 w-5 mr-2" />
+                                        Delete Account
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        Confirm your decision, and we’ll send you an email to complete the account deletion process.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel disabled={disabled}>Cancel</AlertDialogCancel>
+                                    <Button variant="destructive" onClick={sendDeleteEmail} disabled={disabled}>
+                                        {disabled ? <span className='flex items-center gap-1'><Loader2 className='animate-spin w-5 h-5' />Confirm</span> : "Confirm"}
+                                    </Button>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
+                    </CardFooter>
+                </Card>
+            }
 
             {/* Remove profile pic dialog */}
             <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
