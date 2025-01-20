@@ -1,10 +1,9 @@
 import React from 'react'
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card'
 import { Skeleton } from './ui/skeleton'
-
 function SkeletonCard() {
     return (
-        <Card className="flex flex-col overflow-hidden h-full border-none">
+        <Card className="flex flex-col overflow-hidden h-full border-none shadow-none">
             <Skeleton className="h-52 w-full rounded-b-none" /> {/* Placeholder for the image */}
             <CardHeader className='space-y-3'>
                 <Skeleton className="h-5 sm:h-6 w-[95%]" /> {/* Placeholder for the title */}
