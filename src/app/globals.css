@@ -7,7 +7,7 @@
 @layer base {
   :root {
     /* Clean, minimal light mode */
-    --background: 217 79% 98%;
+    --background: 258 65% 98%;
     --foreground: 240 10% 3.9%;
 
     --muted: 240 4.8% 95.9%;
@@ -22,7 +22,7 @@
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
 
-    --primary: 210 45% 45%;
+    --primary: 264 100% 60%;
     --primary-foreground: 0 0% 100%; /* White for contrast on primary */
 
     --secondary: 240 4.8% 95.9%;
@@ -41,7 +41,7 @@
 
   .dark {
     /* True dark mode with deep blacks */
-    --background: 0 0% 3.9%;     /* Near-black for immersive experience */
+    --background: 0 0% 3%;     /* Near-black for immersive experience */
     --foreground: 0 0% 98%;
 
     --muted: 0 0% 14.9%;
@@ -59,7 +59,7 @@
     --card: 0 0% 6.9%;
     --card-foreground: 0 0% 98%;
 
-    --primary: 210 45% 55%; /* Slightly brighter blue-gray */
+    --primary: 259 87% 61%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 240 3.7% 15.9%;
