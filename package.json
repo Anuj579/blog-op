@@ -22,7 +22,9 @@
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "framer-motion": "^12.0.1",
     "lucide-react": "^0.461.0",
+    "mini-svg-data-uri": "^1.4.4",
     "mongoose": "^8.8.2",
     "next": "15.0.3",
     "next-auth": "^4.24.10",
@@ -32,7 +34,7 @@
     "react-cropper": "^2.3.3",
     "react-dom": "^18.3.1",
     "react-toastify": "^10.0.6",
-    "tailwind-merge": "^2.5.5",
+    "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
