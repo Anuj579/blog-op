@@ -32,8 +32,8 @@ const NavLink = ({ href, children }) => {
     return (
         <Link
             href={href}
-            className={`text-sm font-medium transition-colors hover:text-primary ${isActive
-                ? 'text-primary'
+            className={`text-sm font-medium transition-colors hover:text-accent-foreground ${isActive
+                ? 'text-accent-foreground border-b-2 border-primary'
                 : 'text-muted-foreground'
                 }`}
         >

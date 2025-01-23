@@ -158,7 +158,7 @@ export default function BlogPost() {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center min-h-[82vh]">
+            <div className="flex items-center justify-center min-h-[calc(100vh-11rem)]">
                 <Loader2 className="animate-spin h-8 w-8" />
             </div>
         );

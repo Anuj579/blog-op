@@ -79,7 +79,7 @@ function page() {
         }
     };
     return (
-        <div className="flex items-center justify-center mx-4 my-6 min-h-[calc(100vh-10rem)]">
+        <div className="flex items-center justify-center mx-4 my-6 min-h-[75vh]">
             <Card className={`w-full max-w-md`}>
                 <CardHeader className="space-y-2">
                     <CardTitle className="text-2xl font-bold">Login</CardTitle>

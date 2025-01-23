@@ -6,12 +6,11 @@
 
 @layer base {
   :root {
-    /* Clean, minimal light mode */
     --background: 258 65% 98%;
     --foreground: 240 10% 3.9%;
 
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted: 240 4.8% 85%;
+    --muted-foreground: 240 3.8% 25%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
@@ -23,7 +22,7 @@
     --card-foreground: 240 10% 3.9%;
 
     --primary: 264 100% 60%;
-    --primary-foreground: 0 0% 100%; /* White for contrast on primary */
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
@@ -34,14 +33,13 @@
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --ring: 240 5.9% 10%;
+    --ring: 264 100% 60%;
 
     --radius: 0.5rem;
   }
 
   .dark {
-    /* True dark mode with deep blacks */
-    --background: 0 0% 3%;     /* Near-black for immersive experience */
+    --background: 0 0% 3%;
     --foreground: 0 0% 98%;
 
     --muted: 0 0% 14.9%;
@@ -68,7 +66,7 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --ring:  220 50% 60%;;
+    --ring:  259 87% 61%;
 
     --radius: 0.5rem;
   }

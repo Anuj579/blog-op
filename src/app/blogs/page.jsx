@@ -1,6 +1,7 @@
 "use client"
 
 import { BlogCard } from '@/components/BlogCard'
+import SkeletonCard from '@/components/SkeletonCard'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Loader2, Search } from 'lucide-react'
@@ -42,13 +43,6 @@ function page() {
         setFilteredPosts(filtered)
     }
 
-    if (loading) {
-        return (
-            <div className="flex items-center justify-center min-h-[calc(100vh-11rem)]">
-                <Loader2 className="animate-spin h-8 w-8" />
-            </div>
-        );
-    }
     return (
         <div className="container mx-auto px-4 py-8">
             <h1 className="text-3xl font-bold mb-8">Explore Blogs</h1>
@@ -69,15 +63,23 @@ function page() {
                 </div>
             </form>
 
-            {filteredPosts.length === 0 ? (
-                <p className="text-center text-muted-foreground">No blogs found.</p>
-            ) : (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {filteredPosts.map((post) => (
-                        <BlogCard key={post._id} post={post} />
+            {loading ?
+                (<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {Array.from({ length: 3 }).map((_, index) => (
+                        <SkeletonCard key={index} />
                     ))}
-                </div>
-            )}
+                </div>) :
+                filteredPosts.length === 0 ? (
+                    <p className="text-center text-muted-foreground">No blogs found.</p>
+                ) : (
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {filteredPosts.map((post) => (
+                            <BlogCard key={post._id} post={post} />
+                        ))}
+                    </div>
+                )
+
+            }
         </div>
     )
 }

@@ -8,6 +8,7 @@ import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import formatDate from "@/utils/formatDate";
+import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 
 export default function Home() {
   const { data: session, status } = useSession()
@@ -66,10 +67,10 @@ export default function Home() {
       </div>
     )
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="mx-auto">
       {session ?
         <>
-          <section className="mb-12">
+          <section className="my-12 max-[1440px]:px-4 container">
             <h1 className="text-3xl sm:text-4xl font-bold mb-4">Welcome, {session.user.name.split(' ')[0].charAt(0).toUpperCase() + session.user.name.split(' ')[0].slice(1)}!</h1>
             <p className="text-xl text-muted-foreground mb-6">Ready to share your thoughts with the world?</p>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -86,11 +87,11 @@ export default function Home() {
 
           {/* Your Recent Posts */}
           {yourRecentPosts.length > 0 && (
-            <section className="mb-12">
+            <section className="mb-12 max-[1440px]:px-4 container">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl sm:text-3xl font-semibold">Your Recent Posts</h2>
                 <Link href="/dashboard">
-                  <Button variant="link">
+                  <Button variant="link" className='text-accent-foreground p-0'>
                     View all <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
@@ -122,22 +123,25 @@ export default function Home() {
           )}
         </>
         :
-        <section className="text-center mb-16">
-          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl mb-4">
-            Welcome to BlogApp
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Discover insightful articles, share your knowledge, and engage with a community of passionate writers and readers.
-          </p>
-          <div>
-            <Link href="/blogs">
-              <Button size="lg">Explore Blogs</Button>
-            </Link>
+        <section className="text-center min-h-[60vh] flex items-center justify-center px-4">
+          <div className="absolute inset-0 z-0 pointer-events-none dark:bg-grid-purple-500/[0.08] bg-grid-purple-600/[0.1] [mask-image:radial-gradient(70vw_circle_at_center,white,transparent)]"></div>
+          <div className="relative z-10">
+            <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl mb-4">
+              Welcome to BlogApp
+            </h1>
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Discover insightful articles, share your knowledge, and engage with a community of passionate writers and readers.
+            </p>
+            <div>
+              <Link href="/blogs">
+                <Button size="lg">Explore Blogs</Button>
+              </Link>
+            </div>
           </div>
         </section>
       }
 
-      <section>
+      <section className="container relative max-[1440px]:px-4 z-10 my-12">
         <h2 className="text-2xl sm:text-3xl font-semibold mb-8">Latest Posts</h2>
         {featuredPosts.length === 0 && (<p>There are no blogs found.</p>)}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -148,15 +152,19 @@ export default function Home() {
       </section>
 
       {!session &&
-        <section className="text-center mt-14">
-          <h2 className="text-3xl font-bold mb-4">Join Our Community</h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Create your own blog, share your thoughts, and receive feedback from readers. Start your writing journey today!
-          </p>
-          <Link href="/auth/signup">
-            <Button size="lg">Sign Up Now</Button>
-          </Link>
-        </section>
+        <BackgroundBeamsWithCollision className='xl:container my-20 xl:rounded-xl'>
+          <section className="text-center px-4">
+            <div className="bg-clip-text bg-no-repeat text-transparent bg-gradient-to-r py-4 from-purple-500 via-violet-500 to-pink-500 [text-shadow:0_0_rgba(0,0,0,0.1)]">
+              <span className="text-3xl md:text-4xl font-bold ">Join Our Community</span>
+            </div>
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Create your own blog, share your thoughts, and receive feedback from readers. Start your writing journey today!
+            </p>
+            <Link href="/auth/signup">
+              <Button size="lg">Sign Up Now</Button>
+            </Link>
+          </section>
+        </BackgroundBeamsWithCollision>
       }
     </div>
   );
