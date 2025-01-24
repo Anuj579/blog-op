@@ -64,7 +64,7 @@ function page() {
             </form>
 
             {loading ?
-                (<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                (<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                     {Array.from({ length: 3 }).map((_, index) => (
                         <SkeletonCard key={index} />
                     ))}
@@ -72,7 +72,7 @@ function page() {
                 filteredPosts.length === 0 ? (
                     <p className="text-center text-muted-foreground">No blogs found.</p>
                 ) : (
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                         {filteredPosts.map((post) => (
                             <BlogCard key={post._id} post={post} />
                         ))}

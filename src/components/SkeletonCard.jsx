@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader } from './ui/card'
 import { Skeleton } from './ui/skeleton'
 function SkeletonCard() {
     return (
-        <Card className="flex flex-col overflow-hidden h-full border-none shadow-none">
+        <Card className="flex flex-col overflow-hidden h-full border-none shadow-none bg-transparent">
             <Skeleton className="h-52 w-full rounded-b-none" /> {/* Placeholder for the image */}
             <CardHeader className='space-y-4'>
                 <Skeleton className="h-5 sm:h-6 w-[95%]" /> {/* Placeholder for the title */}

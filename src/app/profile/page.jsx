@@ -224,7 +224,7 @@ function page() {
 
     const SkeletonProfileCard = () => {
         return (
-            <Card className="overflow-hidden shadow-lg border-none">
+            <Card className="overflow-hidden">
                 <CardContent className="p-6 sm:p-8">
                     <div className="flex flex-col sm:flex-row gap-4 justify-between items-center sm:items-start mb-6">
                         <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4 mb-4 sm:mb-0">
@@ -272,7 +272,7 @@ function page() {
     }
 
     return (
-        <div className="container max-w-3xl mx-auto px-4 py-8">
+        <div className="container max-w-3xl mx-auto px-4 py-12">
             {loading ? <SkeletonProfileCard /> :
                 <Card className="overflow-hidden shadow-lg">
                     <CardContent className="p-6 sm:p-8">

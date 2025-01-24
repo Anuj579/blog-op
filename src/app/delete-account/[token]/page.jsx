@@ -78,7 +78,7 @@ export default function DeleteAccountPage() {
             <div className="container mx-auto max-w-md px-4 py-12">
                 <Card className="text-center">
                     <CardHeader>
-                        <CardTitle className="text-2xl font-bold text-red-600">
+                        <CardTitle className="text-2xl font-bold text-red-600 dark:text-red-500">
                             <AlertTriangle className="h-8 w-8 mx-auto mb-2" />
                             Link Expired
                         </CardTitle>
@@ -104,7 +104,7 @@ export default function DeleteAccountPage() {
         <div className="container mx-auto max-w-md px-4 py-12">
             <Card className="text-center">
                 <CardHeader>
-                    <CardTitle className="text-2xl font-bold text-red-600">
+                    <CardTitle className="text-2xl font-bold text-red-600 dark:text-red-500">
                         <AlertTriangle className="h-8 w-8 mx-auto mb-2" />
                         Delete Your Account
                     </CardTitle>

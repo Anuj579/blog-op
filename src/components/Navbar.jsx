@@ -118,7 +118,7 @@ const Navbar = () => {
         <header className="sticky top-0 z-50 w-full border-b backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-card/60 md:px-4">
             <div className="md:container flex p-3 items-center">
                 <div className="flex items-center">
-                    <Link href="/" className="mr-6 flex items-center">
+                    <Link href="/" className="mr-10 flex items-center">
                         <span className="font-bold text-xl">BlogApp</span>
                     </Link>
                     <nav className="items-center space-x-6 text-sm font-medium hidden md:inline-flex">
@@ -154,7 +154,7 @@ const Navbar = () => {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <button className="md:hidden p-1">
-                                    <Menu className="h-5 w-5" />
+                                    <Menu className="h-6 w-6" />
                                     <span className="sr-only">Toggle menu</span>
                                 </button>
                             </DropdownMenuTrigger>

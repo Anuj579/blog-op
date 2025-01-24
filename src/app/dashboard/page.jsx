@@ -50,7 +50,7 @@ export default function DashboardPage() {
 
     const SkeletonStats = () => {
         return (
-            <Card className='h-[118px]'>
+            <Card className='h-[116px]'>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <Skeleton className="h-6 w-36" />
                     <Skeleton className="h-4 w-4" />
@@ -78,7 +78,7 @@ export default function DashboardPage() {
 
             <section className="mb-12">
                 <h2 className="text-2xl font-semibold mb-4">Blog Stats</h2>
-                <div className="grid gap-6 md:grid-cols-2">
+                <div className="grid gap-8 md:grid-cols-2">
                     {loading ? <SkeletonStats /> :
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

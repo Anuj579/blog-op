@@ -6,11 +6,11 @@
 
 @layer base {
   :root {
-    --background: 258 65% 98%;
+    --background: 240 10% 97%;
     --foreground: 240 10% 3.9%;
 
     --muted: 240 4.8% 85%;
-    --muted-foreground: 240 3.8% 25%;
+    --muted-foreground: 0 0% 32%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
@@ -43,10 +43,10 @@
     --foreground: 0 0% 98%;
 
     --muted: 0 0% 14.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted-foreground: 0 0% 64%;
 
     --accent: 12 6.5% 15.1%;
-    --accent-foreground: 0 0% 98%;
+    --accent-foreground: 0 0% 92%;
 
     --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
