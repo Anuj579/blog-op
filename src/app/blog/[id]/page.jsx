@@ -46,8 +46,6 @@ export default function BlogPost() {
         fetchBlogDetail()
     }, [id, comment])
 
-    // console.log("Blog data:", blog);
-
     useEffect(() => {
         if (session && blog.author) {
             setIsUserBlog(session.user.id === blog.author._id)
@@ -159,12 +157,12 @@ export default function BlogPost() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[calc(100vh-11rem)]">
-                <Loader2 className="animate-spin h-8 w-8" />
+                <div className="loader"></div>
             </div>
         );
     }
     return (
-        <article className="container mx-auto px-4 py-8 max-w-4xl">
+        <article className="container mx-auto px-4 py-10 max-w-4xl">
             <Card className="overflow-hidden">
                 <Image
                     src={blog.coverImage || "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}

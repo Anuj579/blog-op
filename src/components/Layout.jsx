@@ -1,7 +1,7 @@
 "use client"
 
 import { useSession } from 'next-auth/react';
-import { Loader2, RefreshCcwIcon } from 'lucide-react';
+import { RefreshCcwIcon } from 'lucide-react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { useEffect, useState } from 'react';
@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen bg-background">
-                <Loader2 className="animate-spin h-8 w-8" />
+                <div className="loader"></div>
             </div>
         );
     }
@@ -47,7 +47,7 @@ const Layout = ({ children }) => {
     return (
         <div className="flex flex-col min-h-screen bg-background">
             <Navbar />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 main-content">{children}</main>
             <Footer />
         </div>
     );

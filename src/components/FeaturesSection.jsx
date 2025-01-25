@@ -10,7 +10,7 @@ export function FeaturesSection() {
                 {grid.map((feature) => (
                     <div
                         key={feature.title}
-                        className={`relative bg-gradient-to-b dark:from-neutral-900 from-indigo-50 dark:to-neutral-900 to-white p-6 rounded-xl overflow-hidden shadow`}>
+                        className={`relative bg-gradient-to-b dark:from-neutral-900 from-violet-100 dark:to-black to-white p-6 rounded-xl overflow-hidden shadow`}>
                         <Grid size={20} />
                         <feature.icon className={`h-12 w-12 ${feature.color} mb-4`} />
                         <p

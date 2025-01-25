@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button"
 import { BlogCard } from "@/components/BlogCard";
-import { ArrowRight, Calendar, Clock, PlusCircle } from "lucide-react";
+import { ArrowRight, Calendar, Clock, Compass, PlusCircle } from "lucide-react";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -123,7 +123,7 @@ export default function Home() {
           <div className="absolute inset-0 z-0 pointer-events-none dark:bg-grid-purple-500/[0.08] bg-grid-purple-600/[0.1] [mask-image:radial-gradient(70vw_circle_at_center,white,transparent)]"></div>
           <div className="relative min-h-[50vh] flex flex-col items-center justify-center z-10">
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl mb-4 px-1 py-2 bg-clip-text text-transparent bg-gradient-to-b from-neutral-500 via-neutral-800 to-black dark:from-neutral-800 dark:via-neutral-100 dark:to-white">
-              Welcome to BlogApp
+              Welcome to BlogOp
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               Discover insightful articles, share your knowledge, and engage with a community of passionate writers and readers.
@@ -154,7 +154,7 @@ export default function Home() {
       {!session &&
         <BackgroundBeamsWithCollision className='xl:container my-20 xl:rounded-xl mt-32'>
           <section className="text-center px-4">
-            <div className="bg-clip-text bg-no-repeat text-transparent bg-gradient-to-r py-4 from-purple-500 via-violet-500 to-pink-500 [text-shadow:0_0_rgba(0,0,0,0.1)]">
+            <div className="bg-clip-text bg-no-repeat text-transparent bg-gradient-to-r py-4 from-primary via-violet-500 to-pink-500 [text-shadow:0_0_rgba(0,0,0,0.1)]">
               <span className="text-3xl md:text-4xl font-bold ">Join Our Community</span>
             </div>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">

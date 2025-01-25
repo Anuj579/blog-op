@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/ThemeToggle";
-import { Loader2, LogOut, Menu, User } from "lucide-react";
+import { Globe, Loader2, LogOut, Menu, User } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -119,7 +119,10 @@ const Navbar = () => {
             <div className="md:container flex p-3 items-center">
                 <div className="flex items-center">
                     <Link href="/" className="mr-10 flex items-center">
-                        <span className="font-bold text-xl">BlogApp</span>
+                        <div className="p-[5px] rounded-xl bg-gradient-to-r from-primary via-violet-500 to-pink-500 mr-2">
+                            <Globe className="text-white" />
+                        </div>
+                        <span className="font-bold text-xl">BlogOp</span>
                     </Link>
                     <nav className="items-center space-x-6 text-sm font-medium hidden md:inline-flex">
                         <NavLink href="/">Home</NavLink>
