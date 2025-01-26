@@ -177,7 +177,7 @@ export default function BlogPost() {
                         <div className="flex items-center space-x-4">
                             <Avatar>
                                 <AvatarImage src={blog.author.image} />
-                                <AvatarFallback><Image width={20} height={20} src={`https://ui-avatars.com/api/?name=${blog.author.firstname[0]}&background=6A5ACD&color=fff&size=100`} alt="user-avatar" /></AvatarFallback>
+                                <AvatarFallback><Image width={40} height={40} src={`https://ui-avatars.com/api/?name=${blog.author.firstname[0]}&background=6A5ACD&color=fff&size=100`} alt="user-avatar" /></AvatarFallback>
                             </Avatar>
                             <div>
                                 <p className="font-semibold">{blog.author.firstname} {blog.author.lastname}</p>
@@ -291,7 +291,7 @@ export default function BlogPost() {
                                 <div className="flex items-start space-x-3 mb-2">
                                     <Avatar>
                                         <AvatarImage src={comment.user.image} />
-                                        <AvatarFallback><Image width={20} height={20} src={`https://ui-avatars.com/api/?name=${comment.user.firstname[0]}&background=6A5ACD&color=fff&size=100`} alt="user-avatar" /></AvatarFallback>
+                                        <AvatarFallback><Image width={40} height={40} src={`https://ui-avatars.com/api/?name=${comment.user.firstname[0]}&background=6A5ACD&color=fff&size=100`} alt="user-avatar" /></AvatarFallback>
                                     </Avatar>
                                     <div>
                                         <p className="font-semibold">{comment.user.firstname}</p>
