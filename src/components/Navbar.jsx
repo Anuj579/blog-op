@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/ThemeToggle";
-import { Globe, Loader2, LogOut, Menu, User } from "lucide-react";
+import { Globe, LayoutGrid, Loader2, LogOut, Menu, User } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -86,7 +86,7 @@ const UserMenu = () => {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                         <Link href="/dashboard" className="flex w-full">
-                            <User className="mr-2 h-4 w-4" />
+                            <LayoutGrid className="mr-2 h-4 w-4" />
                             Dashboard
                         </Link>
                     </DropdownMenuItem>

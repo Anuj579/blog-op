@@ -11,6 +11,7 @@ import formatDate from "@/utils/formatDate";
 import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 import SkeletonCard from "@/components/SkeletonCard";
 import { FeaturesSection } from "@/components/FeaturesSection";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
   const { data: session } = useSession()
@@ -66,7 +67,7 @@ export default function Home() {
     <div className="mx-auto">
       {session ?
         <>
-          <section className="my-12 max-[1440px]:px-4 container">
+          <section className="my-12 mb-16 max-[1440px]:px-4 container">
             <h1 className="text-3xl sm:text-4xl font-bold mb-4">Welcome, {session.user.name.split(' ')[0].charAt(0).toUpperCase() + session.user.name.split(' ')[0].slice(1)}!</h1>
             <p className="text-xl text-muted-foreground mb-6">Ready to share your thoughts with the world?</p>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -82,21 +83,27 @@ export default function Home() {
           </section>
 
           {/* Your Recent Posts */}
-          {yourRecentPosts.length > 0 && (
-            <section className="mb-12 max-[1440px]:px-4 container">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl sm:text-3xl font-semibold">Your Recent Posts</h2>
+          <section className="mb-16 max-[1440px]:px-4 container">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl sm:text-3xl font-semibold">Your Recent Posts</h2>
+              {yourRecentPosts.length > 0 && (
                 <Link href="/dashboard">
-                  <Button variant="link" className='text-accent-foreground p-0'>
+                  <Button variant="link" className="text-accent-foreground p-0">
                     View all <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
-              </div>
-              <div className="space-y-6">
-                {yourRecentPosts.slice(0, 3).map((post) => (
+              )}
+            </div>
+            {yourRecentPosts.length === 0 && !loading && (<p className="text-muted-foreground">You don’t have any recent posts yet. Start writing your first blog!</p>)}
+            <div className="space-y-6">
+              {loading && Array.from({ length: 3 }).map((_, index) => (
+                <Skeleton key={index} className="h-[140px] md:h-[124px] w-full rounded-xl" />
+              ))}
+              {yourRecentPosts.length > 0 && (
+                yourRecentPosts.slice(0, 3).map((post) => (
                   <Card key={post._id}>
                     <CardHeader>
-                      <CardTitle className='text'>
+                      <CardTitle>
                         <Link href={`/blog/${post._id}`} className="hover:underline">
                           {post.title}
                         </Link>
@@ -113,10 +120,11 @@ export default function Home() {
                       </div>
                     </CardFooter>
                   </Card>
-                ))}
-              </div>
-            </section>
-          )}
+                ))
+
+              )}
+            </div>
+          </section>
         </>
         :
         <section className="text-center min-h-[90vh] flex flex-col items-center justify-center max-[1440px]:px-4 container">
@@ -140,7 +148,7 @@ export default function Home() {
 
       <section className="container relative max-[1440px]:px-4 z-10 my-12">
         <h2 className="text-2xl sm:text-3xl font-semibold mb-6">Latest Posts</h2>
-        {featuredPosts.length === 0 && !loading && (<p>There are no blogs found.</p>)}
+        {featuredPosts.length === 0 && !loading && (<p className="text-muted-foreground">No blogs available at the moment. Check back soon for updates!</p>)}
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {loading && Array.from({ length: 3 }).map((_, index) => (
             <SkeletonCard key={index} />

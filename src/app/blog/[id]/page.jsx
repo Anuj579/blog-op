@@ -71,7 +71,7 @@ export default function BlogPost() {
                 const data = await res.json()
                 setComment(data.comment)
             } else if (res.status === 401) {
-                toast.error('You need to login first.', {
+                toast.error('Please log in to post a comment.', {
                     autoClose: 4000,
                     theme: theme === "light" ? "light" : "dark"
                 })
@@ -259,7 +259,8 @@ export default function BlogPost() {
                     <hr />
                 </CardHeader>
                 <CardContent className="mt-8">
-                    <div className="prose prose-pre:bg-gray-200 prose-pre:text-gray-900 dark:prose-invert dark:prose-pre:bg-gray-900 dark:prose-pre:text-gray-200 max-w-none">
+                    {/* <div className="prose prose-pre:bg-gray-200 prose-pre:text-gray-900 dark:prose-invert dark:prose-pre:bg-gray-900 dark:prose-pre:text-gray-200 max-w-none"> */}
+                    <div className="prose dark:prose-invert max-w-none">
                         <div className='max-w-full' dangerouslySetInnerHTML={{ __html: blog.content }} />
                     </div>
                 </CardContent>

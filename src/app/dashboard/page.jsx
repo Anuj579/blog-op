@@ -39,7 +39,6 @@ export default function DashboardPage() {
         fetchDashboardData()
     }, [])
 
-
     if (error) {
         return (
             <div className="container mx-auto px-4 py-8">
@@ -48,23 +47,9 @@ export default function DashboardPage() {
         )
     }
 
-    const SkeletonStats = () => {
-        return (
-            <Card className='h-[116px]'>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <Skeleton className="h-6 w-36" />
-                    <Skeleton className="h-4 w-4" />
-                </CardHeader>
-                <CardContent>
-                    <Skeleton className="h-6 w-8 mt-2" />
-                </CardContent>
-            </Card>
-        )
-    }
-
     return (
         <div className="container mx-auto px-4 py-8">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
                 <div>
                     <h1 className="text-3xl font-bold mb-2">Your Dashboard</h1>
                     <p className="text-muted-foreground">Manage your blog posts and create new content</p>
@@ -76,10 +61,10 @@ export default function DashboardPage() {
                 </Link>
             </div>
 
-            <section className="mb-12">
+            <section className="mb-16">
                 <h2 className="text-2xl font-semibold mb-4">Blog Stats</h2>
                 <div className="grid gap-8 md:grid-cols-2">
-                    {loading ? <SkeletonStats /> :
+                    {loading ? <Skeleton className="h-[116px] w-full rounded-xl" /> :
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                 <CardTitle className="text-xl sm:text-xl font-medium">Total Posts</CardTitle>
@@ -90,7 +75,7 @@ export default function DashboardPage() {
                             </CardContent>
                         </Card>
                     }
-                    {loading ? <SkeletonStats /> :
+                    {loading ? <Skeleton className="h-[116px] w-full rounded-xl" /> :
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                 <CardTitle className="text-xl sm:text-xl font-medium">Total Comments</CardTitle>

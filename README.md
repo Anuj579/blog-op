@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# BlogOp
 
-## Getting Started
+BlogOp is a modern and feature-rich blog application built using Next.js. It allows users to explore the latest posts, manage their own blogs, and enjoy a seamless reading and writing experience.
 
-First, run the development server:
+[**Live Demo**](https://blogop.vercel.app)
+
+## 🚀 Features
+
+- **User Authentication**: Secure login and signup functionality using NextAuth.
+- **CRUD Operations on Blogs**: Create, read, update, and delete blogs.
+- **Rich Text Editor**: Write blogs using TinyMCE, a feature-packed text editor.
+- **Dynamic Latest Posts**: Displays the most recent blogs with a skeleton loader until data is fetched.
+- **Your Recent Posts**: Personalized section showing the user’s most recent blogs.
+- **Responsive Design**: Fully responsive design for a smooth experience across all devices.
+- **Search Functionality**: Easily search blogs by title or author.
+- **Cover Images**: Add cover images to blogs for better visual appeal.
+- **Account Management**: Users can update their profile (name, picture) and delete their account.
+- **Skeleton Loaders**: Enhances user experience while waiting for API data.
+
+## 🧑‍💻 Tech Stack
+
+- **Frontend**: Next.js, Tailwind CSS, ShadCN, Aceternity UI
+- **Backend**: Next.js API Routes
+- **Database**: MongoDB
+- **Authentication**: NextAuth
+- **Deployment**: Vercel
+
+## 📥 Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Anuj579/blog-op.git
+   ```
+
+2. Navigate to the project directory:
+
+   ```bash
+   cd blogop
+   ```
+
+3. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+4. Create a `.env` file in the root directory and add your environment variables:
+
+   ```env
+   # Google OAuth Credentials
+   GOOGLE_CLIENT_ID=your-google-client-id
+   GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+   # NextAuth Configuration
+   NEXTAUTH_SECRET=your-nextauth-secret
+   NEXTAUTH_URL=http://localhost:3000
+
+   # MongoDB URI
+   MONGO_URI=your-mongodb-uri
+
+    # Public App URL
+   NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+    # SMTP Configuration (for email sending)
+
+    SMTP_USER=your-smtp-email
+    SMTP_PASS=your-smtp-password
+
+    # Cloudinary Configuration
+    NEXT_PUBLIC_CLOUDINARY_API_URL=https://api.cloudinary.com/v1_1/your-cloudinary-cloud-name/image/upload
+
+    # TinyMCE API Key
+    NEXT_PUBLIC_TINYMCE_API_KEY=your-tinymce-api-key
+   ```
+
+5. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🌍 Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This application is ready for deployment on platforms like **Vercel**. Follow these steps:
 
-## Learn More
+1. Push your code to a GitHub repository.
+2. Link the repository to Vercel.
+3. Add the required environment variables in the Vercel project settings.
+4. Deploy the app.
 
-To learn more about Next.js, take a look at the following resources:
+## 📱 Social Media
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Twitter](https://x.com/anujbuilds)
+- [LinkedIn](https://www.linkedin.com/in/anujchaudhary549/)
+- [YouTube](https://www.youtube.com/@anujbuilds)
+- [Instagram](https://www.instagram.com/anujbuilds)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Developed with ❤️ by Anuj

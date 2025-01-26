@@ -33,7 +33,7 @@ export function UserBlogs() {
     }, [session])
 
     return (
-        <div>
+        <div className="mb-6">
             <h2 className="text-2xl font-semibold mb-4">Your Blog Posts</h2>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {loading
