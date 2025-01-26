@@ -177,7 +177,7 @@ export default function BlogPost() {
                         <div className="flex items-center space-x-4">
                             <Avatar>
                                 <AvatarImage src={blog.author.image} />
-                                <AvatarFallback><Image width={40} height={40} src={`https://ui-avatars.com/api/?name=${blog.author.firstname[0]}&background=6A5ACD&color=fff&size=100`} alt="user-avatar" /></AvatarFallback>
+                                <AvatarFallback><img src={`https://ui-avatars.com/api/?name=${blog.author.firstname[0]}&background=6A5ACD&color=fff&size=100`} alt="user-avatar" /></AvatarFallback>
                             </Avatar>
                             <div>
                                 <p className="font-semibold">{blog.author.firstname} {blog.author.lastname}</p>
@@ -259,7 +259,6 @@ export default function BlogPost() {
                     <hr />
                 </CardHeader>
                 <CardContent className="mt-8">
-                    {/* <div className="prose prose-pre:bg-gray-200 prose-pre:text-gray-900 dark:prose-invert dark:prose-pre:bg-gray-900 dark:prose-pre:text-gray-200 max-w-none"> */}
                     <div className="prose dark:prose-invert max-w-none">
                         <div className='max-w-full' dangerouslySetInnerHTML={{ __html: blog.content }} />
                     </div>
@@ -291,7 +290,7 @@ export default function BlogPost() {
                                 <div className="flex items-start space-x-3 mb-2">
                                     <Avatar>
                                         <AvatarImage src={comment.user.image} />
-                                        <AvatarFallback><Image width={40} height={40} src={`https://ui-avatars.com/api/?name=${comment.user.firstname[0]}&background=6A5ACD&color=fff&size=100`} alt="user-avatar" /></AvatarFallback>
+                                        <AvatarFallback><img src={`https://ui-avatars.com/api/?name=${comment.user.firstname[0]}&background=6A5ACD&color=fff&size=100`} alt="user-avatar" /></AvatarFallback>
                                     </Avatar>
                                     <div>
                                         <p className="font-semibold">{comment.user.firstname}</p>
