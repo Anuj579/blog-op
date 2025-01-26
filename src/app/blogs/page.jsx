@@ -4,10 +4,10 @@ import { BlogCard } from '@/components/BlogCard'
 import SkeletonCard from '@/components/SkeletonCard'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Loader2, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
-function page() {
+function ExplorePage() {
     const [blogPosts, setBlogPosts] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [filteredPosts, setFilteredPosts] = useState([])
@@ -84,4 +84,4 @@ function page() {
     )
 }
 
-export default page
+export default ExplorePage

@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 
-function page() {
+function LoginPage() {
     const [inputType, setInputType] = useState('password')
     const toggleInputType = () => setInputType(prev => (prev === 'password' ? 'text' : 'password'));
     const { theme } = useTheme()
@@ -159,4 +159,4 @@ function page() {
     )
 }
 
-export default page
+export default LoginPage

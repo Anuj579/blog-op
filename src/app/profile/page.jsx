@@ -17,7 +17,7 @@ import { useSession } from 'next-auth/react'
 import ImageCropper from '@/components/ImageCropper'
 import { Skeleton } from '@/components/ui/skeleton'
 
-function page() {
+function ProfilePage() {
     const [userDetails, setUserDetails] = useState({
         firstname: '',
         lastname: '',
@@ -452,4 +452,4 @@ function page() {
     )
 }
 
-export default page
+export default ProfilePage

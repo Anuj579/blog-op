@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from 'next/navigation';
 
-function page() {
+function SignupPage() {
     const { theme } = useTheme()
     const [inputType, setInputType] = useState('password')
     const toggleInputType = () => setInputType(prev => (prev === 'password' ? 'text' : 'password'));
@@ -216,4 +216,4 @@ function page() {
     )
 }
 
-export default page
+export default SignupPage
