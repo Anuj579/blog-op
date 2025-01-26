@@ -17,12 +17,13 @@ export default function Home() {
   const { data: session } = useSession()
   const [yourRecentPosts, setYourRecentPosts] = useState([])
   const [featuredPosts, setFeaturedPosts] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loadingRecentPosts, setLoadingRecentPosts] = useState(true)
+  const [loadingLatestPosts, setLoadingLatestPosts] = useState(true)
 
   useEffect(() => {
     if (session) {
       const fetchRecentPosts = async () => {
-        setLoading(true)
+        setLoadingRecentPosts(true)
         try {
           const res = await fetch(`/api/blog?author=${session.user.id}`)
           const data = await res.json()
@@ -33,17 +34,19 @@ export default function Home() {
           }
         } catch (error) {
           console.error("Error fetching blogs:", error)
+        } finally {
+          setLoadingRecentPosts(false)
         }
       }
       fetchRecentPosts()
     } else {
-      setLoading(false)
+      setLoadingRecentPosts(false)
     }
   }, []) // include session in dependency array if needed
 
   useEffect(() => {
     const fetchPosts = async () => {
-      setLoading(true)
+      setLoadingLatestPosts(true)
       try {
         const res = await fetch('/api/blog/list', {
           headers: {
@@ -55,7 +58,7 @@ export default function Home() {
       } catch (error) {
         console.error("Error fetching featured posts:", error)
       } finally {
-        setLoading(false)
+        setLoadingLatestPosts(false)
       }
     }
     fetchPosts()
@@ -92,12 +95,15 @@ export default function Home() {
                 </Link>
               )}
             </div>
-            {yourRecentPosts.length === 0 && !loading && (<p className="text-muted-foreground">You don’t have any recent posts yet. Start writing your first blog!</p>)}
+            {yourRecentPosts.length === 0 && !loadingRecentPosts && (
+              <p className="text-muted-foreground">You don’t have any recent posts yet. Start writing your first blog!</p>
+            )}
             <div className="space-y-6">
-              {loading && Array.from({ length: 3 }).map((_, index) => (
-                <Skeleton key={index} className="h-[140px] md:h-[124px] w-full rounded-xl" />
-              ))}
-              {yourRecentPosts.length > 0 && (
+              {loadingRecentPosts ? (
+                Array.from({ length: 3 }).map((_, index) => (
+                  <Skeleton key={index} className="h-[140px] md:h-[124px] w-full rounded-xl" />
+                ))
+              ) : (
                 yourRecentPosts.slice(0, 3).map((post) => (
                   <Card key={post._id}>
                     <CardHeader>
@@ -119,7 +125,6 @@ export default function Home() {
                     </CardFooter>
                   </Card>
                 ))
-
               )}
             </div>
           </section>
@@ -146,14 +151,17 @@ export default function Home() {
 
       <section className="container relative max-[1440px]:px-4 z-10 my-12">
         <h2 className="text-2xl sm:text-3xl font-semibold mb-6">Latest Posts</h2>
-        {featuredPosts.length === 0 && !loading && (<p className="text-muted-foreground">No blogs available at the moment. Check back soon for updates!</p>)}
+        {featuredPosts.length === 0 && !loadingLatestPosts && (<p className="text-muted-foreground">No blogs available at the moment. Check back soon for updates!</p>)}
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {loading && Array.from({ length: 3 }).map((_, index) => (
-            <SkeletonCard key={index} />
-          ))}
-          {featuredPosts.length > 0 && featuredPosts.slice(0, 3).map((post) => (
-            <BlogCard key={post._id} post={post} />
-          ))}
+          {loadingLatestPosts ? (
+            Array.from({ length: 3 }).map((_, index) => (
+              <SkeletonCard key={index} />
+            ))
+          ) : (
+            featuredPosts.length > 0 && featuredPosts.slice(0, 3).map((post) => (
+              <BlogCard key={post._id} post={post} />
+            ))
+          )}
         </div>
       </section>
 

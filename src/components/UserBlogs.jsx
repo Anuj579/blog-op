@@ -43,7 +43,7 @@ export function UserBlogs() {
                     ))
                     : userBlogs.length === 0
                         ? // Show message if no blogs are found
-                        <p>No blogs found. Start writing your first blog!</p>
+                        <p className="text-muted-foreground">No blogs found. Start writing your first blog!</p>
                         : // Show blog cards if data is loaded
                         userBlogs.map((blog) => <BlogCard key={blog._id} post={blog} />)}
             </div>

@@ -59,19 +59,18 @@ BlogOp is a modern and feature-rich blog application built using Next.js. It all
    # MongoDB URI
    MONGO_URI=your-mongodb-uri
 
-    # Public App URL
+   # Public App URL
    NEXT_PUBLIC_APP_URL=http://localhost:3000
 
-    # SMTP Configuration (for email sending)
+   # SMTP Configuration (for email sending)
+   SMTP_USER=your-smtp-email
+   SMTP_PASS=your-smtp-password
 
-    SMTP_USER=your-smtp-email
-    SMTP_PASS=your-smtp-password
+   # Cloudinary Configuration
+   NEXT_PUBLIC_CLOUDINARY_API_URL=https://api.cloudinary.com/v1_1/your-cloudinary-cloud-name/image/upload
 
-    # Cloudinary Configuration
-    NEXT_PUBLIC_CLOUDINARY_API_URL=https://api.cloudinary.com/v1_1/your-cloudinary-cloud-name/image/upload
-
-    # TinyMCE API Key
-    NEXT_PUBLIC_TINYMCE_API_KEY=your-tinymce-api-key
+   # TinyMCE API Key
+   NEXT_PUBLIC_TINYMCE_API_KEY=your-tinymce-api-key
    ```
 
 5. Run the development server:
