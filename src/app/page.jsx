@@ -33,7 +33,7 @@ export default function Home() {
             console.log("Error fetching user posts:", data.error);
           }
         } catch (error) {
-          console.error("Error fetching blogs:", error)
+          console.error("Error fetching user's recent blogs:", error)
         } finally {
           setLoadingRecentPosts(false)
         }
@@ -54,7 +54,11 @@ export default function Home() {
           }
         })
         const data = await res.json()
-        setFeaturedPosts(data.blogs)
+        if (data.success) {
+          setFeaturedPosts(data.blogs)
+        } else {
+          console.log("Error fetching posts:", data.error);
+        }
       } catch (error) {
         console.error("Error fetching featured posts:", error)
       } finally {
