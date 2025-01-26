@@ -18,6 +18,7 @@ const DialogOverlay = React.forwardRef(({ className, ...props }, ref) => (
     {...props}
   />
 ));
+DialogOverlay.displayName = "DialogOverlay";
 
 const DialogContent = React.forwardRef(({ className, children, ...props }, ref) => (
   <DialogPortal>
@@ -38,22 +39,27 @@ const DialogContent = React.forwardRef(({ className, children, ...props }, ref) 
     </DialogPrimitive.Content>
   </DialogPortal>
 ));
+DialogContent.displayName = "DialogContent";
 
 const DialogHeader = ({ className, ...props }) => (
   <div className={cn("flex flex-col space-y-1.5 text-center sm:text-left", className)} {...props} />
 );
+DialogHeader.displayName = "DialogHeader";
 
 const DialogFooter = ({ className, ...props }) => (
   <div className={cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className)} {...props} />
 );
+DialogFooter.displayName = "DialogFooter";
 
 const DialogTitle = React.forwardRef(({ className, ...props }, ref) => (
   <DialogPrimitive.Title ref={ref} className={cn("text-lg font-semibold leading-none tracking-tight", className)} {...props} />
 ));
+DialogTitle.displayName = "DialogTitle";
 
 const DialogDescription = React.forwardRef(({ className, ...props }, ref) => (
   <DialogPrimitive.Description ref={ref} className={cn("text-sm text-muted-foreground", className)} {...props} />
 ));
+DialogDescription.displayName = "DialogDescription";
 
 export {
   Dialog,

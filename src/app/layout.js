@@ -32,7 +32,9 @@ export default function RootLayout({ children }) {
         <SessionWrapper>
           <ThemeProvider attribute="class">
             <ScrollToTop>
-              <Layout children={children} />
+              <Layout>
+                {children}
+              </Layout>
             </ScrollToTop>
           </ThemeProvider>
         </SessionWrapper>
