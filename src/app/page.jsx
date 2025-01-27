@@ -18,7 +18,9 @@ export default function Home() {
   const [yourRecentPosts, setYourRecentPosts] = useState([])
   const [featuredPosts, setFeaturedPosts] = useState([])
   const [loadingRecentPosts, setLoadingRecentPosts] = useState(true)
+  const [errorFetchingRecentPosts, setErrorFetchingRecentPosts] = useState(false)
   const [loadingLatestPosts, setLoadingLatestPosts] = useState(true)
+  const [errorFetchingLatestPosts, setErrorFetchingLatestPosts] = useState(false)
 
   useEffect(() => {
     if (session) {
@@ -30,6 +32,7 @@ export default function Home() {
           if (data.success) {
             setYourRecentPosts(data.blogs)
           } else {
+            setErrorFetchingRecentPosts(true)
             console.log("Error fetching user posts:", data.error);
           }
         } catch (error) {
@@ -57,6 +60,7 @@ export default function Home() {
         if (data.success) {
           setFeaturedPosts(data.blogs)
         } else {
+          setErrorFetchingLatestPosts(true)
           console.log("Error fetching posts:", data.error);
         }
       } catch (error) {
@@ -99,9 +103,10 @@ export default function Home() {
                 </Link>
               )}
             </div>
-            {yourRecentPosts.length === 0 && !loadingRecentPosts && (
+            {yourRecentPosts.length === 0 && !loadingRecentPosts && !errorFetchingRecentPosts && (
               <p className="text-muted-foreground">You don’t have any recent posts yet. Start writing your first blog!</p>
             )}
+            {errorFetchingRecentPosts && <p className="text-muted-foreground">Something went wrong while fetching your posts. Please try again.</p>}
             <div className="space-y-6">
               {loadingRecentPosts ? (
                 Array.from({ length: 3 }).map((_, index) => (
@@ -155,7 +160,8 @@ export default function Home() {
 
       <section className="container relative max-[1440px]:px-4 z-10 my-12">
         <h2 className="text-2xl sm:text-3xl font-semibold mb-6">Latest Posts</h2>
-        {featuredPosts.length === 0 && !loadingLatestPosts && (<p className="text-muted-foreground">No blogs available at the moment. Check back soon for updates!</p>)}
+        {featuredPosts.length === 0 && !loadingLatestPosts && !errorFetchingLatestPosts && (<p className="text-muted-foreground">No blogs available at the moment. Check back soon for updates!</p>)}
+        {errorFetchingLatestPosts && <p className="text-muted-foreground">Something went wrong while fetching latest posts. Please try again.</p>}
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {loadingLatestPosts ? (
             Array.from({ length: 3 }).map((_, index) => (

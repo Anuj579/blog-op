@@ -51,7 +51,6 @@ export default function EditBlogPage() {
                 try {
                     const res = await fetch(`/api/blog/${id}`)
                     const data = await res.json()
-                    // console.log("Blog details:", data.blog);
                     setBody({ title: data.blog.title, previewText: data.blog.previewText, content: data.blog.content, coverImage: data.blog.coverImage })
                     if (!session || session.user.id !== data.blog.author._id) {
                         router.push(`/blog/${id}`)
@@ -130,8 +129,8 @@ export default function EditBlogPage() {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center min-h-[82vh]">
-                <Loader2 className="animate-spin h-8 w-8" />
+            <div className="flex items-center justify-center min-h-[calc(100vh-11rem)]">
+                <div className="loader"></div>
             </div>
         );
     }

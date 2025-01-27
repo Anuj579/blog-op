@@ -17,7 +17,7 @@ export async function GET(req, { params }) {
             select: "firstname lastname image", // Select only these fields
         });
         if (!blog) {
-            return NextResponse.json({ success: false, message: "Blog not found" }, { status: 404 });
+            return NextResponse.json({ success: false, error: "Blog not found" }, { status: 404 });
         }
 
         // Sort comments by createdAt in descending order

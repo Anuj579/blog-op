@@ -7,6 +7,7 @@ export function UserBlogs() {
     const { data: session } = useSession()
     const [userBlogs, setUserBlogs] = useState([])
     const [loading, setLoading] = useState(true)
+    const [errorFetchingUserBlogs, setErrorFetchingUserBlogs] = useState(false)
 
     useEffect(() => {
         if (session) {
@@ -19,6 +20,7 @@ export function UserBlogs() {
                     if (data.success) {
                         setUserBlogs(data.blogs)
                     } else {
+                        setErrorFetchingUserBlogs(true)
                         console.error("Failed to fetch blogs:", data.error)
                     }
                 } catch (error) {
@@ -35,13 +37,14 @@ export function UserBlogs() {
     return (
         <div className="mb-6">
             <h2 className="text-2xl font-semibold mb-4">Your Blog Posts</h2>
+            {errorFetchingUserBlogs && <p className="text-muted-foreground">Something went wrong while fetching your blog posts. Please try again.</p>}
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {loading
                     ? // Show dynamic skeletons while loading
                     Array.from({ length: 3 }).map((_, index) => (
                         <SkeletonCard key={index} />
                     ))
-                    : userBlogs.length === 0
+                    : !errorFetchingUserBlogs && userBlogs.length === 0
                         ? // Show message if no blogs are found
                         <p className="text-muted-foreground">No blogs found. Start writing your first blog!</p>
                         : // Show blog cards if data is loaded

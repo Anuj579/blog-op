@@ -36,7 +36,11 @@ export default function BlogPost() {
             try {
                 const res = await fetch(`/api/blog/${id}`)
                 const data = await res.json()
-                setBlog(data.blog)
+                if (data.success) {
+                    setBlog(data.blog)
+                } else {
+                    console.log("Error in fetching blog details:", data.error);
+                }
             } catch (error) {
                 console.log("Error in fetching blog details:", error);
             } finally {
@@ -96,7 +100,7 @@ export default function BlogPost() {
     const handleShare = async (platform) => {
         const shareData = {
             title: 'Check out this blog!',
-            text: 'I found this amazing blog on BlogApp. Take a look!',
+            text: 'I found this amazing blog on BlogOp. Take a look!',
             url: window.location.href,
         }
         if (platform === 'copy') {

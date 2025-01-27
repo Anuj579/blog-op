@@ -12,7 +12,7 @@ export async function sendDeleteConfirmationEmail(toEmail, confirmationUrl) {
         },
     });
 
-    const blogAppName = "BlogApp"
+    const blogAppName = "BlogOp"
 
     // Email options
     const mailOptions = {
