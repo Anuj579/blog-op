@@ -250,7 +250,9 @@ export default function BlogPost() {
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
                                     <AlertDialogCancel disabled={disabled}>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction asChild onClick={handleDeleteBlog} disabled={disabled}><Button className='bg-red-600 hover:bg-red-700 dark:text-white'>Delete Blog</Button></AlertDialogAction>
+                                    <Button variant="destructive" onClick={handleDeleteBlog} disabled={disabled}>
+                                        {disabled ? <span className='flex items-center gap-1'><Loader2 className='animate-spin w-5 h-5' />Delete Blog</span> : "Delete Blog"}
+                                    </Button>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>

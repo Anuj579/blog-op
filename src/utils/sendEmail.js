@@ -22,7 +22,7 @@ export async function sendDeleteConfirmationEmail(toEmail, confirmationUrl) {
         html: `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
             <p>You recently requested to delete your account on <strong>${blogAppName}</strong>.</p>
             <p>Click the button below to confirm your account deletion. This link will expire in <strong>10 minutes</strong>:</p>
-            <a href="${confirmationUrl}" style="display: inline-block; color: #ffffff; background-color: #007bff; text-decoration: none; font-weight: bold; padding: 10px 15px; border-radius: 5px;">Confirm Deletion</a>
+            <a href="${confirmationUrl}" style="display: inline-block; color: #ffffff; background-color: #8533FF; text-decoration: none; font-weight: bold; padding: 10px 15px; border-radius: 5px;">Confirm Deletion</a>
             <p style="margin-top: 15px;">If you did not request this, you can safely ignore this email.</p>
         </div>`,
     };

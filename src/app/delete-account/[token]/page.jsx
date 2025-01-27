@@ -16,7 +16,7 @@ export default function DeleteAccountPage() {
     const [disabled, setDisabled] = useState(false)
 
     const { token } = useParams();
-    
+
     useEffect(() => {
         const checkToken = async () => {
             try {
@@ -66,12 +66,13 @@ export default function DeleteAccountPage() {
         }
     };
 
-    if (loading)
+    if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[calc(100vh-11rem)]">
-                <Loader2 className="animate-spin h-8 w-8" />
+                <div className="loader"></div>
             </div>
-        )
+        );
+    }
 
     if (isExpired) {
         return (
