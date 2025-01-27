@@ -16,7 +16,6 @@ import { useTheme } from 'next-themes'
 import { useSession } from 'next-auth/react'
 import ImageCropper from '@/components/ImageCropper'
 import { Skeleton } from '@/components/ui/skeleton'
-import Image from 'next/image'
 
 function ProfilePage() {
     const [userDetails, setUserDetails] = useState({
@@ -282,7 +281,7 @@ function ProfilePage() {
                                 <div className="relative">
                                     <Avatar className="w-24 h-24 border-2 border-primary">
                                         <AvatarImage src={userDetails.image || previewUrl} />
-                                        <AvatarFallback><Image width={30} height={30} src={`https://ui-avatars.com/api/?name=${userDetails.firstname[0]}&background=6A5ACD&color=fff&size=100`} alt="user-avatar" /></AvatarFallback>
+                                        <AvatarFallback><img src={`https://ui-avatars.com/api/?name=${userDetails.firstname[0]}&background=6A5ACD&color=fff&size=100`} alt="user-avatar" /></AvatarFallback>
                                     </Avatar>
                                     {isEditing && (
                                         <div>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { BookOpen, MessageCircle, PlusCircle } from 'lucide-react'
+import { BookOpen, MessageCircle, PlusCircle, RotateCwIcon } from 'lucide-react'
 import { UserBlogs } from "@/components/UserBlogs"
 import Link from "next/link"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -12,40 +12,33 @@ export default function DashboardPage() {
     const [totalBlogs, setTotalBlogs] = useState(0)
     const [totalComments, setTotalComments] = useState(0)
     const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
+    const [errorLoadingStats, setErrorLoadingStats] = useState(false)
+
+    const fetchDashboardData = async () => {
+        setLoading(true)
+        try {
+            const response = await fetch("/api/dashboard")
+            if (response.ok) {
+                const data = await response.json()
+                if (data.success) {
+                    setTotalBlogs(data.totalBlogs)
+                    setTotalComments(data.totalComments)
+                } else {
+                    setErrorLoadingStats(true)
+                }
+            } else {
+                setError("Failed to fetch data")
+            }
+        } catch (error) {
+            setError("An error occurred while fetching data")
+        } finally {
+            setLoading(false)
+        }
+    }
 
     useEffect(() => {
-        const fetchDashboardData = async () => {
-            try {
-                const response = await fetch("/api/dashboard")
-                if (response.ok) {
-                    const data = await response.json()
-                    if (data.success) {
-                        setTotalBlogs(data.totalBlogs)
-                        setTotalComments(data.totalComments)
-                    } else {
-                        setError(data.error)
-                    }
-                } else {
-                    setError("Failed to fetch data")
-                }
-            } catch (error) {
-                setError("An error occurred while fetching data")
-            } finally {
-                setLoading(false)
-            }
-        }
-
         fetchDashboardData()
     }, [])
-
-    if (error) {
-        return (
-            <div className="container mx-auto px-4 py-8">
-                <div>Error: {error}</div>
-            </div>
-        )
-    }
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -63,30 +56,42 @@ export default function DashboardPage() {
 
             <section className="mb-16">
                 <h2 className="text-2xl font-semibold mb-4">Blog Stats</h2>
-                <div className="grid gap-8 md:grid-cols-2">
-                    {loading ? <Skeleton className="h-[116px] w-full rounded-xl" /> :
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-xl sm:text-xl font-medium">Total Posts</CardTitle>
-                                <BookOpen className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{totalBlogs}</div>
-                            </CardContent>
-                        </Card>
-                    }
-                    {loading ? <Skeleton className="h-[116px] w-full rounded-xl" /> :
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-xl sm:text-xl font-medium">Total Comments</CardTitle>
-                                <MessageCircle className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">{totalComments}</div>
-                            </CardContent>
-                        </Card>
-                    }
-                </div>
+                {loading ? (
+                    <div className="grid gap-8 md:grid-cols-2">
+                        {Array.from({ length: 2 }).map((_, index) =>
+                            <Skeleton key={index} className="h-[116px] w-full rounded-xl" />
+                        )}
+                    </div>
+                ) : (
+                    errorLoadingStats ? (
+                        <div>
+                            <p className="text-muted-foreground">Something went wrong while fetching your blog stats. Please try again.
+                                <Button variant="link" className='text-purple-800 dark:text-purple-400 p-0 ml-2' onClick={fetchDashboardData}>Retry <RotateCwIcon size={14} className="ml-1" /></Button>
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="grid gap-8 md:grid-cols-2">
+                            <Card>
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-xl sm:text-xl font-medium">Total Posts</CardTitle>
+                                    <BookOpen className="h-4 w-4 text-muted-foreground" />
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">{totalBlogs}</div>
+                                </CardContent>
+                            </Card>
+                            <Card>
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-xl sm:text-xl font-medium">Total Comments</CardTitle>
+                                    <MessageCircle className="h-4 w-4 text-muted-foreground" />
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">{totalComments}</div>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    )
+                )}
             </section>
             <UserBlogs />
         </div>

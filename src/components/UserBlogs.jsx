@@ -2,6 +2,8 @@ import { useState, useEffect } from "react"
 import { BlogCard } from "./BlogCard"
 import { useSession } from "next-auth/react"
 import SkeletonCard from "./SkeletonCard"
+import { RotateCwIcon } from "lucide-react"
+import { Button } from "./ui/button"
 
 export function UserBlogs() {
     const { data: session } = useSession()
@@ -9,27 +11,27 @@ export function UserBlogs() {
     const [loading, setLoading] = useState(true)
     const [errorFetchingUserBlogs, setErrorFetchingUserBlogs] = useState(false)
 
+    const fetchUserBlogs = async () => {
+        setLoading(true)
+        try {
+            const res = await fetch(`/api/blog?author=${session.user.id}`)
+            const data = await res.json()
+            if (data.success) {
+                setUserBlogs(data.blogs)
+            } else {
+                setErrorFetchingUserBlogs(true)
+                console.error("Failed to fetch blogs:", data.error)
+            }
+        } catch (error) {
+            console.error("Error fetching blogs:", error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
     useEffect(() => {
         if (session) {
             // Fetch blogs of the logged-in user
-
-            const fetchUserBlogs = async () => {
-                try {
-                    const res = await fetch(`/api/blog?author=${session.user.id}`)
-                    const data = await res.json()
-                    if (data.success) {
-                        setUserBlogs(data.blogs)
-                    } else {
-                        setErrorFetchingUserBlogs(true)
-                        console.error("Failed to fetch blogs:", data.error)
-                    }
-                } catch (error) {
-                    console.error("Error fetching blogs:", error)
-                } finally {
-                    setLoading(false)
-                }
-            }
-
             fetchUserBlogs()
         }
     }, [session])
@@ -37,19 +39,29 @@ export function UserBlogs() {
     return (
         <div className="mb-6">
             <h2 className="text-2xl font-semibold mb-4">Your Blog Posts</h2>
-            {errorFetchingUserBlogs && <p className="text-muted-foreground">Something went wrong while fetching your blog posts. Please try again.</p>}
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {loading
-                    ? // Show dynamic skeletons while loading
-                    Array.from({ length: 3 }).map((_, index) => (
+            {loading ? (
+                <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    {Array.from({ length: 3 }).map((_, index) => (
                         <SkeletonCard key={index} />
-                    ))
-                    : !errorFetchingUserBlogs && userBlogs.length === 0
-                        ? // Show message if no blogs are found
+                    ))}
+                </div>
+            ) :
+                (errorFetchingUserBlogs ? (
+                    <div>
+                        <p className="text-muted-foreground">Something went wrong while fetching your posts. Please try again.
+                            <Button variant="link" className='text-purple-800 dark:text-purple-400 p-0 ml-2' onClick={fetchUserBlogs}>Retry <RotateCwIcon size={14} className="ml-1" /></Button>
+                        </p>
+                    </div>
+                ) : (
+                    userBlogs.length === 0 ? (
                         <p className="text-muted-foreground">No blogs found. Start writing your first blog!</p>
-                        : // Show blog cards if data is loaded
-                        userBlogs.map((blog) => <BlogCard key={blog._id} post={blog} />)}
-            </div>
+                    ) : (
+                        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                            {userBlogs.map((blog) => <BlogCard key={blog._id} post={blog} />)}
+                        </div>
+                    )
+                ))
+            }
         </div>
     )
 }

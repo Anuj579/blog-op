@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button"
 import { BlogCard } from "@/components/BlogCard";
-import { ArrowRight, Calendar, Clock, Compass, PlusCircle } from "lucide-react";
+import { ArrowRight, Calendar, Clock, PlusCircle, RotateCwIcon } from "lucide-react";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -22,54 +22,56 @@ export default function Home() {
   const [loadingLatestPosts, setLoadingLatestPosts] = useState(true)
   const [errorFetchingLatestPosts, setErrorFetchingLatestPosts] = useState(false)
 
+  const fetchRecentPosts = async () => {
+    setLoadingRecentPosts(true)
+    try {
+      const res = await fetch(`/api/blog?author=${session.user.id}`)
+      const data = await res.json()
+      if (data.success) {
+        setYourRecentPosts(data.blogs)
+      } else {
+        setErrorFetchingRecentPosts(true)
+        console.log("Error fetching user posts:", data.error);
+      }
+    } catch (error) {
+      console.error("Error fetching user's recent blogs:", error)
+    } finally {
+      setLoadingRecentPosts(false)
+    }
+  }
+
   useEffect(() => {
     if (session) {
-      const fetchRecentPosts = async () => {
-        setLoadingRecentPosts(true)
-        try {
-          const res = await fetch(`/api/blog?author=${session.user.id}`)
-          const data = await res.json()
-          if (data.success) {
-            setYourRecentPosts(data.blogs)
-          } else {
-            setErrorFetchingRecentPosts(true)
-            console.log("Error fetching user posts:", data.error);
-          }
-        } catch (error) {
-          console.error("Error fetching user's recent blogs:", error)
-        } finally {
-          setLoadingRecentPosts(false)
-        }
-      }
       fetchRecentPosts()
     } else {
       setLoadingRecentPosts(false)
     }
   }, []) // include session in dependency array if needed
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      setLoadingLatestPosts(true)
-      try {
-        const res = await fetch('/api/blog/list', {
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        })
-        const data = await res.json()
-        if (data.success) {
-          setFeaturedPosts(data.blogs)
-        } else {
-          setErrorFetchingLatestPosts(true)
-          console.log("Error fetching posts:", data.error);
+  const fetchLatestPosts = async () => {
+    setLoadingLatestPosts(true)
+    try {
+      const res = await fetch('/api/blog/list', {
+        headers: {
+          'Content-Type': 'application/json',
         }
-      } catch (error) {
-        console.error("Error fetching featured posts:", error)
-      } finally {
-        setLoadingLatestPosts(false)
+      })
+      const data = await res.json()
+      if (data.success) {
+        setFeaturedPosts(data.blogs)
+      } else {
+        setErrorFetchingLatestPosts(true)
+        console.log("Error fetching posts:", data.error);
       }
+    } catch (error) {
+      console.error("Error fetching featured posts:", error)
+    } finally {
+      setLoadingLatestPosts(false)
     }
-    fetchPosts()
+  }
+
+  useEffect(() => {
+    fetchLatestPosts()
   }, [])
 
   return (
@@ -95,7 +97,7 @@ export default function Home() {
           <section className="mb-16 max-[1440px]:px-4 container">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl sm:text-3xl font-semibold">Your Recent Posts</h2>
-              {yourRecentPosts.length > 0 && (
+              {!errorFetchingRecentPosts && yourRecentPosts.length > 0 && (
                 <Link href="/dashboard">
                   <Button variant="link" className="text-accent-foreground p-0">
                     View all <ArrowRight className="ml-2 h-4 w-4" />
@@ -106,36 +108,49 @@ export default function Home() {
             {yourRecentPosts.length === 0 && !loadingRecentPosts && !errorFetchingRecentPosts && (
               <p className="text-muted-foreground">You don’t have any recent posts yet. Start writing your first blog!</p>
             )}
-            {errorFetchingRecentPosts && <p className="text-muted-foreground">Something went wrong while fetching your posts. Please try again.</p>}
-            <div className="space-y-6">
-              {loadingRecentPosts ? (
-                Array.from({ length: 3 }).map((_, index) => (
+
+            {loadingRecentPosts ? (
+              <div className="space-y-6">
+                {Array.from({ length: 3 }).map((_, index) => (
                   <Skeleton key={index} className="h-[140px] md:h-[124px] w-full rounded-xl" />
-                ))
-              ) : (
-                yourRecentPosts.slice(0, 3).map((post) => (
-                  <Card key={post._id}>
-                    <CardHeader>
-                      <CardTitle>
-                        <Link href={`/blog/${post._id}`} className="hover:underline">
-                          {post.title}
-                        </Link>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardFooter className="flex justify-between items-center text-sm text-muted-foreground">
-                      <div className="flex items-center">
-                        <Calendar className="mr-2 h-4 w-4" />
-                        {formatDate(post.updatedAt)}
-                      </div>
-                      <div className="flex items-center">
-                        <Clock className="mr-2 h-4 w-4" />
-                        {post.readTime} min read
-                      </div>
-                    </CardFooter>
-                  </Card>
-                ))
-              )}
-            </div>
+                ))}
+              </div>
+            ) : (
+              errorFetchingRecentPosts ? (
+                <div>
+                  <p className="text-muted-foreground">Something went wrong while fetching your posts. Please try again.
+                    <Button variant="link" className='text-purple-800 dark:text-purple-400 p-0 ml-2' onClick={fetchRecentPosts}>Retry <RotateCwIcon size={14} className="ml-1" /></Button>
+                  </p>
+                </div>
+              ) :
+                yourRecentPosts.length === 0 ? (
+                  <p className="text-muted-foreground">You don’t have any recent posts yet. Start writing your first blog!</p>
+                ) :
+                  <div className="space-y-6">
+                    {yourRecentPosts.slice(0, 3).map((post) => (
+                      <Card key={post._id}>
+                        <CardHeader>
+                          <CardTitle>
+                            <Link href={`/blog/${post._id}`} className="hover:underline">
+                              {post.title}
+                            </Link>
+                          </CardTitle>
+                        </CardHeader>
+                        <CardFooter className="flex justify-between items-center text-sm text-muted-foreground">
+                          <div className="flex items-center">
+                            <Calendar className="mr-2 h-4 w-4" />
+                            {formatDate(post.updatedAt)}
+                          </div>
+                          <div className="flex items-center">
+                            <Clock className="mr-2 h-4 w-4" />
+                            {post.readTime} min read
+                          </div>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                  </div>
+            )}
+
           </section>
         </>
         :
@@ -160,19 +175,29 @@ export default function Home() {
 
       <section className="container relative max-[1440px]:px-4 z-10 my-12">
         <h2 className="text-2xl sm:text-3xl font-semibold mb-6">Latest Posts</h2>
-        {featuredPosts.length === 0 && !loadingLatestPosts && !errorFetchingLatestPosts && (<p className="text-muted-foreground">No blogs available at the moment. Check back soon for updates!</p>)}
-        {errorFetchingLatestPosts && <p className="text-muted-foreground">Something went wrong while fetching latest posts. Please try again.</p>}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {loadingLatestPosts ? (
-            Array.from({ length: 3 }).map((_, index) => (
+        {loadingLatestPosts ? (
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, index) => (
               <SkeletonCard key={index} />
-            ))
-          ) : (
-            featuredPosts.length > 0 && featuredPosts.slice(0, 3).map((post) => (
-              <BlogCard key={post._id} post={post} />
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          errorFetchingLatestPosts ? (
+            <div className="space-y-4">
+              <p className="text-muted-foreground">Something went wrong while fetching latest posts. Please try again.
+                <Button variant="link" className='text-purple-800 dark:text-purple-400 p-0 ml-2' onClick={fetchLatestPosts}>Retry <RotateCwIcon size={14} className="ml-1" /></Button>
+              </p>
+            </div>
+          ) :
+            featuredPosts.length === 0 ? (
+              <p className="text-muted-foreground">No blogs available at the moment. Check back soon for updates!</p>
+            ) :
+              <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                {featuredPosts.slice(0, 3).map((post) => (
+                  <BlogCard key={post._id} post={post} />
+                ))}
+              </div>
+        )}
       </section>
 
       {!session &&
