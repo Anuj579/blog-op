@@ -13,6 +13,8 @@ export function UserBlogs() {
 
     const fetchUserBlogs = async () => {
         setLoading(true)
+        setErrorFetchingUserBlogs(false)
+        await new Promise((resolve) => setTimeout(resolve, 500));
         try {
             const res = await fetch(`/api/blog?author=${session.user.id}`)
             const data = await res.json()
