@@ -24,6 +24,8 @@ export default function Home() {
 
   const fetchRecentPosts = async () => {
     setLoadingRecentPosts(true)
+    setErrorFetchingRecentPosts(false)
+    await new Promise((resolve) => setTimeout(resolve, 500));
     try {
       const res = await fetch(`/api/blog?author=${session.user.id}`)
       const data = await res.json()
@@ -50,6 +52,8 @@ export default function Home() {
 
   const fetchLatestPosts = async () => {
     setLoadingLatestPosts(true)
+    setErrorFetchingLatestPosts(false)
+    await new Promise((resolve) => setTimeout(resolve, 500));
     try {
       const res = await fetch('/api/blog/list', {
         headers: {

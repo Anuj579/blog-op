@@ -16,9 +16,12 @@ function ExplorePage() {
 
     const fetchBlogs = async () => {
         setLoading(true)
+        setErrorLoadingBlogs(false);
+        await new Promise((resolve) => setTimeout(resolve, 500));
         try {
             const res = await fetch('/api/blog/list')
             if (!res.ok) {
+                setErrorLoadingBlogs(true)
                 throw new Error(`Failed to fetch blogs: ${res.statusText}`)
             }
             const data = await res.json()
