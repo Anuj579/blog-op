@@ -16,8 +16,14 @@ export default function DashboardPage() {
 
     const fetchDashboardData = async () => {
         setLoading(true)
+        setErrorLoadingStats(false)
         try {
-            const response = await fetch("/api/dashboard")
+            const response = await fetch("/api/dashboard", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
             if (response.ok) {
                 const data = await response.json()
                 if (data.success) {
@@ -25,12 +31,14 @@ export default function DashboardPage() {
                     setTotalComments(data.totalComments)
                 } else {
                     setErrorLoadingStats(true)
+                    console.log("Error loading stats:", data.error);
                 }
             } else {
-                setError("Failed to fetch data")
+                setErrorLoadingStats(true)
             }
         } catch (error) {
-            setError("An error occurred while fetching data")
+            console.log("Error fetching dashboard data:", error);
+            setErrorLoadingStats(true)
         } finally {
             setLoading(false)
         }
