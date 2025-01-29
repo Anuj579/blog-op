@@ -27,7 +27,13 @@ export default function Home() {
     setErrorFetchingRecentPosts(false)
     await new Promise((resolve) => setTimeout(resolve, 500));
     try {
-      const res = await fetch(`/api/blog?author=${session.user.id}`)
+      const res = await fetch(`/api/blog?author=${session.user.id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include'
+      })
       const data = await res.json()
       if (data.success) {
         setYourRecentPosts(data.blogs)
@@ -56,6 +62,7 @@ export default function Home() {
     await new Promise((resolve) => setTimeout(resolve, 500));
     try {
       const res = await fetch('/api/blog/list', {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         }
