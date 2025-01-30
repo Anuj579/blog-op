@@ -18,7 +18,7 @@ export default function DashboardPage() {
         setLoading(true)
         setErrorLoadingStats(false)
         try {
-            const response = await fetch("/api/dashboard", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/dashboard`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

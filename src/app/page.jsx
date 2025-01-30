@@ -21,13 +21,14 @@ export default function Home() {
   const [errorFetchingRecentPosts, setErrorFetchingRecentPosts] = useState(false)
   const [loadingLatestPosts, setLoadingLatestPosts] = useState(true)
   const [errorFetchingLatestPosts, setErrorFetchingLatestPosts] = useState(false)
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL
 
   const fetchRecentPosts = async () => {
     setLoadingRecentPosts(true)
     setErrorFetchingRecentPosts(false)
     await new Promise((resolve) => setTimeout(resolve, 500));
     try {
-      const res = await fetch(`/api/blog?author=${session.user.id}`, {
+      const res = await fetch(`${baseUrl}/api/blog?author=${session.user.id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -62,7 +63,7 @@ export default function Home() {
     setErrorFetchingLatestPosts(false)
     await new Promise((resolve) => setTimeout(resolve, 500));
     try {
-      const res = await fetch('/api/blog/list', {
+      const res = await fetch(`${baseUrl}/api/blog/list`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

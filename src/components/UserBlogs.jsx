@@ -16,7 +16,7 @@ export function UserBlogs() {
         setErrorFetchingUserBlogs(false)
         await new Promise((resolve) => setTimeout(resolve, 500));
         try {
-            const res = await fetch(`/api/blog?author=${session.user.id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/blog?author=${session?.user?.id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

@@ -19,7 +19,7 @@ function ExplorePage() {
         setErrorLoadingBlogs(false);
         await new Promise((resolve) => setTimeout(resolve, 500));
         try {
-            const res = await fetch('/api/blog/list', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/blog/list`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
