@@ -12,6 +12,7 @@ import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-w
 import SkeletonCard from "@/components/SkeletonCard";
 import { FeaturesSection } from "@/components/FeaturesSection";
 import { Skeleton } from "@/components/ui/skeleton";
+import ErrorMessage from "@/components/ErrorMessage";
 
 export default function Home() {
   const { data: session } = useSession()
@@ -131,11 +132,7 @@ export default function Home() {
               </div>
             ) : (
               errorFetchingRecentPosts ? (
-                <div>
-                  <p className="text-muted-foreground">Something went wrong while fetching your posts. Please try again.
-                    <Button variant="link" className='text-purple-800 dark:text-purple-400 p-0 ml-2' onClick={fetchRecentPosts}>Retry <RotateCwIcon size={14} className="ml-1" /></Button>
-                  </p>
-                </div>
+                <ErrorMessage fetchData={fetchRecentPosts} />
               ) :
                 yourRecentPosts.length === 0 ? (
                   <p className="text-muted-foreground">You don’t have any recent posts yet. Start writing your first blog!</p>
@@ -197,11 +194,7 @@ export default function Home() {
           </div>
         ) : (
           errorFetchingLatestPosts ? (
-            <div className="space-y-4">
-              <p className="text-muted-foreground">Something went wrong while fetching latest posts. Please try again.
-                <Button variant="link" className='text-purple-800 dark:text-purple-400 p-0 ml-2' onClick={fetchLatestPosts}>Retry <RotateCwIcon size={14} className="ml-1" /></Button>
-              </p>
-            </div>
+            <ErrorMessage fetchData={fetchLatestPosts} />
           ) :
             featuredPosts.length === 0 ? (
               <p className="text-muted-foreground">No blogs available at the moment. Check back soon for updates!</p>

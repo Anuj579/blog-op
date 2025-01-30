@@ -2,8 +2,7 @@ import { useState, useEffect } from "react"
 import { BlogCard } from "./BlogCard"
 import { useSession } from "next-auth/react"
 import SkeletonCard from "./SkeletonCard"
-import { RotateCwIcon } from "lucide-react"
-import { Button } from "./ui/button"
+import ErrorMessage from "./ErrorMessage"
 
 export function UserBlogs() {
     const { data: session } = useSession()
@@ -56,11 +55,7 @@ export function UserBlogs() {
                 </div>
             ) :
                 (errorFetchingUserBlogs ? (
-                    <div>
-                        <p className="text-muted-foreground">Something went wrong while fetching your posts. Please try again.
-                            <Button variant="link" className='text-purple-800 dark:text-purple-400 p-0 ml-2' onClick={fetchUserBlogs}>Retry <RotateCwIcon size={14} className="ml-1" /></Button>
-                        </p>
-                    </div>
+                    <ErrorMessage fetchData={fetchUserBlogs} />
                 ) : (
                     userBlogs.length === 0 ? (
                         <p className="text-muted-foreground">No blogs found. Start writing your first blog!</p>

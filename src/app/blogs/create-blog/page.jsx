@@ -135,7 +135,7 @@ export default function CreateBlogPage() {
                                 </div>
                                 <div>
                                     <Label htmlFor="content">Content</Label>
-                                    <BlogEditor value={body.content} onEditorChange={handleContentChange} />
+                                    <BlogEditor value={body.content} onEditorChange={handleContentChange} disabled={loading} />
                                 </div>
                                 <div>
                                     <Label htmlFor="coverImage">Cover Image</Label>

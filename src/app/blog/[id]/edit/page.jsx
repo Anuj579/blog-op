@@ -163,7 +163,7 @@ export default function EditBlogPage() {
                                 </div>
                                 <div>
                                     <Label htmlFor="content">Content</Label>
-                                    <BlogEditor value={body.content} onEditorChange={handleContentChange} />
+                                    <BlogEditor value={body.content} onEditorChange={handleContentChange} disabled={disabled} />
                                 </div>
                                 <div>
                                     <Label htmlFor="coverImage">Cover Image</Label>

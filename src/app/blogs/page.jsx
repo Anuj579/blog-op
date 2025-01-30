@@ -1,10 +1,11 @@
 "use client"
 
 import { BlogCard } from '@/components/BlogCard'
+import ErrorMessage from '@/components/ErrorMessage'
 import SkeletonCard from '@/components/SkeletonCard'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { RotateCwIcon, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
 function ExplorePage() {
@@ -85,12 +86,7 @@ function ExplorePage() {
                     ))}
                 </div>)
                 : errorLoadingBlogs ? (
-                    <div className="text-center">
-                        <p className="text-muted-foreground mb-4">
-                            Something went wrong while fetching blogs. <br /> Please try again.
-                            <Button variant="link" className='text-purple-800 dark:text-purple-400 p-0 ml-2' onClick={fetchBlogs}>Retry <RotateCwIcon size={14} className="ml-1" /></Button>
-                        </p>
-                    </div>
+                    <ErrorMessage fetchData={fetchBlogs} className="text-center" />
                 ) :
                     filteredPosts.length === 0 ? (
                         <p className="text-center text-muted-foreground">No blogs found.</p>

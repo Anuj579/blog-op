@@ -1,11 +1,10 @@
 import { Editor } from '@tinymce/tinymce-react';
-import { useTheme } from 'next-themes';
 
-const BlogEditor = ({ value, onEditorChange }) => {
-    const { theme } = useTheme()
+const BlogEditor = ({ value, onEditorChange, disabled }) => {
 
     return (
         <Editor
+            disabled={disabled}
             apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
             value={value}
             onEditorChange={onEditorChange}

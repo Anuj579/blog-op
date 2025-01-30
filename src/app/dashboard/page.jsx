@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { BookOpen, MessageCircle, PlusCircle, RotateCwIcon } from 'lucide-react'
+import { BookOpen, MessageCircle, PlusCircle } from 'lucide-react'
 import { UserBlogs } from "@/components/UserBlogs"
 import Link from "next/link"
 import { Skeleton } from "@/components/ui/skeleton"
+import ErrorMessage from "@/components/ErrorMessage"
 
 export default function DashboardPage() {
     const [totalBlogs, setTotalBlogs] = useState(0)
@@ -73,11 +74,7 @@ export default function DashboardPage() {
                     </div>
                 ) : (
                     errorLoadingStats ? (
-                        <div>
-                            <p className="text-muted-foreground">Something went wrong while fetching your blog stats. Please try again.
-                                <Button variant="link" className='text-purple-800 dark:text-purple-400 p-0 ml-2' onClick={fetchDashboardData}>Retry <RotateCwIcon size={14} className="ml-1" /></Button>
-                            </p>
-                        </div>
+                        <ErrorMessage fetchData={fetchDashboardData} />
                     ) : (
                         <div className="grid gap-8 md:grid-cols-2">
                             <Card>
