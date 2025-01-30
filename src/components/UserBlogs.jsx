@@ -21,6 +21,7 @@ export function UserBlogs() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                cache: 'no-store',
                 credentials: 'include'
             })
             const data = await res.json()

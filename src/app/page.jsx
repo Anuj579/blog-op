@@ -32,6 +32,7 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json'
         },
+        cache: 'no-store',
         credentials: 'include'
       })
       const data = await res.json()
@@ -65,7 +66,8 @@ export default function Home() {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-        }
+        },
+        cache: 'no-store'
       })
       const data = await res.json()
       if (data.success) {
