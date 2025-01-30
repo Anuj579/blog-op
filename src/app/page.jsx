@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button"
 import { BlogCard } from "@/components/BlogCard";
-import { ArrowRight, Calendar, Clock, PlusCircle, RotateCwIcon } from "lucide-react";
+import { ArrowRight, Calendar, Clock, PlusCircle } from "lucide-react";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -120,9 +120,6 @@ export default function Home() {
                 </Link>
               )}
             </div>
-            {yourRecentPosts.length === 0 && !loadingRecentPosts && !errorFetchingRecentPosts && (
-              <p className="text-muted-foreground">You don’t have any recent posts yet. Start writing your first blog!</p>
-            )}
 
             {loadingRecentPosts ? (
               <div className="space-y-6">
