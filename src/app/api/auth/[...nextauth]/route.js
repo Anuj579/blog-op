@@ -75,43 +75,51 @@ export const authOptions = {
             if (account.provider === "google") {
                 await connectDB();
 
-                const existingUser = await User.findOne({ email: user.email });
+                let existingUser = await User.findOne({ email: user.email });
 
                 if (!existingUser) {
                     // Create a new user in MongoDB from Google profile
-                    await User.create({
+                    existingUser = await User.create({
                         firstname: user.name.split(" ")[0] || "Unknown",
                         lastname: user.name.split(" ")[1] || "",
                         email: user.email,
                         image: user.image,
+                        googleId: account.providerAccountId,
                         password: null, // Google users don't need a password
                     });
                 }
+                // Manually return the user's MongoDB _id
+                user.id = existingUser._id.toString();
             }
             return true; // Allow the sign-in
         },
         async jwt({ token, user }) {
             if (user) {
-                token.id = user.id;
+                token.id = user.id;  // Ensure MongoDB `_id` is stored
                 token.name = user.name;
             }
             return token;
         },
+
         async session({ session, token }) {
             // Fetch updated user details from the database
             await connectDB();
 
-            const dbUser = await User.findById(token.id);
+            try {
+                const dbUser = await User.findById(token.id); // Ensure it's querying `_id`
 
-            if (dbUser) {
-                session.user.id = dbUser._id.toString();
-                session.user.name = `${dbUser.firstname} ${dbUser.lastname}`;
-                session.user.email = dbUser.email;
-                session.user.image = dbUser.image;
-            } else {
-                // Fallback in case the user doesn't exist in DB
-                session.user.id = token.id;
-                session.user.name = token.name;
+                if (dbUser) {
+                    session.user.id = dbUser._id.toString();
+                    session.user.name = `${dbUser.firstname} ${dbUser.lastname}`;
+                    session.user.email = dbUser.email;
+                    session.user.image = dbUser.image;
+                    session.user.googleId = dbUser.googleId;
+                } else {
+                    session.user.id = token.id;
+                    session.user.name = token.name;
+                }
+            } catch (error) {
+                console.error("Session callback error:", error);
             }
             return session;
         },

@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema(
         email: { type: String, required: true, unique: true },
         password: { type: String, default: null }, // Nullable for social login users
         image: { type: String, default: null }, // Nullable for credentials users
+        googleId: { type: String, unique: true, sparse: true },
     },
     {
         timestamps: true, // Automatically adds `createdAt` and `updatedAt`
